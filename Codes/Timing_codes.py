@@ -13,10 +13,10 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_qq.root",'r')
-f2= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_ww.root",'r')
-f3= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_qq_1GeV_cut.root",'r')
-f4= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_ww_1GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
 
 h1 = f1.Get("Timing_detector_next_to_trailing")
 h2 = f2.Get("Timing_detector_next_to_trailing")
@@ -81,8 +81,8 @@ h5.GetYaxis().SetRangeUser(0,1)
 h5.GetYaxis().SetRangeUser(0,1)
 
 
-h5.SetTitle("Time of flight - collision point to HCAL(Next-to-Trailing)")
-h5.SetTitle("Time of flight - collision point to HCAL(Next-to-Trailing)")
+h5.SetTitle("Time of flight - collision point to HCAL(Next_to_trailing)")
+h5.SetTitle("Time of flight - collision point to HCAL(Next_to_trailing)")
 h5.SetXTitle("T [ns]")
 h5.SetXTitle("T [ns]")
 h5.SetYTitle("Arbitrary number")
@@ -90,8 +90,8 @@ h5.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
 leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
 leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
-leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(1GeV cut)","l")
-leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(1GeV cut)","l")
+leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(1.5GeV cut)","l")
+leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(1.5GeV cut)","l")
 leg.AddEntry(h5,"Constant velocity = c","l")
 
 leg.Draw()
@@ -119,7 +119,7 @@ h4.Draw("histsame")
 
 leg.Draw()
 
-c.Print("Try_Next_to_Trailing.pdf")
+c.Print("Try_Next_to_trailing.pdf")
 
 
 

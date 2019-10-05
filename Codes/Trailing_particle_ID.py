@@ -13,10 +13,10 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_qq.root",'r')
-f2= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_ww.root",'r')
-f3= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_qq_1GeV_cut.root",'r')
-f4= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_ww_1GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
 
 h1 = f1.Get("Timing_detector_next_to_trailing")
 h2 = f2.Get("Timing_detector_next_to_trailing")
@@ -100,8 +100,8 @@ h3.SetXTitle("Kinds of particles")
 h3.SetYTitle("Arbitrary number")
 h3.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
-leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(1GeV cut)","l")
-leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(1GeV cut)","l")
+leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(1.5GeV cut)","l")
+leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(1.5GeV cut)","l")
 
 leg.Draw()
 

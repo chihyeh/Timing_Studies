@@ -13,8 +13,8 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_ww_1GeV_cut.root",'r')
-f2= ROOT.TFile.Open("tev5mm_pythia6_zprime5tev_ww_1GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_Jet_number.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_Jet_number.root",'r')
 h1 = f1.Get("Check_matching_0P2")
 h2 = f2.Get("Check_matching_0P4")
 h3 = f1.Get("Timing_Standard")
@@ -62,7 +62,7 @@ h1.SetMarkerStyle(9)
 h2.SetMarkerStyle(9)
 h3.SetMarkerStyle(9)
 
-h2.GetXaxis().SetRangeUser(0,2)
+h2.GetXaxis().SetRangeUser(0,3)
 h2.GetYaxis().SetRangeUser(0,4000)
 
 
@@ -73,8 +73,8 @@ h2.SetXTitle("Number of jet(s)")
 h2.SetYTitle("Event number")
 h2.SetYTitle("Event number")
 leg.AddEntry("","FD group - SiFCC","")
-#leg.AddEntry("","Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","")
-leg.AddEntry("","Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjet(s)","")
+leg.AddEntry("","Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","")
+#leg.AddEntry("","Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjet(s)","")
 leg.AddEntry(h1,"Delta(R) < 0.2","l")
 leg.AddEntry(h2,"Delta(R) < 0.4","l")
 
@@ -99,7 +99,7 @@ h1.Draw("histsame")
 
 leg.Draw()
 
-c.Print("WW_checking_1GeV_cut.pdf")
+c.Print("QQ_checking_1GeV_cut.pdf")
 
 
 
