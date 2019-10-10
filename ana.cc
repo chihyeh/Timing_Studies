@@ -633,14 +633,14 @@ int main(int argc, char **argv)
 
   TH1F *Eta_plot = new TH1F("Eta_plot","Eta_plot",200,-10,10);
   TH1F *Eta_plot_after_cut = new TH1F("Eta_plot_after_cut","Eta_plot_after_cut",200,-10,10);
-  TH1F *Timing_Standard = new TH1F("Timing_Standard","Timing_Standard",100,0,50);
-  TH1F *Timing_detector_Leading = new TH1F("Timing_detector_Timing_Leading","Timing_detector_Leading",100,0,50);
-  TH1F *Timing_detector_Trailing = new TH1F("Timing_detector_Trailing","Timing_detector_Trailing",100,0,50);
+  TH1F *Timing_Standard = new TH1F("Timing_Standard","Timing_Standard",200,0,50);
+  TH1F *Timing_detector_Leading = new TH1F("Timing_detector_Timing_Leading","Timing_detector_Leading",200,0,50);
+  TH1F *Timing_detector_Trailing = new TH1F("Timing_detector_Trailing","Timing_detector_Trailing",200,0,50);
   TH1F *Timing_detector_Average_tem = new TH1F("Timing_detector_Average_tem","Timing_detector_Average_tem",1000,7,12);
-  TH1F *Timing_detector_Average = new TH1F("Timing_detector_Average","Timing_detector_Average",100,0,50);
-  TH1F *Timing_detector_next_to_trailing = new TH1F("Timing_detector_next_to_trailing","Timing_detector_next_to_trailing",100,0,50);
-  TH1F *Timing_detector_Trailing_P = new TH1F("Timing_detector_Trailing_P","Timing_detector_Trailing_P",100,0,100);
-  TH1F *Timing_detector_next_to_trailing_P = new TH1F("Timing_detector_next_to_trailing_P","Timing_detector_next_to_trailing_P",100,0,100);
+  TH1F *Timing_detector_Average = new TH1F("Timing_detector_Average","Timing_detector_Average",200,0,50);
+  TH1F *Timing_detector_next_to_trailing = new TH1F("Timing_detector_next_to_trailing","Timing_detector_next_to_trailing",200,0,50);
+  TH1F *Timing_detector_Trailing_P = new TH1F("Timing_detector_Trailing_P","Timing_detector_Trailing_P",200,0,100);
+  TH1F *Timing_detector_next_to_trailing_P = new TH1F("Timing_detector_next_to_trailing_P","Timing_detector_next_to_trailing_P",200,0,100);
   TH1F *Timing_detector_Trailing_V = new TH1F("Timing_detector_Trailing_V","Timing_detector_Trailing_V",1000,0.9,1);
   TH1F *Timing_detector_next_to_trailing_V = new TH1F("Timing_detector_next_to_trailing_V","Timing_detector_next_to_trailing_V",1000,0.9,1);
   TH1F *Timing_detector_dR_Leading_trailing = new TH1F("Timing_detector_dR_Leading_trailing","Timing_detector_dR_Leading_trailing",50,0,1);
@@ -759,7 +759,7 @@ int main(int argc, char **argv)
    int nEvents = 0  ;
    int Hadronic_decay_total = 0;
    int Leptonic_decay_total = 0;
-   vector<int> Trailing_particle_kind={130,211,310,321,2112,2212,3112,3122,3312,3222,3322};
+   vector<int> Trailing_particle_kind={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322};
    
    int Trailing_photon=0;
    // loop over all files
@@ -1061,6 +1061,7 @@ int main(int argc, char **argv)
 							 cout << "constit[i].perp(): " << constit[i].perp()<< endl;  
 							 cout << "constit[i].getpdg(): "<< constit[i].user_index() << endl;
 							continue;}
+		  if(abs(constit_vec.Eta())>2.1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
 		  h_jet_econst_truth->Fill(constit[i].e(), constit[i].e());
                   h_jet_econst_truth_frac->Fill(TMath::Log10(constit[i].e()), constit[i].e()/e);
                   h_truth_jets_const_Et->Fill(constit[i].Et());
@@ -1088,13 +1089,14 @@ int main(int argc, char **argv)
 		  FourP.push_back(constit_vec);
 		  FourP_1.push_back(constituent);
 		  event_number = event_number+1;
-		  if(abs(constit_vec.Eta())>2.1) Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;
 		  if(nEvents==1){cout << "Timing_detector: " << 2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta()))) << endl;
 			       cout << "Velocity: "<< constit_velocity << endl;}
               }
-		if((Event_number_out_Eta2P1/event_number)!=0)
+		cout << "Event_number_out_Eta2P1: " << Event_number_out_Eta2P1 << endl;
+		cout << "event_number: " << (event_number+Event_number_out_Eta2P1) << endl;
+		if((Event_number_out_Eta2P1/(event_number+Event_number_out_Eta2P1))!=0)
 	{ 
-		cout << "Out-of_Eta2P1_fraction:" << Event_number_out_Eta2P1/event_number << endl; 
+		cout << "Out-of_Eta2P1_fraction:" << (Event_number_out_Eta2P1/(event_number+Event_number_out_Eta2P1)) << endl; 
 		cout << "What the fucking unexpected events" << endl;
 	}
 		time_average = time_average/event_number; 

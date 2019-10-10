@@ -18,8 +18,8 @@ f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6
 f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
 f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
 
-h1 = f1.Get("Timing_detector_next_to_trailing")
-h2 = f2.Get("Timing_detector_next_to_trailing")
+h1 = f1.Get("Timing_detector_dR_Leading_next_trailing")
+h2 = f2.Get("Timing_detector_dR_Leading_next_trailing")
 h3 = f3.Get("Timing_Standard")
 h4 = f4.Get("Timing_detector_next_to_trailing")
 h5 = f1.Get("Timing_Standard")
@@ -76,15 +76,15 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h2.GetXaxis().SetRangeUser(7,25)
+h2.GetXaxis().SetRangeUser(0,1)
 h2.GetYaxis().SetRangeUser(0,0.3)
 h2.GetYaxis().SetRangeUser(0,0.3)
 
 
-h2.SetTitle("Time of flight - collision point to HCAL(next_to_trailing)")
-h2.SetTitle("Time of flight - collision point to HCAL(next_to_trailing)")
-h2.SetXTitle("T [ns]")
-h2.SetXTitle("T [ns]")
+h2.SetTitle("#DeltaR(Next-to-Trailing)")
+h2.SetTitle("#DeltaR(Next-to-Trailing)")
+h2.SetXTitle("#DeltaR")
+h2.SetXTitle("#DeltaR")
 h2.SetYTitle("Arbitrary number")
 h2.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
@@ -117,7 +117,7 @@ h1.Draw("histsame")
 
 leg.Draw()
 
-c.Print("Try_next_to_trailing.pdf")
+c.Print("Try_next_to_trailing_dR.pdf")
 
 
 

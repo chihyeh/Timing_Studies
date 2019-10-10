@@ -18,8 +18,8 @@ f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6
 f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
 f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
 
-h1 = f1.Get("Timing_detector_next_to_trailing_V")
-h2 = f2.Get("Timing_detector_next_to_trailing_V")
+h1 = f1.Get("Timing_detector_Trailing_V")
+h2 = f2.Get("Timing_detector_Trailing_V")
 h3 = f3.Get("Timing_detector_Average")
 h4 = f4.Get("Timing_detector_Average")
 h5 = f1.Get("Timing_Standard")
@@ -42,7 +42,7 @@ a.Fill(1)
 c = TCanvas("c1", "c1",0,0,500,500)
 gStyle.SetOptStat(0)
 
-leg = TLegend(0.2,0.6,0.55,0.9)
+leg = TLegend(0.15,0.7,0.45,0.9)
 leg.SetFillColor(0)
 leg.SetFillStyle(0)
 leg.SetTextSize(0.04)
@@ -81,15 +81,15 @@ h2.GetYaxis().SetRangeUser(0,0.2)
 h2.GetYaxis().SetRangeUser(0,0.2)
 
 
-h2.SetTitle("#beta(Next-to-Trailing)")
-h2.SetTitle("#beta(Next-to-Trailing)")
+h2.SetTitle("#beta(Trailing)")
+h2.SetTitle("#beta(Trailing)")
 h2.SetXTitle("#beta")
 h2.SetXTitle("#beta")
 h2.SetYTitle("Arbitrary number")
 h2.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
-leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(1.5GeV cut)","l")
-leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(1.5GeV cut)","l")
+leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
+leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
 
 leg.Draw()
 
@@ -115,7 +115,7 @@ h1.Draw("histsame")
 
 leg.Draw()
 
-c.Print("Try_V_next_to_trailing.pdf")
+c.Print("Try_V_Trailing.pdf")
 
 
 
