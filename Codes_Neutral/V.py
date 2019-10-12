@@ -13,15 +13,15 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_No_Eta_cut.root",'r')
-f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_No_Eta_cut.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_No_Eta_cut_neutral.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_No_Eta_cut_neutral.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_neutral.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut_neutral.root",'r')
 
-h1 = f1.Get("Timing_detector_dR_Leading_trailing")
-h2 = f2.Get("Timing_detector_dR_Leading_trailing")
-h3 = f3.Get("Timing_detector_dR_Leading_trailing")
-h4 = f4.Get("Timing_detector_dR_Leading_trailing")
+h1 = f1.Get("Timing_detector_Trailing_V")
+h2 = f2.Get("Timing_detector_Trailing_V")
+h3 = f3.Get("Timing_detector_Trailing_V")
+h4 = f4.Get("Timing_detector_Trailing_V")
 h5 = f1.Get("Timing_Standard")
 
 h1.Sumw2()
@@ -76,15 +76,15 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h2.GetXaxis().SetRangeUser(0,1)
-h2.GetYaxis().SetRangeUser(0,0.3)
-h2.GetYaxis().SetRangeUser(0,0.3)
+h2.GetXaxis().SetRangeUser(0.988,1)
+h2.GetYaxis().SetRangeUser(0,0.5)
+h2.GetYaxis().SetRangeUser(0,0.5)
 
 
-h2.SetTitle("#DeltaR(Trailing)")
-h2.SetTitle("#DeltaR(Trailing)")
-h2.SetXTitle("#DeltaR")
-h2.SetXTitle("#DeltaR")
+h2.SetTitle("#beta(Trailing)")
+h2.SetTitle("#beta(Trailing)")
+h2.SetXTitle("#beta")
+h2.SetXTitle("#beta")
 h2.SetYTitle("Arbitrary number")
 h2.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
@@ -117,7 +117,7 @@ h4.Draw("histsame")
 
 leg.Draw()
 
-c.Print("Try_trailing_dR.pdf")
+c.Print("Try_V_Trailing.pdf")
 
 
 

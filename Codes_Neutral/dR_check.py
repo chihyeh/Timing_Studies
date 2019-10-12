@@ -13,15 +13,15 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_No_Eta_cut.root",'r')
-f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_No_Eta_cut.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_No_Eta_cut_neutral.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_No_Eta_cut_neutral.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_neutral.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut_neutral.root",'r')
 
-h1 = f1.Get("Timing_detector_dR_Leading_trailing")
-h2 = f2.Get("Timing_detector_dR_Leading_trailing")
-h3 = f3.Get("Timing_detector_dR_Leading_trailing")
-h4 = f4.Get("Timing_detector_dR_Leading_trailing")
+h1 = f1.Get("Timing_detector_dR_Leading_next_trailing")
+h2 = f2.Get("Timing_detector_dR_Leading_next_trailing")
+h3 = f3.Get("Timing_detector_dR_Leading_next_trailing")
+h4 = f4.Get("Timing_detector_dR_Leading_next_trailing")
 h5 = f1.Get("Timing_Standard")
 
 h1.Sumw2()
@@ -81,8 +81,8 @@ h2.GetYaxis().SetRangeUser(0,0.3)
 h2.GetYaxis().SetRangeUser(0,0.3)
 
 
-h2.SetTitle("#DeltaR(Trailing)")
-h2.SetTitle("#DeltaR(Trailing)")
+h2.SetTitle("#DeltaR(Next-to-Trailing)")
+h2.SetTitle("#DeltaR(Next-to-Trailing)")
 h2.SetXTitle("#DeltaR")
 h2.SetXTitle("#DeltaR")
 h2.SetYTitle("Arbitrary number")
@@ -117,7 +117,7 @@ h4.Draw("histsame")
 
 leg.Draw()
 
-c.Print("Try_trailing_dR.pdf")
+c.Print("Try_next_to_trailing_dR.pdf")
 
 
 

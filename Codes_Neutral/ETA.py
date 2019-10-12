@@ -13,15 +13,15 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_No_Eta_cut.root",'r')
-f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_No_Eta_cut.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
 
-h1 = f1.Get("Timing_detector_dR_Leading_trailing")
-h2 = f2.Get("Timing_detector_dR_Leading_trailing")
-h3 = f3.Get("Timing_detector_dR_Leading_trailing")
-h4 = f4.Get("Timing_detector_dR_Leading_trailing")
+h1 = f1.Get("Eta_plot")
+h2 = f2.Get("Eta_plot_after_cut")
+h3 = f3.Get("Timing_detector_Average")
+h4 = f4.Get("Timing_detector_Average")
 h5 = f1.Get("Timing_Standard")
 
 h1.Sumw2()
@@ -76,22 +76,22 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h2.GetXaxis().SetRangeUser(0,1)
-h2.GetYaxis().SetRangeUser(0,0.3)
-h2.GetYaxis().SetRangeUser(0,0.3)
+h2.GetXaxis().SetRangeUser(-2.5,2.5)
+h2.GetYaxis().SetRangeUser(0,0.1)
+h2.GetYaxis().SetRangeUser(0,0.1)
 
 
-h2.SetTitle("#DeltaR(Trailing)")
-h2.SetTitle("#DeltaR(Trailing)")
-h2.SetXTitle("#DeltaR")
-h2.SetXTitle("#DeltaR")
+h2.SetTitle("#eta")
+h2.SetTitle("#eta")
+h2.SetXTitle("#eta")
+h2.SetXTitle("#eta")
 h2.SetYTitle("Arbitrary number")
 h2.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
-leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(No #eta cut)","l")
-leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(No #eta cut)","l")
-leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
-leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
+#leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
+#leg.AddEntry(h2,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(#eta cut)","l")
+leg.AddEntry(h1,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
+leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(#eta cut)","l")
 
 leg.Draw()
 
@@ -111,13 +111,13 @@ h2.GetYaxis().SetLabelFont(22)
 
 h2.Draw("hist")
 h1.Draw("histsame")
-h3.Draw("histsame")
-h4.Draw("histsame")
+#h3.Draw("histsame")
+#h4.Draw("histsame")
 
 
 leg.Draw()
 
-c.Print("Try_trailing_dR.pdf")
+c.Print("Try_Eta_WW.pdf")
 
 
 

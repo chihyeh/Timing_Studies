@@ -13,15 +13,15 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
-f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_No_Eta_cut.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_No_Eta_cut.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
 
-h1 = f1.Get("Timing_detector_Trailing_P")
-h2 = f2.Get("Timing_detector_Trailing_P")
-h3 = f3.Get("Timing_detector_Average")
-h4 = f4.Get("Timing_detector_Average")
+h1 = f1.Get("Timing_detector_next_to_trailing_P")
+h2 = f2.Get("Timing_detector_next_to_trailing_P")
+h3 = f3.Get("Timing_detector_next_to_trailing_P")
+h4 = f4.Get("Timing_detector_next_to_trailing_P")
 h5 = f1.Get("Timing_Standard")
 
 h1.Sumw2()
@@ -81,16 +81,17 @@ h2.GetYaxis().SetRangeUser(0,0.4)
 h2.GetYaxis().SetRangeUser(0,0.4)
 
 
-h2.SetTitle("Momentum(Trailing)")
-h2.SetTitle("Momentum(Trailing)")
+h2.SetTitle("Momentum(Next-to-Trailing)")
+h2.SetTitle("Momentum(Next-to-Trailing)")
 h2.SetXTitle("P [GeV]")
 h2.SetXTitle("P [GeV]")
 h2.SetYTitle("Arbitrary number")
 h2.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
-leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
-leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
-
+leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(No #eta cut)","l")
+leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(No #eta cut)","l")
+leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
+leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
 leg.Draw()
 
 #Z'("+str(energy_array[1][m])+"TeV)#rightarrowt#bar{t}#rightarrow3 jet
@@ -109,13 +110,13 @@ h2.GetYaxis().SetLabelFont(22)
 
 h2.Draw("hist")
 h1.Draw("histsame")
-#h3.Draw("histsame")
-#h4.Draw("histsame")
+h3.Draw("histsame")
+h4.Draw("histsame")
 
 
 leg.Draw()
 
-c.Print("Try_P_Trailing.pdf")
+c.Print("Try_P_next_to_Trailing.pdf")
 
 
 
