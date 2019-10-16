@@ -42,7 +42,7 @@ a.Fill(-1)
 c = TCanvas("c1", "c1",0,0,500,500)
 gStyle.SetOptStat(0)
 
-leg = TLegend(0.15,0.7,0.45,0.9)
+leg = TLegend(0.35,0.75,0.65,0.9)
 leg.SetFillColor(0)
 leg.SetFillStyle(0)
 leg.SetTextSize(0.04)

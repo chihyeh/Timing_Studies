@@ -76,20 +76,20 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h2.GetXaxis().SetRangeUser(0,20)
-h2.GetYaxis().SetRangeUser(0,0.4)
-h2.GetYaxis().SetRangeUser(0,0.4)
+h3.GetXaxis().SetRangeUser(0,20)
+h3.GetYaxis().SetRangeUser(0,0.4)
+h3.GetYaxis().SetRangeUser(0,0.4)
 
 
-h2.SetTitle("Momentum(Next-to-Trailing)")
-h2.SetTitle("Momentum(Next-to-Trailing)")
-h2.SetXTitle("P [GeV]")
-h2.SetXTitle("P [GeV]")
-h2.SetYTitle("Arbitrary number")
-h2.SetYTitle("Arbitrary number")
+h3.SetTitle("Momentum(next_to_trailing)")
+h3.SetTitle("Momentum(next_to_trailing)")
+h3.SetXTitle("P [GeV]")
+h3.SetXTitle("P [GeV]")
+h3.SetYTitle("Arbitrary number")
+h3.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
-leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(No #eta cut)","l")
-leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(No #eta cut)","l")
+#leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(No #eta cut)","l")
+#leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(No #eta cut)","l")
 leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
 leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
 leg.Draw()
@@ -108,15 +108,15 @@ h2.GetXaxis().SetLabelFont(22)
 h1.GetYaxis().SetLabelFont(22)
 h2.GetYaxis().SetLabelFont(22)
 
-h2.Draw("hist")
-h1.Draw("histsame")
-h3.Draw("histsame")
+#h2.Draw("hist")
+#h1.Draw("histsame")
+h3.Draw("hist")
 h4.Draw("histsame")
 
 
 leg.Draw()
 
-c.Print("Try_P_next_to_Trailing.pdf")
+c.Print("Try_P_next_to_trailing.pdf")
 
 
 
