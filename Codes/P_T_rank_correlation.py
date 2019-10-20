@@ -13,9 +13,9 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut_rank_reduce_tosix_mass.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_rank_reduce_tosix_mass.root",'r')
 
-h1 = f1.Get("Timing_momentum_correlation")
+h1 = f1.Get("Timing_P_rank_difference_momentum_correlation")
 
 c = TCanvas("c1", "c1",0,0,500,500)
 gStyle.SetOptStat(0)
@@ -27,10 +27,10 @@ leg.SetTextSize(0.04)
 leg.SetBorderSize(0)
 leg.SetTextFont(22)
 leg.Draw()
-h1.GetXaxis().SetRangeUser(0,1)
-h1.GetYaxis().SetRangeUser(0,1)
-h1.SetXTitle("P Rank")
-h1.SetYTitle("T rank")
+h1.GetXaxis().SetRangeUser(0,3)
+h1.GetYaxis().SetRangeUser(-50,50)
+h1.SetXTitle("Log{P} [GeV]")
+h1.SetYTitle("T_rank - P_rank")
 h1.SetZTitle("Arbitrary number")
 
 
@@ -94,8 +94,7 @@ h1.GetXaxis().SetLabelFont(22)
 h1.GetYaxis().SetLabelFont(22)
 
 h1.Draw("colz")
-
-c.Print("P_T_correlation_WW_plot_reduce_Factwo_normalized.pdf")
+c.Print("P_T_rank_correlation_QQ_plot_tosix.pdf")
 
 
 
