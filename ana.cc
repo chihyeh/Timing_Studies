@@ -643,16 +643,36 @@ int main(int argc, char **argv)
   TH1F *Timing_detector_next_to_trailing_P = new TH1F("Timing_detector_next_to_trailing_P","Timing_detector_next_to_trailing_P",200,0,100);
   TH1F *Timing_detector_Trailing_V = new TH1F("Timing_detector_Trailing_V","Timing_detector_Trailing_V",1000,0.9,1);
   TH1F *Timing_detector_next_to_trailing_V = new TH1F("Timing_detector_next_to_trailing_V","Timing_detector_next_to_trailing_V",1000,0.9,1);
-  TH1F *Timing_detector_dR_Leading_trailing = new TH1F("Timing_detector_dR_Leading_trailing","Timing_detector_dR_Leading_trailing",50,0,1);
-  TH1F *Timing_detector_dR_Leading_next_trailing = new TH1F("Timing_detector_dR_Leading_next_trailing","Timing_detector_dR_Leading_next_trailing",50,0,1);
-  TH2F *Timing_momentum_correlation = new TH2F("Timing_momentum_correlation","Timing_momentum_correlation",50,0,1,50,0,1);
-  TH2F *Timing_P_rank_difference_momentum_correlation = new TH2F("Timing_P_rank_difference_momentum_correlation","Timing_P_rank_difference_momentum_correlation",6,0,3,100,-100,100);
-  TH1F *mass_sum_average = new TH1F("mass_sum_average","mass_sum_average",50,0,1);
+  TH1F *Timing_detector_dR_Leading_trailing_T = new TH1F("Timing_detector_dR_Leading_trailing_T","Timing_detector_dR_Leading_trailing_T",50,0,1);
+  TH1F *Timing_detector_dR_Leading_next_trailing_T = new TH1F("Timing_detector_dR_Leading_next_trailing_T","Timing_detector_dR_Leading_next_trailing_T",50,0,1);
+  TH1F *Timing_detector_dR_Leading_trailing_PT = new TH1F("Timing_detector_dR_Leading_trailing_PT","Timing_detector_dR_Leading_trailing_PT",50,0,1);
+  TH1F *Timing_detector_dR_Leading_next_trailing_PT = new TH1F("Timing_detector_dR_Leading_next_trailing_PT","Timing_detector_dR_Leading_next_trailing_PT",50,0,1);
+  TH1F *Timing_detector_dR_Leading_Proton_PT = new TH1F("Timing_detector_dR_Leading_Proton_PT","Timing_detector_dR_Leading_Proton_PT",50,0,1);
+  TH2F *Timing_momentum_correlation = new TH2F("Timing_momentum_correlation","Timing_momentum_correlation",20,0,1,20,0,1);
+  TH2F *Timing_P_rank_difference_momentum_correlation = new TH2F("Timing_P_rank_difference_momentum_correlation","Timing_P_rank_difference_momentum_correlation",6,0,3,40,-2,2);
+  TH1F *mass_sum_average = new TH1F("mass_sum_average","mass_sum_average",100,0.5,2.5);
+  TH1F *check_jet_particle_number = new TH1F("check_jet_particle_number","check_jet_particle_number",100,0,100);
+  TH1F *Highest_rank = new TH1F("Highest_rank","Highest_rank",100,0,100);
 
-  TH1F *Trailing_particle_ID = new TH1F("Trailing_particle_ID","Trailing_particle_ID",20,0,20);
+  TH1F *Total_particle_ID_eta_cut = new TH1F("Total_particle_ID_eta_cut","Total_particle_ID_eta_cut",20,0,20);
+  TH1F *Total_particle_ID_eta_PT_cut = new TH1F("Total_particle_ID_eta_PT_cut","Total_particle_ID_eta_PT_cut",20,0,20);
+  TH1F *Total_particle_ID_cut = new TH1F("Total_particle_ID_cut","Total_particle_ID_cut",5000,0,5000);
+  TH1F *Baryon_cut_PT = new TH1F("Baryon_cut_PT","Baryon_cut_PT",2000,0,1000);
+  TH1F *Trailing_particle_ID_T  = new TH1F("Trailing_particle_ID_T" ,"Trailing_particle_ID_T",20,0,20);
+  TH1F *Trailing_particle_ID_PT = new TH1F("Trailing_particle_ID_PT","Trailing_particle_ID_PT",20,0,20);
+  
+  TH1F *Baryons_ID = new TH1F("Baryons_ID","Baryons_ID",20,0,20);
   TH1F *Check_matching_0P2 = new TH1F("Check_matching_0P2","Check_matching_0P2",6,-1,5);
   TH1F *Check_matching_0P3 = new TH1F("Check_matching_0P3","Check_matching_0P3",6,-1,5);
   TH1F *Check_matching_0P4 = new TH1F("Check_matching_0P4","Check_matching_0P4",6,-1,5);
+  
+  TH1F *check_Pion_DZ = new TH1F("check_Pion_DZ","check_Pion_DZ",50,0,5);
+  TH1F *check_Proton_DZ = new TH1F("check_Pion_DZ","check_Proton_DZ",50,0,5);
+  TH1F *check_Pion_VZ = new TH1F("check_Pion_VZ","check_Pion_VZ",10000,0.9,1);
+  TH1F *check_Proton_V = new TH1F("check_Proton_V","check_Proton_V",2000,0.9,1);
+  TH1F *check_Pion_T = new TH1F("check_Pion_T","check_Pion_T",200,0,50);
+  TH1F *check_Proton_T = new TH1F("check_Proton_T","check_Proton_T",200,0,50);
+
   // read detector geometry for this configuration 
   string detector="./data/rfull009_sifcch7/sifcch7/sifcch7.pandora";
   DetectorGeometrySimple* geom = new   DetectorGeometrySimple(detector);
@@ -762,8 +782,9 @@ int main(int argc, char **argv)
    int nEvents = 0  ;
    int Hadronic_decay_total = 0;
    int Leptonic_decay_total = 0;
-   vector<int> Trailing_particle_kind={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322};
-   
+   vector<int> Total_particle_kind={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322,16,3344};
+   vector<int> Trailing_particle_kind={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322,16,3344};
+   vector<int> Baryons_particle_kind ={2112,2212,3112,3122,3312,3222,3322};
    int Trailing_photon=0;
    // loop over all files
   for(unsigned int mfile=0; mfile < files.size(); mfile++){
@@ -991,7 +1012,7 @@ int main(int argc, char **argv)
               double m=sjets_truth[k].m();
               double pt = sjets_truth[k].perp();
               double e = sjets_truth[k].e();
-	      vector<float> velocity_jet; vector<float> velocity_jet_sort;  vector<float> momentum_jet; vector<float> PT_jet; vector<int> constit_PDG; 
+	      vector<float> velocity_jet; vector<float> velocity_jet_sort;  vector<float> momentum_jet; vector<float> PT_jet; vector<float> PT_jet_sort; vector<int> constit_PDG; 
               vector<float> velocity_jet_Z; vector<float> velocity_jet_Theta; vector<float> jet_time; vector<float> jet_time_sort;
 	      TLorentzVector p_using; vector<float> P_jet_sort; 
 	      
@@ -1053,25 +1074,70 @@ int main(int argc, char **argv)
 		  if(Check_photon_jet==0) {
 			//cout << "This is the Photon jet, we hate it and want to throw it away." << endl;
 			for (int i=0; i<csize; i++){
-                        cout << "constit_Photon jet:" << constit[i].user_index() << endl;}
+                        cout << "constit_Photon jet:" << constit[i].user_index() << endl;
+			continue;}
                                 }
+                 for (int i=0; i<csize; i++) {
+                        fastjet::PseudoJet constituent(constit[i].px(),constit[i].py(),constit[i].pz(),constit[i].e());
+                        TLorentzVector constit_vec;
+                        constit_vec.SetPxPyPzE(constit[i].px(),constit[i].py(),constit[i].pz(),constit[i].e());
+                        if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
+                        int it;
+                        it=find(Total_particle_kind.begin(),Total_particle_kind.end(),abs(constit[i].user_index()))[0];
+                        if(it!=abs(constit[i].user_index()))
+                        {
+                        Total_particle_kind.push_back(abs(constit[i].user_index()));
+                        }
+                        else {cout << "" << endl;}//
+                        for(int m=0; m<Total_particle_kind.size();m++){
+                              cout << "[m]: "<< abs(Total_particle_kind[m]) << endl;
+                                if(abs(constit[i].user_index())==Total_particle_kind[m]) Total_particle_ID_eta_cut->Fill(m);
+                        cout << " Total_particle_ID->GetBinContent(m): " << Total_particle_ID_eta_cut->GetBinContent(m+1) << endl;
+			}}
+
 
 //=========================================Cut and Find the information we want=================================//
                   for (int i=0; i<csize; i++) {
 	          	fastjet::PseudoJet constituent(constit[i].px(),constit[i].py(),constit[i].pz(),constit[i].e());
 		  	TLorentzVector constit_vec;
 		  	constit_vec.SetPxPyPzE(constit[i].px(),constit[i].py(),constit[i].pz(),constit[i].e());
+			int ID=0;
+                   	ID = find(PDG_with_no_charge.begin(),PDG_with_no_charge.end(),abs(constit[i].user_index()))[0];      
+		        if(constit[i].perp()<1.5 and ID!=abs(constit[i].user_index()) )
+                                                        {cout << "Cut-off event" << endl;
+                                                         cout << "constit[i].perp(): " << constit[i].perp()<< endl;
+                                                         cout << "constit[i].getpdg(): "<< constit[i].user_index() << endl;
+                                                        continue;}        
+			if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
+			int it;
+			it=find(Total_particle_kind.begin(),Total_particle_kind.end(),abs(constit[i].user_index()))[0];
+        		if(it!=abs(constit[i].user_index()))
+        		{
+        		Total_particle_kind.push_back(abs(constit[i].user_index()));
+        		}
+       			else {cout << "" << endl;}//
+	                for(int m=0; m<Total_particle_kind.size();m++){
+        	              cout << "[m]: "<< abs(Total_particle_kind[m]) << endl;
+                        	if(abs(constit[i].user_index())==Total_particle_kind[m]) Total_particle_ID_eta_PT_cut->Fill(m);
+                        cout << " Total_particle_ID->GetBinContent(m): " << Total_particle_ID_eta_PT_cut->GetBinContent(m+1) << endl;
+                        //if(abs(Trailing_ID)==Trailing_particle_kind[m]) Trailing_particle_ID->Fill(m);
+			}
+	
 		   mass_average = mass_average +  constit_vec.M() ;
+		   /*
 		   int ID=0;
 		   ID = find(PDG_with_no_charge.begin(),PDG_with_no_charge.end(),abs(constit[i].user_index()))[0];
-		   //if(abs(constit[i].user_index())==211) cout << "Pion matching charged: " << ID << endl;
-		   if(constit[i].perp()<1.5 and ID!=abs(constit[i].user_index()) ) 
+		   if(abs(constit[i].user_index())==211) cout << "Pion matching charged: " << ID << endl;
+		   
+			if(constit[i].perp()<1.5 and ID!=abs(constit[i].user_index()) ) 
 							{cout << "Cut-off event" << endl; 
 							 cout << "constit[i].perp(): " << constit[i].perp()<< endl;  
 							 cout << "constit[i].getpdg(): "<< constit[i].user_index() << endl;
 							continue;}
-		  if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
-		  h_jet_econst_truth->Fill(constit[i].e(), constit[i].e());
+		    
+		   if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
+		*/
+		h_jet_econst_truth->Fill(constit[i].e(), constit[i].e());
                   h_jet_econst_truth_frac->Fill(TMath::Log10(constit[i].e()), constit[i].e()/e);
                   h_truth_jets_const_Et->Fill(constit[i].Et());
 		  
@@ -1080,38 +1146,55 @@ int main(int argc, char **argv)
 		  float constit_velocity_z = (constit[i].pz()/constit[i].e());// Magnetic_consideration
 		  //cout << "constit[i].Theta(): " << constit_vec.Theta() << endl;
 		  //cout << "TMath::Tan(constit[i].Theta()): " << TMath::Tan(constit_vec.Theta()) << endl;
-		  //cout << "constit_velocity_z: " << constit_velocity_z << endl;
-		  
+		  //cout << "constit_velocity_z: " << constit_velocity_z << endl
+		  if(abs(sjets_truth[k].constituents()[i].user_index())==211)
+			{
+				check_Pion_DZ->Fill(2.3/(TMath::Tan(constit_vec.Theta())));
+				check_Pion_VZ->Fill(abs(constit_velocity_z));
+				check_Pion_T ->Fill(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
+			}
+                  if(abs(sjets_truth[k].constituents()[i].user_index())==2212)
+                        {
+                                check_Proton_DZ->Fill(2.3/(TMath::Tan(constit_vec.Theta())));
+                                cout << "abs(constit_velocity): " << abs(constit_velocity) << endl;
+				check_Proton_V->Fill(abs(constit_velocity));
+                                check_Proton_T ->Fill(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
+                        }
+
+		  if(abs(sjets_truth[k].constituents()[i].user_index())!=22)
+                        {
 		  time_average = time_average + abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta()))));//[ns]
 		  jet_time.push_back(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
-                  jet_time_sort.push_back(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
+                  cout << "jet_time:" << abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))) << endl;
+		  jet_time_sort.push_back(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
 		 
-		   if(abs(sjets_truth[k].constituents()[i].user_index())!=22) 
-			{
 			jet_time_for_rank_sort.push_back(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
 			jet_time_for_rank.push_back(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
 			jet_P_for_rank.push_back( constit_vec.P() );
 			jet_P_for_rank_sort.push_back( constit_vec.P() );
 			Rank_PDGID.push_back(sjets_truth[k].constituents()[i].user_index());
-			}
-		if(constit[i].user_index()==211 and constit[i].perp()<1.5) cout << "*Fuck* constit[i].perp() of Pion: " << constit[i].perp() << endl;  
-		velocity_jet_sort.push_back(constit_velocity);
+			
+		//if(constit[i].user_index()==211 and constit[i].perp()<1.5) cout << "*Fuck* constit[i].perp() of Pion: " << constit[i].perp() << endl;  
+		  velocity_jet_sort.push_back(constit_velocity);
 		  velocity_jet.push_back(constit_velocity);
 		  velocity_jet_Z.push_back(constit[i].pz()/constit[i].e());
 		  velocity_jet_Theta.push_back(constit_vec.Theta());	
 		  Timing_Standard->Fill(abs(2.3*TMath::Power(10,9)/(SOL*TMath::Sin(constit_vec.Theta()))));//Suppose all of them are photons.
-                  if(constit_velocity==1) Timing_detector_Leading->Fill(abs(2.3*TMath::Power(10,9)/(SOL*TMath::Sin(constit_vec.Theta()))));
+                 // if(constit_velocity==1) Timing_detector_Leading->Fill(abs(2.3*TMath::Power(10,9)/(SOL*TMath::Sin(constit_vec.Theta()))));
 		  PT_jet.push_back(constit[i].perp());
+		  PT_jet_sort.push_back(constit[i].perp());
 		  momentum_jet.push_back( constit_vec.P() );
 		  P_jet_sort.push_back( constit_vec.P() );
-		  constit_PDG.push_back(sjets_truth[k].constituents()[i].user_index());
+		  constit_PDG.push_back(abs(sjets_truth[k].constituents()[i].user_index()));
 		  FourP.push_back(constit_vec);
 		  FourP_1.push_back(constituent);
 		  event_number = event_number+1;
 		  //if(nEvents==1){cout << "Timing_detector: " << 2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta()))) << endl;
 		//	       cout << "Velocity: "<< constit_velocity << endl;}
-              }
+              	}
+		}
 		if(event_number==0) continue;
+		check_jet_particle_number->Fill(jet_time_for_rank_sort.size());
 		if(event_number>0 and Event_number_out_Eta2P1>0)
 		{
 		cout << "Event_number_out_Eta2P1: " << Event_number_out_Eta2P1 << endl;
@@ -1129,70 +1212,63 @@ int main(int argc, char **argv)
 		 double max_time = *max_element(jet_time.begin(), jet_time.end());
                  double min_time = *min_element(jet_time.begin(), jet_time.end());
 		 double max_perp = *max_element(PT_jet.begin(),PT_jet.end());
+                 double min_perp = *min_element(PT_jet.begin(),PT_jet.end());
+
+		sort(PT_jet_sort.begin(), PT_jet_sort.end());
                 sort(jet_time_sort.begin(), jet_time_sort.end());
                 sort(velocity_jet_sort.begin(), velocity_jet_sort.end());
 		sort(P_jet_sort.begin(),P_jet_sort.end());
 		sort(jet_time_for_rank_sort.begin(),jet_time_for_rank_sort.end()); 
 		sort(jet_P_for_rank_sort.begin(),jet_P_for_rank_sort.end());
-		 int Trailing_ID=0; //One jet one trailing ID
-		 int it;
+		 int Trailing_ID_T=0; //One jet one trailing ID(T)
+                 int Trailing_ID_PT=0; //One jet one trailing ID(PT)
 		 float Momentum_Trailing=0;
 		 float Momentum_Next_to_Trailing=0;                
 		 float PT_Trailing=0;
+		 float Theta_Leading=0;
 		 float Theta_Trailing=0;
 		 float Theta_Next_to_Trailing=0;
 		 float Vz_Trailing=0;
 		 float Vz_Next_to_Trailing=0;
+		 float Vz_Leading=0;
 
 //===============================Find_minimum_velocity_in_particle=========================//
-		for(int i=0; i<jet_time.size(); i++) {
+		for(int i=0; i<jet_time.size(); i++) 
+				{
                         if(max_time==jet_time[i]){
-		//		cout << "Time: " << jet_time[i] ;
-				Trailing_ID = constit_PDG[i];}}
-		//		cout << "Trailing_ID: " << Trailing_ID  << endl;}}
-                               // cout << "PDG of the lowest particle: " << constit_PDG[i] << endl;
-      		/*
-		if(abs(Trailing_ID)==22) {for(int i=0; i<csize; i++) 
-				cout << "constit_PDG[i]:" << constit_PDG[i] << endl;}
-                               	Trailing_ID = abs(constit_PDG[i]);}}
+				Trailing_ID_T = constit_PDG[i];}
+			if(min_perp==PT_jet[i]){
+			       Trailing_ID_PT = constit_PDG[i];}	
+				}
 
-		if(abs(Trailing_ID)==22 or abs(Trailing_ID)==0) 
-		
-		{ cout << "Trailing_ID:" << Trailing_ID << endl;
-		  Trailing_photon = Trailing_photon + 1; 
-		  cout << "Trailing_photon: " << Trailing_photon << endl; 
-		  cout << "=============================================================================================================" << endl;
-		continue;}
-		
-		 //==========================================//
-		//cout << "Trailing_ID: " << Trailing_ID << endl;
-	        
-		cout << "Ya this is a right man! " << endl;
-		vector<int> Try={0,130,2,130};
-		vector<int>::iterator it1;
-		cout << "find(Try.begin(),Try.end(),abs(4))[0];" << find(Try.begin(),Try.end(),abs(4))[0] << endl;
-                cout << "find(Try.begin(),Try.end(),abs(4))[1];" << find(Try.begin(),Try.end(),abs(4))[1] << endl;
-		cout << "find(Try.begin(),Try.end(),abs(4))[2];" << find(Try.begin(),Try.end(),abs(4))[2] << endl; 
-                cout << "find(Try.begin(),Try.end(),abs(130));" << find(Try.begin(),Try.end(),abs(130))[0] << endl;  
-		cout << "find(Try.begin(),Try.end(),abs(130));" << find(Try.begin(),Try.end(),abs(130))[1] << endl;  	
-                cout << "find(Try.begin(),Try.end(),abs(129));" << find(Try.begin(),Try.end(),abs(129))[0] << endl;
-                cout << "find(Try.begin(),Try.end(),abs(129));" << find(Try.begin(),Try.end(),abs(129))[1] << endl;
-		*/
-//=================================================================================================================================//		
-	it=find(Trailing_particle_kind.begin(),Trailing_particle_kind.end(),abs(Trailing_ID))[0];
-	if(it!=abs(Trailing_ID)) 
+	int it;
+	it=find(Trailing_particle_kind.begin(),Trailing_particle_kind.end(),abs(Trailing_ID_T))[0];
+	if(it!=abs(Trailing_ID_T)) 
 	{	
-	Trailing_particle_kind.push_back(abs(Trailing_ID));
+	Trailing_particle_kind.push_back(abs(Trailing_ID_T));
 	}	
 	else cout << "" << endl;//
          
-		for(int m=0; m<Trailing_particle_kind.size();m++){
-	//		cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
-			if(abs(Trailing_ID)==Trailing_particle_kind[m]) Trailing_particle_ID->Fill(m);
-	//		cout << "Trailing_particle_ID->GetBinContent(m): " << Trailing_particle_ID->GetBinContent(m+1) << endl;
-			//if(abs(Trailing_ID)==Trailing_particle_kind[m]) Trailing_particle_ID->Fill(m);
-			
-			}
+	for(int m=0; m<Trailing_particle_kind.size();m++){
+		cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
+		if(abs(Trailing_ID_T)==Trailing_particle_kind[m] and abs(Trailing_ID_T)!=22) Trailing_particle_ID_T->Fill(m);
+		cout << "Trailing_particle_ID_T->GetBinContent(m): " << Trailing_particle_ID_T->GetBinContent(m+1) << endl;
+		}
+
+        int it2;
+        it2=find(Trailing_particle_kind.begin(),Trailing_particle_kind.end(),abs(Trailing_ID_PT))[0];
+        if(it2!=abs(Trailing_ID_PT))
+        {
+        Trailing_particle_kind.push_back(abs(Trailing_ID_PT));
+        }
+        else cout << "" << endl;//
+
+        for(int m=0; m<Trailing_particle_kind.size();m++){
+                cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
+                if(abs(Trailing_ID_PT)==Trailing_particle_kind[m] and abs(Trailing_ID_PT)!=22) Trailing_particle_ID_PT->Fill(m);
+                cout << "Trailing_particle_ID_PT->GetBinContent(m): " << Trailing_particle_ID_PT->GetBinContent(m+1) << endl;
+                }       
+
 //=================================================================================================================================//           
 		if(jet_time_sort[0]<jet_time_sort[1] and jet_time_sort[1]<jet_time_sort[2]) cout << "Let go party party all night oh oh!~" << endl;
 		 
@@ -1201,15 +1277,14 @@ int main(int argc, char **argv)
 	for(int j=0 ; j<jet_time_for_rank_sort.size() ; j++){
 		for(int i=0 ; i<jet_time_for_rank.size() ; i++){
 		 	if(jet_time_for_rank_sort[(jet_time_for_rank_sort.size()-1)-j]==jet_time_for_rank[i]) {
-				//cout << "jet_time_for_rank[i]: " << jet_time_for_rank[i] << endl;
 				for(int kk=0 ; kk<jet_P_for_rank.size() ; kk++){
 				if(jet_P_for_rank[i]==jet_P_for_rank_sort[kk])
 				{
-							Timing_momentum_correlation->Fill(float((j+1))/float((jet_time_for_rank_sort.size())),float((kk+1))/float((jet_time_for_rank_sort.size())));
-							
-							cout << "float((j+1))/float((jet_time_for_rank_sort.size())): " << float((j+1))/float((jet_time_for_rank_sort.size())) << endl;
-							cout << "float((kk+1))/float((jet_time_for_rank_sort.size())): " << float((kk+1))/float((jet_time_for_rank_sort.size())) << endl;
-							Timing_P_rank_difference_momentum_correlation->Fill(TMath::Log10(jet_P_for_rank[kk]),j-kk);
+	Timing_momentum_correlation->Fill(float((j+1))/float((jet_time_for_rank_sort.size())),float((kk+1))/float((jet_time_for_rank_sort.size())));
+	cout << "float((j+1))/float((jet_time_for_rank_sort.size())): " << float((j+1))/float((jet_time_for_rank_sort.size())) << endl;
+	cout << "float((kk+1))/float((jet_time_for_rank_sort.size())): " << float((kk+1))/float((jet_time_for_rank_sort.size())) << endl;
+	Timing_P_rank_difference_momentum_correlation->Fill(TMath::Log10(jet_P_for_rank[kk]),float(j-kk)/float((jet_time_for_rank_sort.size())));
+	cout << "float(j-kk)/float((jet_time_for_rank_sort.size())): " << float(j-kk)/float((jet_time_for_rank_sort.size())) << endl;
 							cout << "TMath::Log10(jet_P_for_rank[kk]): " << TMath::Log10(jet_P_for_rank[kk]) << endl;
 							//cout << "jet_P_for_rank_sort[kk]: "<< jet_P_for_rank_sort[kk] << endl;
 									cout << "(j+1): " << (j+1) << "(kk+1): " << (kk+1) << endl ;
@@ -1222,37 +1297,61 @@ int main(int argc, char **argv)
 		cout << "event_checkk: " << event_checkk << endl;
 		 vector<TLorentzVector> HighestPT_Trailing_and_next_trailing;                  
 		 vector<float> Try_space={1,2}; cout << "Try_space.size() Try_space={1,2}: " << Try_space.size() << "Try_space[Try_space.size()-1]: " << Try_space[Try_space.size()-1] ; 
+		//=====
 		for(int i=0; i<PT_jet.size(); i++) {
                 	if(max_perp==PT_jet[i]){HighestPT_Trailing_and_next_trailing.push_back(FourP[i]);cout << "Highest(PT):" << endl; cout << "PDGID: "<< constit_PDG[i] << endl; cout << "PT_jet[i].pz()" << FourP_1[i].pz() << endl; cout << "PT_jet[i].px()" << FourP_1[i].px() << endl; cout << "PT_jet[i].py()" << FourP_1[i].py() << endl;}}
- 
+                //=====
+                for(int i=0; i<constit_PDG.size(); i++){
+                        if(constit_PDG[i]==2212)
+                        {
+			cout << "Great!" << endl;
+                        Timing_detector_dR_Leading_Proton_PT->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
+			cout << "HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]): " << HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]) << endl;
+			}}
+		//=====
+		for(int i=0; i<jet_time.size(); i++){
+                        if(jet_time_sort[0]==jet_time[i]) {Vz_Leading=velocity_jet_Z[i]; Theta_Leading =velocity_jet_Theta[i]; } }
+		//=====
 		for(int i=0; i<jet_time.size(); i++) {
                         if(jet_time_sort[jet_time.size()-1]==jet_time[i]){Theta_Trailing = velocity_jet_Theta[i]; Vz_Trailing = velocity_jet_Z[i];Momentum_Trailing = momentum_jet[i]; PT_Trailing = PT_jet[i]; HighestPT_Trailing_and_next_trailing.push_back(FourP[i]);cout << "Trailing: " << endl; cout << "PDGID: "<< constit_PDG[i] << endl;cout << "PT_jet[i].e()" << FourP_1[i].e() << endl; cout << "PT_jet[i].pz()" << FourP_1[i].pz() << endl; cout << "PT_jet[i].px()" << FourP_1[i].px() << endl; cout << "PT_jet[i].py()" << FourP_1[i].py() << endl;}}
-                
+                //======
 		for(int i=0; i<jet_time.size(); i++) {
                         if(jet_time_sort[jet_time.size()-2]==jet_time[i]){Theta_Next_to_Trailing = velocity_jet_Theta[i]; Vz_Next_to_Trailing = velocity_jet_Z[i]; Momentum_Next_to_Trailing = momentum_jet[i];HighestPT_Trailing_and_next_trailing.push_back(FourP[i]);cout << "Next-to-Trailing: " << endl;cout << "PDGID: "<< constit_PDG[i] << endl;cout << "PT_jet[i].pz()" << FourP_1[i].pz() << endl; cout << "PT_jet[i].px()" << FourP_1[i].px() << endl; cout << "PT_jet[i].py()" << FourP_1[i].py() << endl;cout << "PT_jet[i].e()" << FourP_1[i].e() << endl;}}
 		
-		if(PT_Trailing<1.5) cout << "This is the PT<1.5 paticle: " << Trailing_ID << endl;
-		if(HighestPT_Trailing_and_next_trailing.size()>3) cout << "Not Weird! The number of the trailing and next-trailing" << endl;
+		 for(int i=0; i<PT_jet.size(); i++) {
+			if(PT_jet_sort[0]==PT_jet[i]){HighestPT_Trailing_and_next_trailing.push_back(FourP[i]);}}
+                 for(int i=0; i<PT_jet.size(); i++) {  
+                        if(PT_jet_sort[1]==PT_jet[i]){HighestPT_Trailing_and_next_trailing.push_back(FourP[i]);}}		
+
+		if(PT_Trailing<1.5) cout << "This is the PT<1.5 paticle: " << Trailing_ID_PT << endl;
+		if(HighestPT_Trailing_and_next_trailing.size()>5) cout << "Not Weird! The number of the trailing and next-trailing" << endl;
 
 
 		 cout << "Momentum_Trailing: " << Momentum_Trailing << endl;
                  cout << "Momentum_Next_to_Trailing: " << Momentum_Next_to_Trailing << endl;
-		 cout << "Highest_PT_trailing_dR: " << HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[1]) << endl;
-            cout << "Highest_PT_next_to_trailing_dR: " << HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[2]) << endl;
-		 cout << "Vz_Trailing: " << Vz_Trailing << "Vz_Next_to_Trailing: " << Vz_Next_to_Trailing << endl;
+		 cout << "Highest_PT_trailing_dR_T: " << HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[1]) << endl;
+            cout << "Highest_PT_next_to_trailing_dR_T: " << HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[2]) << endl;
+                 cout << "Highest_PT_trailing_dR_PT: " << HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[3]) << endl;
+            cout << "Highest_PT_next_to_trailing_dR_PT: " << HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[4]) << endl;
+		  cout << "Vz_Trailing: " << Vz_Trailing << "Vz_Next_to_Trailing: " << Vz_Next_to_Trailing << endl;
 		 cout << "TMath::Tan(Theta_Trailing): " << TMath::Tan(Theta_Trailing) << "TMath::Tan(Theta_Next_to_Trailing): " << TMath::Tan(Theta_Next_to_Trailing) << endl;
 		 cout << "Theta_Trailing: " << Theta_Trailing << "Theta_Next_to_Trailing: " << Theta_Next_to_Trailing << endl;
 		 Timing_detector_Average->Fill(abs(time_average));
+		Timing_detector_Leading->Fill(abs(2.3*TMath::Power(10,9)/(Vz_Leading*SOL*TMath::Tan(Theta_Leading))));
 		Timing_detector_Trailing->Fill(abs(2.3*TMath::Power(10,9)/(Vz_Trailing*SOL*TMath::Tan(Theta_Trailing))));
 		Timing_detector_next_to_trailing->Fill(abs(2.3*TMath::Power(10,9)/(Vz_Next_to_Trailing*SOL*TMath::Tan(Theta_Next_to_Trailing)))); 
 		Timing_detector_Trailing_P->Fill(abs(Momentum_Trailing));
 		Timing_detector_next_to_trailing_P->Fill(abs(Momentum_Next_to_Trailing));
 		Timing_detector_Trailing_V->Fill(abs(velocity_jet_sort[0]));
 		 Timing_detector_next_to_trailing_V->Fill(abs(velocity_jet_sort[1]));
-		Timing_detector_dR_Leading_trailing->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[1]));
-	Timing_detector_dR_Leading_next_trailing->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[2]));
+		Timing_detector_dR_Leading_trailing_T->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[1]));
+	Timing_detector_dR_Leading_next_trailing_T->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[2]));
+                Timing_detector_dR_Leading_trailing_PT->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[3]));
+        Timing_detector_dR_Leading_next_trailing_PT->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[4]));
 		cout << " Timing_detector_Average: "<< time_average << "Timing_detector_Trailing: "<< abs(2.3*TMath::Power(10,9)/(Vz_Trailing*SOL*TMath::Tan(Theta_Trailing)))  << "Timing_detector_next_to_trailing: " << abs(2.3*TMath::Power(10,9)/(Vz_Next_to_Trailing*SOL*TMath::Tan(Theta_Next_to_Trailing))) ; 
-		 velocity_jet.clear();
+		cout << "TIming_detector_Leading: " << abs(2.3*TMath::Power(10,9)/(Vz_Leading*SOL*TMath::Tan(Theta_Leading))) << endl;
+ 
+		velocity_jet.clear();
 		Timing_detector_Average_tem->Clear();
               if (pt >= 10000) {
                   for (int i=0; i<csize; i++) {
