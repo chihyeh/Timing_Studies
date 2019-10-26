@@ -13,15 +13,15 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_No_Eta_cut.root",'r')
-f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_No_Eta_cut.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check.root",'r')
 
-h1 = f1.Get("Timing_detector_next_to_trailing_V")
-h2 = f2.Get("Timing_detector_next_to_trailing_V")
-h3 = f3.Get("Timing_detector_next_to_trailing_V")
-h4 = f4.Get("Timing_detector_next_to_trailing_V")
+h1 = f1.Get("check_Proton_V")
+h2 = f2.Get("check_Proton_V")
+h3 = f3.Get("check_Proton_V")
+h4 = f4.Get("check_Proton_V")
 h5 = f1.Get("Timing_Standard")
 
 h1.Sumw2()
@@ -76,13 +76,13 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h3.GetXaxis().SetRangeUser(0.988,1)
-h3.GetYaxis().SetRangeUser(0,0.2)
-h3.GetYaxis().SetRangeUser(0,0.2)
+h3.GetXaxis().SetRangeUser(0.998,1)
+h3.GetYaxis().SetRangeUser(0,0.5)
+h3.GetYaxis().SetRangeUser(0,0.5)
 
 
-h3.SetTitle("#beta(next_to_trailing)")
-h3.SetTitle("#beta(next_to_trailing)")
+h3.SetTitle("#beta(Proton)")
+h3.SetTitle("#beta(Proton)")
 h3.SetXTitle("#beta")
 h3.SetXTitle("#beta")
 h3.SetYTitle("Arbitrary number")
@@ -114,10 +114,9 @@ h2.GetYaxis().SetLabelFont(22)
 h3.Draw("hist")
 h4.Draw("histsame")
 
-
 leg.Draw()
 
-c.Print("Try_V_next_to_trailing.pdf")
+c.Print("Try_V_proton.pdf")
 
 
 

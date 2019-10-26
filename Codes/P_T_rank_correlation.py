@@ -28,7 +28,7 @@ leg.SetBorderSize(0)
 leg.SetTextFont(22)
 leg.Draw()
 h1.GetXaxis().SetRangeUser(0,3)
-h1.GetYaxis().SetRangeUser(-50,50)
+h1.GetYaxis().SetRangeUser(-1,1)
 h1.SetXTitle("Log{P} [GeV]")
 h1.SetYTitle("T_rank - P_rank")
 h1.SetZTitle("Arbitrary number")
@@ -94,7 +94,7 @@ h1.GetXaxis().SetLabelFont(22)
 h1.GetYaxis().SetLabelFont(22)
 
 h1.Draw("colz")
-c.Print("P_T_rank_correlation_QQ_plot_tosix.pdf")
+c.Print("P_T_rank_correlation_QQ_plot_tosix_normalized.pdf")
 
 
 

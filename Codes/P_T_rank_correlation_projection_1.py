@@ -58,7 +58,7 @@ for i in range(6):
     leg.AddEntry(H2_Projection,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
 
 
-    H1_Projection.GetXaxis().SetRangeUser(-50,50)
+    H1_Projection.GetXaxis().SetRangeUser(-1,1)
     H1_Projection.GetYaxis().SetRangeUser(0,0.3)
     H1_Projection.SetTitle("Log(P): "+str(0.5*(i))+"~"+str(0.5*(i+1))+" [GeV]")
     H1_Projection.SetXTitle("T rank-P rank")
@@ -78,7 +78,7 @@ for i in range(6):
 
     leg.Draw()
 
-    c.Print("P_T_rank_correlation_QQ_plot_slice1_"+str(i)+".pdf")
+    c.Print("P_T_rank_correlation_QQ_plot_slice1_"+str(i)+"_normalized.pdf")
 
 
 

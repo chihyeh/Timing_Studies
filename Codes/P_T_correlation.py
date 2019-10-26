@@ -13,7 +13,7 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut_rank_reduce_tosix_mass.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_rank_reduce_tosix_mass.root",'r')
 
 h1 = f1.Get("Timing_momentum_correlation")
 
@@ -95,7 +95,7 @@ h1.GetYaxis().SetLabelFont(22)
 
 h1.Draw("colz")
 
-c.Print("P_T_correlation_WW_plot_reduce_Factwo_normalized.pdf")
+c.Print("P_T_correlation_QQ_plot_reduce_Factwo_normalized.pdf")
 
 
 
