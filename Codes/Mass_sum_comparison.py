@@ -13,10 +13,10 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_rank_reduce_tosix_mass.root",'r')
-f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut_rank_reduce_tosix_mass.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Files/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_qq_with_Eta_cut_for_component_check_1.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_ww_with_Eta_cut_for_component_check_1.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_qq_with_Eta_cut_for_component_check_1.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_qq_with_Eta_cut_for_component_check_1.root",'r')
 
 h1 = f1.Get("mass_sum_average")
 h2 = f2.Get("mass_sum_average")
@@ -36,7 +36,7 @@ h5.Sumw2()
 h5.Scale(1/h5.Integral())
 
 
-a = TH1F ("a","a",10,0,100)
+a = TH1F ("a","a",40,0,400)
 a.Fill(1)
 
 c = TCanvas("c1", "c1",0,0,500,500)
@@ -76,12 +76,13 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h2.GetXaxis().SetRangeUser(0,4)
-h2.GetYaxis().SetRangeUser(0,0.2)
+h2.GetXaxis().SetRangeUser(0,0.7)
+h2.GetYaxis().SetRangeUser(0,0.7)
+h2.Rebin(2)
+h1.Rebin(2)
 
-
-h2.SetTitle("Average mass comparison")
-h2.SetTitle("Average mass comparison")
+h2.SetTitle("Average mass comparison(40TeV)")
+h2.SetTitle("Average mass comparison(40TeV)")
 h2.SetXTitle("Mass[GeV]")
 h2.SetXTitle("Mass[GeV]")
 h2.SetYTitle("Arbitrary number")
@@ -117,7 +118,7 @@ h1.Draw("histsame")
 
 leg.Draw()
 
-c.Print("Try_mass_comparison.pdf")
+c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/40TeV/Try_mass_comparison_40TeV.pdf")
 
 
 
