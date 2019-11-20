@@ -18,12 +18,12 @@
 void TMVA_Timing()
 {
     
-    TFile* signalTree = new TFile("/Users/ms08962476/singularity/TIming_Studies/tev20mm_pythia6_zprime20tev_ww_with_Eta_cut_for_component_check_1.root");
-    TFile* backgroundTree = new TFile(" /Users/ms08962476/singularity/TIming_Studies/tev20mm_pythia6_zprime20tev_qq_with_Eta_cut_for_component_check_1.root");
+    TFile* signalTree = new TFile("/Users/ms08962476/singularity/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root");
+    TFile* backgroundTree = new TFile("/Users/ms08962476/singularity/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root");
     TTree *signal     = (TTree*)signalTree->Get("BDT_variables");
     TTree *background = (TTree*)backgroundTree->Get("BDT_variables");
     
-    TString outfileName( "TMVA_for_timing_dR_PT_20TeV.root" );
+    TString outfileName( "TMVA_for_timing_dR_PT_5TeV_reco.root" );
     TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
     
     TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
