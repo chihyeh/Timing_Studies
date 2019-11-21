@@ -1970,8 +1970,6 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
   vector<LParticle> simhits;
  
   double ecalsum_raw=0;
-  PT_Reco_sort[0].push_back(1);
-  cout << "PT_Reco_sort[0].push_back(1): " << PT_Reco_sort[0][0] << endl;
   
 // ECAL hits
   IMPL::LCCollectionVec* col53 = (IMPL::LCCollectionVec*) evt->getCollection("EcalBarrelHits") ;
@@ -2149,6 +2147,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 //    cout << "  new event " << endl;
       vector<vector<TLorentzVector>> FourP_dR_Reco(2,vector<TLorentzVector>());
+      vector<vector<int>>         PDG_Reco(2,vector<int>());
       vector<int>                 PT_PDG_Reco;
       vector<vector<double>>      PT_Reco_sort(2,vector<double>());
       vector<vector<double>>      PT_Reco(2,vector<double>());
@@ -2263,7 +2262,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 /// ECAL
 
-                 if (type==2 && Thit<1000 && delta<Rparam && layer_pos_cm==(0.1*(layer_size_ecal_mm*0.5+(32*layer_size_ecal_mm))) ) {  // ECAL
+                 if (type==2 && delta<Rparam && layer==32 ) {  // ECAL
 
                      // ECAL
                      double Xcenter=par1[3];
@@ -2305,7 +2304,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                          PDG_Reco[Back_forth].push_back(abs(pdg));
                                          //Eta_selection
                                          event_number_Reco[Back_forth] = event_number_Reco[Back_forth] + 1;
-                                         if(abs(constit_vec.Eta())<1) Eta_smaller_than_1_event[Back_forth] = Eta_smaller_than_1_event[Back_forth] + 1;
+                                         if(abs(eta_h)<1) Eta_smaller_than_1_event[Back_forth] = Eta_smaller_than_1_event[Back_forth] + 1;
                                      }}}
                  }}
                      sort(T_Reco_sort[0].begin(), T_Reco_sort[0].end());
@@ -2379,8 +2378,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                                      dR_Highest_PT_T_Reco.push_back(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
                                                      h_Particles_dR_Highest_PT_T_Reco[jkl]->Fill(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
                                                      cout << "TTT:FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]): " << FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]) << endl;
-                                                 }}}
-                                            if(identify_1>1) cout << "Weird! Check!"<< endl;
+                                                 }}
+                                             if(identify_1>1) cout << "Weird! Check!"<< endl;}
                                          //===================================================/
                                          if( jkl < PT_sort_number_only[Back_forth].size() ){
                                              int identify=0;
@@ -2393,8 +2392,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                                      dR_Highest_PT_PT_Reco.push_back(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
                                                      h_Particles_dR_Highest_PT_PT_Reco[jkl]->Fill(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
                                                      cout << "PTPTPT:FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]): " << FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]) << endl;
-                                                 }}}}
-                                            if(identify>1) cout << "Weird! Check_1!"<< endl;
+                                                 }}
+                                             if(identify>1) cout << "Weird! Check_1!"<< endl;}
+                                     }
                       }}}}
         cout << "Check_point_trailing_ID" << endl;
         for(int j=0 ; j<5 ; j++)
@@ -2471,8 +2471,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                      {
                          dR_Tr4T_HPt_Reco = dR_Highest_PT_T_Reco[4];
                      }
-          }
-
+        
+        }
 
       } // close loop over  hits
 
