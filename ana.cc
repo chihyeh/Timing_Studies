@@ -2409,7 +2409,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                 }
                 
                 for(int m=0; m<Trailing_particle_kind.size();m++){
+                    cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
                     if(abs(T_PDG_Reco[j])==Trailing_particle_kind[m] and abs(T_PDG_Reco[j])!=22) h_Particles_Rank_T_Reco[j]->Fill(m);
+                    cout << "Particle_ID_PT_Reco[j]->GetBinContent(m): " << h_Particles_Rank_T_Reco[j]->GetBinContent(m+1) << endl;
                 }
                 
                 int it2;
@@ -2420,7 +2422,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                 }
                 
                 for(int m=0; m<Trailing_particle_kind.size();m++){
+                    cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
                     if(abs(PT_PDG_Reco[j])==Trailing_particle_kind[m] and abs(PT_PDG_Reco[j])!=22) h_Particles_Rank_PT_Reco[j]->Fill(m);
+                    cout << "Particle_ID_PT_Reco[j]->GetBinContent(m): " << h_Particles_Rank_PT_Reco[j]->GetBinContent(m+1) << endl;
                 }
                 
             }}
@@ -2467,11 +2471,6 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                      {
                          dR_Tr4T_HPt_Reco = dR_Highest_PT_T_Reco[4];
                      }
-
-
-                 
-          
-
           }
 
 
