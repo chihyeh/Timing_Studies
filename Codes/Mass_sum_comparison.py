@@ -15,13 +15,13 @@ from array import array
 
 f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_qq_with_Eta_cut_for_component_check_1.root",'r')
 f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_ww_with_Eta_cut_for_component_check_1.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_qq_with_Eta_cut_for_component_check_1.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev40mm_pythia6_zprime40tev_qq_with_Eta_cut_for_component_check_1.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
 
 h1 = f1.Get("mass_sum_average")
 h2 = f2.Get("mass_sum_average")
-h3 = f3.Get("Timing_detector_Average")
-h4 = f4.Get("Timing_detector_Average")
+h3 = f3.Get("mass_sum_average_Reco")
+h4 = f4.Get("mass_sum_average_Reco")
 h5 = f1.Get("Timing_Standard")
 
 h1.Sumw2()
@@ -76,13 +76,11 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h2.GetXaxis().SetRangeUser(0,0.7)
-h2.GetYaxis().SetRangeUser(0,0.7)
-h2.Rebin(2)
-h1.Rebin(2)
+h2.GetXaxis().SetRangeUser(0,0.5)
+h2.GetYaxis().SetRangeUser(0,0.5)
 
-h2.SetTitle("Average mass comparison(40TeV)")
-h2.SetTitle("Average mass comparison(40TeV)")
+h2.SetTitle("Average mass comparison(5TeV)")
+h2.SetTitle("Average mass comparison(5TeV)")
 h2.SetXTitle("Mass[GeV]")
 h2.SetXTitle("Mass[GeV]")
 h2.SetYTitle("Arbitrary number")
@@ -118,7 +116,7 @@ h1.Draw("histsame")
 
 leg.Draw()
 
-c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/40TeV/Try_mass_comparison_40TeV.pdf")
+c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV_Reco/Try_mass_comparison_5TeV_Reco.pdf")
 
 
 

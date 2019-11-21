@@ -15,15 +15,15 @@ from array import array
 list_PT_T = ["T","PT"]
 for j in range(2):
     for i in range(5):
-        f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1.root",'r')
-        f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1.root",'r')
-        f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1.root",'r')
-        f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1.root",'r')
+        f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
+        f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
+        f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root",'r')
+        f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
 
         h1 = f1.Get("Timing_detector_dR_Leading_Proton_PT")
         h2 = f2.Get("Timing_detector_dR_Leading_Proton_PT")
-        h3 = f3.Get("h_Particles_dR_Highest_PT_"+str(list_PT_T[j])+"_"+str(i))
-        h4 = f4.Get("h_Particles_dR_Highest_PT_"+str(list_PT_T[j])+"_"+str(i))
+        h3 = f3.Get("h_Particles_dR_Highest_PT_"+str(list_PT_T[j])+"_Reco_"+str(i))
+        h4 = f4.Get("h_Particles_dR_Highest_PT_"+str(list_PT_T[j])+"_Reco_"+str(i))
         h5 = f1.Get("Timing_Standard")
 
         h1.Sumw2()
@@ -78,11 +78,11 @@ for j in range(2):
         h4.SetMarkerStyle(9)
         h5.SetMarkerStyle(9)
         if(j==0):
-            h3.GetXaxis().SetRangeUser(0,0.5)
+            h3.GetXaxis().SetRangeUser(0,4)
             h3.GetYaxis().SetRangeUser(0,0.4)
         if(j==1):
-            h3.GetXaxis().SetRangeUser(0,0.5)
-            h3.GetYaxis().SetRangeUser(0,0.4)
+            h3.GetXaxis().SetRangeUser(0,4)
+            h3.GetYaxis().SetRangeUser(0,0.2)
 
 
         h3.SetTitle("#DeltaR_"+str(list_PT_T[j])+"_"+str(i))
@@ -115,13 +115,15 @@ for j in range(2):
 
         #h2.Draw("hist")
         #h1.Draw("histsame")
+        h3.Rebin(4)
+        h4.Rebin(4)
         h3.Draw("hist")
         h4.Draw("histsame")
 
 
         leg.Draw()
 
-        c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV/Try_dR_"+str(list_PT_T[j])+"_"+str(i)+"_5TeV.pdf")
+        c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV_Reco/Try_dR_"+str(list_PT_T[j])+"_"+str(i)+"_5TeV_reco.pdf")
 
 
 
