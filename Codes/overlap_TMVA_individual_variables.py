@@ -13,8 +13,8 @@ from ROOT import TLatex
 from array import array
 
 c = TCanvas("c1", "c1",0,0,500,500)
-f4 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Codes/TMVA_for_timing_dR_PT_5TeV_reco.root",'r')
-f5 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Codes/TMVA_for_timing_dR_PT_T_5TeV_reco.root",'r')
+f4 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/TMVA_for_timing_dR_PT_5TeV_reco.root",'r')
+f5 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/TMVA_for_timing_dR_PT_T_5TeV_reco.root",'r')
 
 #=====================#Get the histogram from TDirectoryFile
 h1_1 = f4.Get("dataset")
@@ -35,7 +35,7 @@ h4_1.GetXaxis().SetRangeUser(0,1)
 h4_1.GetYaxis().SetRangeUser(0,1.1)
 
 
-leg = TLegend(0.1,0.7,0.4,0.9)
+leg = TLegend(0.1,0.3,0.4,0.5)
 leg.SetFillColor(0)
 leg.SetFillStyle(0)
 leg.SetTextSize(0.04)

@@ -23,7 +23,7 @@ void TMVA_Timing()
     TTree *signal     = (TTree*)signalTree->Get("BDT_variables_Reco");
     TTree *background = (TTree*)backgroundTree->Get("BDT_variables_Reco");
     
-    TString outfileName( "TMVA_for_timing_dR_T_5TeV_reco.root" );
+    TString outfileName( "TMVA_for_timing_dR_PT_T_5TeV_reco.root" );
     TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
     
     TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
@@ -39,13 +39,13 @@ void TMVA_Timing()
    dataloader->AddVariable("dR_Tr2T_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr3T_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr4T_HPt_Reco", 'F');
-/*
+
    dataloader->AddVariable("dR_Tr0PT_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr1PT_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr2PT_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr3PT_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr4PT_HPt_Reco", 'F');
-*/
+
  /*
     dataloader->AddVariable("ID_Tr0T", 'F');
     dataloader->AddVariable("ID_Tr1T", 'F');
@@ -54,19 +54,19 @@ void TMVA_Timing()
     dataloader->AddVariable("ID_Tr4T", 'F');
 */
     //====No mass soft drop====//
-    //TCut mycuts= "j_tau21_b1<4 && j_tau21_b2<4 && j_c2_b1<4 && j_c2_b2<4 ";
-    //TCut mycutb= "j_tau21_b1<4 && j_tau21_b2<4 && j_c2_b1<4 && j_c2_b2<4 ";
-    //&& j_d2_a1_b2_mmdt<4000 && j_m2_b1_mmdt<4000 && j_m2_b2_mmdt<4000 && j_n2_b1_mmdt<4000 && j_n2_b2_mmdt<4000
+    //TCut mycuts= "j_tau21_b1<1 && j_tau21_b2<1 && j_c2_b1<1 && j_c2_b2<1 ";
+    //TCut mycutb= "j_tau21_b1<1 && j_tau21_b2<1 && j_c2_b1<1 && j_c2_b2<1 ";
+    //&& j_d2_a1_b2_mmdt<1000 && j_m2_b1_mmdt<1000 && j_m2_b2_mmdt<1000 && j_n2_b1_mmdt<1000 && j_n2_b2_mmdt<1000
     //====Have mass soft drop====//
-    TCut mycuts= "dR_Tr0T_HPt_Reco<4 && dR_Tr1T_HPt_Reco<4 && dR_Tr2T_HPt_Reco<4 && dR_Tr3T_HPt_Reco<4 && dR_Tr4T_HPt_Reco<4 && dR_Tr0PT_HPt_Reco<4 && dR_Tr1PT_HPt_Reco<4 && dR_Tr2PT_HPt_Reco<4 && dR_Tr3PT_HPt_Reco<4 && dR_Tr4PT_HPt_Reco<4 && 0<dR_Tr0T_HPt_Reco && 0<dR_Tr1T_HPt_Reco && 0<dR_Tr2T_HPt_Reco && 0<dR_Tr3T_HPt_Reco && 0<dR_Tr4T_HPt_Reco && 0<dR_Tr0PT_HPt_Reco && 0<dR_Tr1PT_HPt_Reco && 0<dR_Tr2PT_HPt_Reco && 0<dR_Tr3PT_HPt_Reco && 0<dR_Tr4PT_HPt_Reco";
-    TCut mycutb= "dR_Tr0T_HPt_Reco<4 && dR_Tr1T_HPt_Reco<4 && dR_Tr2T_HPt_Reco<4 && dR_Tr3T_HPt_Reco<4 && dR_Tr4T_HPt_Reco<4 && dR_Tr0PT_HPt_Reco<4 && dR_Tr1PT_HPt_Reco<4 && dR_Tr2PT_HPt_Reco<4 && dR_Tr3PT_HPt_Reco<4 && dR_Tr4PT_HPt_Reco<4 && 0<dR_Tr0T_HPt_Reco && 0<dR_Tr1T_HPt_Reco && 0<dR_Tr2T_HPt_Reco && 0<dR_Tr3T_HPt_Reco && 0<dR_Tr4T_HPt_Reco && 0<dR_Tr0PT_HPt_Reco && 0<dR_Tr1PT_HPt_Reco && 0<dR_Tr2PT_HPt_Reco && 0<dR_Tr3PT_HPt_Reco && 0<dR_Tr4PT_HPt_Reco";
-    //TCut mycuts= "j_c2_b1_mmdt<400 && j_c2_b2_mmdt<400";
-    //TCut mycutb= "j_c2_b1_mmdt<400 && j_c2_b2_mmdt<400";
+    TCut mycuts= "dR_Tr0T_HPt_Reco<1 && dR_Tr1T_HPt_Reco<1 && dR_Tr2T_HPt_Reco<1 && dR_Tr3T_HPt_Reco<1 && dR_Tr4T_HPt_Reco<1 && dR_Tr0PT_HPt_Reco<1 && dR_Tr1PT_HPt_Reco<1 && dR_Tr2PT_HPt_Reco<1 && dR_Tr3PT_HPt_Reco<1 && dR_Tr4PT_HPt_Reco<1 && 0<dR_Tr0T_HPt_Reco && 0<dR_Tr1T_HPt_Reco && 0<dR_Tr2T_HPt_Reco && 0<dR_Tr3T_HPt_Reco && 0<dR_Tr4T_HPt_Reco && 0<dR_Tr0PT_HPt_Reco && 0<dR_Tr1PT_HPt_Reco && 0<dR_Tr2PT_HPt_Reco && 0<dR_Tr3PT_HPt_Reco && 0<dR_Tr4PT_HPt_Reco";
+    TCut mycutb= "dR_Tr0T_HPt_Reco<1 && dR_Tr1T_HPt_Reco<1 && dR_Tr2T_HPt_Reco<1 && dR_Tr3T_HPt_Reco<1 && dR_Tr4T_HPt_Reco<1 && dR_Tr0PT_HPt_Reco<1 && dR_Tr1PT_HPt_Reco<1 && dR_Tr2PT_HPt_Reco<1 && dR_Tr3PT_HPt_Reco<1 && dR_Tr4PT_HPt_Reco<1 && 0<dR_Tr0T_HPt_Reco && 0<dR_Tr1T_HPt_Reco && 0<dR_Tr2T_HPt_Reco && 0<dR_Tr3T_HPt_Reco && 0<dR_Tr4T_HPt_Reco && 0<dR_Tr0PT_HPt_Reco && 0<dR_Tr1PT_HPt_Reco && 0<dR_Tr2PT_HPt_Reco && 0<dR_Tr3PT_HPt_Reco && 0<dR_Tr4PT_HPt_Reco";
+    //TCut mycuts= "j_c2_b1_mmdt<100 && j_c2_b2_mmdt<100";
+    //TCut mycutb= "j_c2_b1_mmdt<100 && j_c2_b2_mmdt<100";
     //=====Have mass soft drop and no mass soft drop=====//
-    //TCut mycuts="j_tau21_b1<4 && j_tau21_b2<4 && j_c2_b1<4 && j_c2_b2<4 && j_d2_b1<4000 && j_d2_b2<4000 && j_d2_a1_b1<4000 && j_d2_a1_b2<4000 && j_m2_b1<4000 && j_m2_b2<4000 && j_n2_b1<4000 && j_n2_b2<4000 && j_tau21_b1_mmdt<4 && j_tau21_b2_mmdt<4 && j_c2_b1_mmdt<4 && j_c2_b2_mmdt<4 && j_d2_b1_mmdt<4000 && j_d2_b2_mmdt<4000 && j_d2_a1_b2_mmdt<4000 && j_m2_b1_mmdt<4000 && j_m2_b1_mmdt<4000 && j_m2_b2_mmdt<4000 && j_n2_b1_mmdt<4000 && j_n2_b2_mmdt<4000 && j_d2_a1_b1_mmdt<4000";
-    //TCut mycutb="j_tau21_b1<4 && j_tau21_b2<4 && j_c2_b1<4 && j_c2_b2<4 && j_d2_b1<4000 && j_d2_b2<4000 && j_d2_a1_b1<4000 && j_d2_a1_b2<4000 && j_m2_b1<4000 && j_m2_b2<4000 && j_n2_b1<4000 && j_n2_b2<4000 && j_tau21_b1_mmdt<4 && j_tau21_b2_mmdt<4 && j_c2_b1_mmdt<4 && j_c2_b2_mmdt<4 && j_d2_b1_mmdt<4000 && j_d2_b2_mmdt<4000 && j_d2_a1_b2_mmdt<4000 && j_m2_b1_mmdt<4000 && j_m2_b1_mmdt<4000 && j_m2_b2_mmdt<4000 && j_n2_b1_mmdt<4000 && j_n2_b2_mmdt<4000 && j_d2_a1_b1_mmdt<4000";
-    //TCut mycuts = "j_tau21_b1<4 && j_c2_b1<4 && j_mass_mmdt<800 && j_tau21_b1_mmdt<4 && j_tau21_b2_mmdt<4 && j_c2_b1_mmdt<4 && j_tau21_b2<4 && j_c2_b2<4 && j_c2_b2_mmdt<4 && jmass<500 && j_d2_b1<350 && j_d2_b2<350 "; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<4";
-    //TCut mycutb = "j_tau21_b1<4 && j_c2_b1<4 && j_mass_mmdt<800 && j_tau21_b1_mmdt<4 && j_tau21_b2_mmdt<4 && j_c2_b1_mmdt<4 && j_tau21_b2<4 && j_c2_b2<4 && j_c2_b2_mmdt<4 && jmass<500 && j_d2_b1<350 && j_d2_b2<350 "; // for example: TCut mycutb = "abs(var1)<0.5";
+    //TCut mycuts="j_tau21_b1<1 && j_tau21_b2<1 && j_c2_b1<1 && j_c2_b2<1 && j_d2_b1<1000 && j_d2_b2<1000 && j_d2_a1_b1<1000 && j_d2_a1_b2<1000 && j_m2_b1<1000 && j_m2_b2<1000 && j_n2_b1<1000 && j_n2_b2<1000 && j_tau21_b1_mmdt<1 && j_tau21_b2_mmdt<1 && j_c2_b1_mmdt<1 && j_c2_b2_mmdt<1 && j_d2_b1_mmdt<1000 && j_d2_b2_mmdt<1000 && j_d2_a1_b2_mmdt<1000 && j_m2_b1_mmdt<1000 && j_m2_b1_mmdt<1000 && j_m2_b2_mmdt<1000 && j_n2_b1_mmdt<1000 && j_n2_b2_mmdt<1000 && j_d2_a1_b1_mmdt<1000";
+    //TCut mycutb="j_tau21_b1<1 && j_tau21_b2<1 && j_c2_b1<1 && j_c2_b2<1 && j_d2_b1<1000 && j_d2_b2<1000 && j_d2_a1_b1<1000 && j_d2_a1_b2<1000 && j_m2_b1<1000 && j_m2_b2<1000 && j_n2_b1<1000 && j_n2_b2<1000 && j_tau21_b1_mmdt<1 && j_tau21_b2_mmdt<1 && j_c2_b1_mmdt<1 && j_c2_b2_mmdt<1 && j_d2_b1_mmdt<1000 && j_d2_b2_mmdt<1000 && j_d2_a1_b2_mmdt<1000 && j_m2_b1_mmdt<1000 && j_m2_b1_mmdt<1000 && j_m2_b2_mmdt<1000 && j_n2_b1_mmdt<1000 && j_n2_b2_mmdt<1000 && j_d2_a1_b1_mmdt<1000";
+    //TCut mycuts = "j_tau21_b1<1 && j_c2_b1<1 && j_mass_mmdt<800 && j_tau21_b1_mmdt<1 && j_tau21_b2_mmdt<1 && j_c2_b1_mmdt<1 && j_tau21_b2<1 && j_c2_b2<1 && j_c2_b2_mmdt<1 && jmass<500 && j_d2_b1<350 && j_d2_b2<350 "; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+    //TCut mycutb = "j_tau21_b1<1 && j_c2_b1<1 && j_mass_mmdt<800 && j_tau21_b1_mmdt<1 && j_tau21_b2_mmdt<1 && j_c2_b1_mmdt<1 && j_tau21_b2<1 && j_c2_b2<1 && j_c2_b2_mmdt<1 && jmass<500 && j_d2_b1<350 && j_d2_b2<350 "; // for example: TCut mycutb = "abs(var1)<0.5";
 
     dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
                                            "nTrain_Signal=1000:nTrain_Background=1000:SplitMode=Random:NormMode=NumEvents:!V" );

@@ -13,15 +13,15 @@ from ROOT import TPaveText
 from ROOT import TLatex
 from array import array
 
-f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_Baryon_jets_Eta_cut_R.root",'r')
-f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut_Baryon_jets_Eta_cut_R.root",'r')
-f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_1P5GeV_cut_Baryon_jets_Eta_cut_R.root",'r')
-f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_1P5GeV_cut_Baryon_jets_Eta_cut_R.root",'r')
+f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root",'r')
+f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
+f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root",'r')
+f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
 
-h1 = f1.Get("check_Proton_T")
-h2 = f2.Get("check_Proton_T")
-h3 = f3.Get("check_Pion_T")
-h4 = f4.Get("check_Pion_T")
+h1 = f1.Get("Timing_detector_Leading")
+h2 = f2.Get("Timing_detector_Leading")
+h3 = f3.Get("Timing_detector_Reco_TOF")
+h4 = f4.Get("Timing_detector_Reco_TOF")
 h5 = f1.Get("Timing_detector_Average")
 
 h1.Sumw2()
@@ -58,11 +58,11 @@ h2.SetLineColor(2)
 h2.SetLineWidth(2)
 h2.SetLineStyle(1)
 
-h3.SetLineColor(1)
+h3.SetLineColor(3)
 h3.SetLineWidth(2)
 h3.SetLineStyle(1)
 
-h4.SetLineColor(2)
+h4.SetLineColor(4)
 h4.SetLineWidth(2)
 h4.SetLineStyle(1)
 
@@ -76,9 +76,9 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h3.GetXaxis().SetRangeUser(7,10)
-h3.GetYaxis().SetRangeUser(0,0.5)
-h3.GetYaxis().SetRangeUser(0,0.5)
+h3.GetXaxis().SetRangeUser(7,15)
+h3.GetYaxis().SetRangeUser(0,0.6)
+h3.GetYaxis().SetRangeUser(0,0.6)
 
 
 h3.SetTitle("Time of flight - collision point to HCAL(Proton)")
@@ -88,10 +88,10 @@ h3.SetXTitle("T [ns]")
 h3.SetYTitle("Arbitrary number")
 h3.SetYTitle("Arbitrary number")
 leg.AddEntry("","FD group - SiFCC","")
-#leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(No #eta cut)","l")
-#leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(No #eta cut)","l")
-leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
-leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets","l")
+leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(Truth-level)","l")
+leg.AddEntry(h2,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(Truth-level)","l")
+leg.AddEntry(h3,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(Reco-level)","l")
+leg.AddEntry(h4,"Z'(5TeV)#rightarrowW^{+}W^{-}#rightarrow2 subjets(Reco-level)","l")
 
 leg.Draw()
 
@@ -109,15 +109,15 @@ h2.GetXaxis().SetLabelFont(22)
 h1.GetYaxis().SetLabelFont(22)
 h2.GetYaxis().SetLabelFont(22)
 
-#h2.Draw("hist")
-#h1.Draw("histsame")
 h3.Draw("hist")
 h4.Draw("histsame")
+h2.Draw("histsame")
+h1.Draw("histsame")
 
 
 leg.Draw()
 
-c.Print("Try_Pion.pdf")
+c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV_Reco/TOF_plot.pdf")
 
 
 

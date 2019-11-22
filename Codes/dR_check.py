@@ -26,6 +26,8 @@ for j in range(2):
         h4 = f4.Get("h_Particles_dR_Highest_PT_"+str(list_PT_T[j])+"_Reco_"+str(i))
         h5 = f1.Get("Timing_Standard")
 
+        print 'GetBunNumber1: '+ str(h3.GetNbinsX())
+        print 'GetBunNumber2: '+ str(h4.GetNbinsX())
         h1.Sumw2()
         h1.Scale(1/h1.Integral())
         h2.Sumw2()
@@ -78,11 +80,11 @@ for j in range(2):
         h4.SetMarkerStyle(9)
         h5.SetMarkerStyle(9)
         if(j==0):
-            h3.GetXaxis().SetRangeUser(0,4)
-            h3.GetYaxis().SetRangeUser(0,0.4)
+            h3.GetXaxis().SetLimits(0,1)
+            h3.GetYaxis().SetRangeUser(0,0.15)
         if(j==1):
-            h3.GetXaxis().SetRangeUser(0,4)
-            h3.GetYaxis().SetRangeUser(0,0.2)
+            h3.GetXaxis().SetLimits(0,1)
+            h3.GetYaxis().SetRangeUser(0,0.12)
 
 
         h3.SetTitle("#DeltaR_"+str(list_PT_T[j])+"_"+str(i))
@@ -115,8 +117,6 @@ for j in range(2):
 
         #h2.Draw("hist")
         #h1.Draw("histsame")
-        h3.Rebin(4)
-        h4.Rebin(4)
         h3.Draw("hist")
         h4.Draw("histsame")
 

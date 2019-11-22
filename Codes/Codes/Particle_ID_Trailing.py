@@ -16,13 +16,13 @@ from array import array
 list_PT_T = ["T","PT"]
 for j in range(2):
     for i in range(5):
-        f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1.root",'r')
-        f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1.root",'r')
-        f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1.root",'r')
-        f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1.root",'r')
+        f1= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root",'r')
+        f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
+        f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root",'r')
+        f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
 
-        h1 = f3.Get("h_Particles_Rank_"+str(list_PT_T[j])+"_"+str(i))
-        h2 = f4.Get("h_Particles_Rank_"+str(list_PT_T[j])+"_"+str(i))
+        h1 = f3.Get("h_Particles_Rank_"+str(list_PT_T[j])+"_Reco_"+str(i))
+        h2 = f4.Get("h_Particles_Rank_"+str(list_PT_T[j])+"_Reco_"+str(i))
         h3 = f3.Get("Total_particle_ID_eta_cut")
         h4 = f4.Get("Total_particle_ID_eta_cut")
         h5 = f3.Get("Total_particle_ID_eta_PT_cut")
@@ -87,7 +87,7 @@ for j in range(2):
         h4.SetMarkerStyle(9)
         h5.SetMarkerStyle(9)
 
-        h1.GetXaxis().SetRangeUser(0,20)
+        h1.GetXaxis().SetRangeUser(0,30)
         h1.GetYaxis().SetRangeUser(0,1)
         h1.GetYaxis().SetRangeUser(0,1)
 
@@ -144,26 +144,26 @@ for j in range(2):
         #h5.Draw("histsame")
         #h6.Draw("histsame")
 
-        t.Draw("same")
-        t1.Draw("same")
-        t2.Draw("same")
-        t3.Draw("same")
-        t4.Draw("same")
-        t5.Draw("same")
-        t6.Draw("same")
-        t7.Draw("same")
-        t8.Draw("same")
-        t9.Draw("same")
-        t10.Draw("same")
-        t11.Draw("same")
-        t12.Draw("same")
-        t13.Draw("same")
-        t14.Draw("same")
-        t15.Draw("same")
+#t.Draw("same")
+#        t1.Draw("same")
+#       t2.Draw("same")
+#       t3.Draw("same")
+#       t4.Draw("same")
+#       t5.Draw("same")
+#        t6.Draw("same")
+#        t7.Draw("same")
+#        t8.Draw("same")
+#        t9.Draw("same")
+#        t10.Draw("same")
+#        t11.Draw("same")
+#        t12.Draw("same")
+#        t13.Draw("same")
+#        t14.Draw("same")
+#        t15.Draw("same")
 
         leg.Draw()
 
-        c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV/h_5TeV_Particles_Rank_"+str(list_PT_T[j])+"_"+str(i)+".pdf")
+        c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV_Reco/h_5TeV_Reco_Particles_Rank_"+str(list_PT_T[j])+"_"+str(i)+".pdf")
 
 
 
