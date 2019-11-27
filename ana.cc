@@ -1843,8 +1843,6 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 */
   // HCAL simulated raw hits
   double hcalsum_raw=0;
-  vector<PseudoJet> avec_hits_raw;
-  vector<double> avec_hittime_raw;
   vector<PseudoJet> avec_hits_raw_sf;
   vector<LParticle> simhits;
 
@@ -1908,7 +1906,6 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     //double phi_r=pj.phi();
     //double pt_r=pj.pt();
     //cout << " e=" << e <<  " phi=" << pj.phi() << " eta=" << pj.eta() << endl;
-    avec_hittime_raw.push_back(avt);
 
     // fill hits
      LParticle p(px,py,pz,e,layer);
@@ -1971,18 +1968,14 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
     } // end fill of hits
 
-
-  vector<PseudoJet> avec_hits_raw;
-  vector<double> avec_hittime_raw;
-  vector<LParticle> simhits;
  
   double ecalsum_raw=0;
 
 
 // ECAL hits
   IMPL::LCCollectionVec* col53 = (IMPL::LCCollectionVec*) evt->getCollection("EcalBarrelHits") ;
-  int nCL = col53->getNumberOfElements() ;
-   for(int i=0 ; i<nCL ; ++i){
+  int nCL1 = col53->getNumberOfElements() ;
+   for(int i=0 ; i<nCL1 ; ++i){
     EVENT::SimCalorimeterHit* mcp =  (EVENT::SimCalorimeterHit*) col53->getElementAt(i) ;
     // EVENT::CalorimeterHit* mcp =  (EVENT::CalorimeterHit*) col53->getElementAt(i) ;
 
