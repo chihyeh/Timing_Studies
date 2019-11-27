@@ -2150,6 +2150,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                       //Mass
                       mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
                       //Timing
+                      cout << "Timing: " <<Thit << endl;
                       T_Reco_sort[Back_forth].push_back(LogTime);
                       T_Reco[Back_forth].push_back(LogTime);
                       //Four_momentum
