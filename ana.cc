@@ -2185,11 +2185,11 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                          cout << "Fraction_of_the_event_forth====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
                          if((Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth])>0.9)
                          {
-                             Full_contain[Back_forth].push_back(1);
+                             Full_contain.push_back(1);
                          }
-                         else{Full_contain[Back_forth].push_back(0); check_point_eta = check_point_eta +1;}
+                         else{Full_contain.push_back(0); check_point_eta = check_point_eta +1;}
                      }
-                     else{Full_contain[Back_forth].push_back(0);check_point_eta = check_point_eta +1}
+                        else{Full_contain.push_back(0);check_point_eta = check_point_eta +1;}
                      }
             
                      if(check_point_eta==Recojets.size()) continue;
