@@ -18,10 +18,10 @@ f2= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6
 f3= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_qq_with_Eta_cut_for_component_check_1_reco.root",'r')
 f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6_zprime5tev_ww_with_Eta_cut_for_component_check_1_reco.root",'r')
 
-h1 = f1.Get("Timing_detector_Leading")
-h2 = f2.Get("Timing_detector_Leading")
-h3 = f3.Get("Timing_detector_Reco_TOF")
-h4 = f4.Get("Timing_detector_Reco_TOF")
+h1 = f1.Get("Timing_detector_Trailing")
+h2 = f2.Get("Timing_detector_Trailing")
+h3 = f3.Get("Timing_detector_Reco_TOF_trailing")
+h4 = f4.Get("Timing_detector_Reco_TOF_trailing")
 h5 = f1.Get("Timing_detector_Average")
 
 h1.Sumw2()
@@ -76,13 +76,13 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h3.GetXaxis().SetRangeUser(7,15)
-h3.GetYaxis().SetRangeUser(0,0.6)
-h3.GetYaxis().SetRangeUser(0,0.6)
+h3.GetXaxis().SetRangeUser(7,20)
+h3.GetYaxis().SetRangeUser(0,1)
+h3.GetYaxis().SetRangeUser(0,1)
 
 
-h3.SetTitle("Time of flight - collision point to HCAL(Proton)")
-h3.SetTitle("Time of flight - collision point to HCAL(Proton)")
+h3.SetTitle("Time of flight - collision point to HCAL")
+h3.SetTitle("Time of flight - collision point to HCAL")
 h3.SetXTitle("T [ns]")
 h3.SetXTitle("T [ns]")
 h3.SetYTitle("Arbitrary number")
@@ -117,7 +117,7 @@ h1.Draw("histsame")
 
 leg.Draw()
 
-c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV_Reco/TOF_plot.pdf")
+c.Print("/Users/ms08962476/singularity/TIming_Studies/Codes/5TeV_Reco/TOF_plot_trailing.pdf")
 
 
 

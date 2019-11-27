@@ -80,10 +80,10 @@ for j in range(2):
         h4.SetMarkerStyle(9)
         h5.SetMarkerStyle(9)
         if(j==0):
-            h3.GetXaxis().SetLimits(0,1)
-            h3.GetYaxis().SetRangeUser(0,0.15)
+            h3.GetXaxis().SetRangeUser(0,1)
+            h3.GetYaxis().SetRangeUser(0,0.12)
         if(j==1):
-            h3.GetXaxis().SetLimits(0,1)
+            h3.GetXaxis().SetRangeUser(0,1)
             h3.GetYaxis().SetRangeUser(0,0.12)
 
 

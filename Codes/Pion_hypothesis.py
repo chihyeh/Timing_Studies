@@ -34,7 +34,19 @@ def Resolution_term(momentum,theta,Resolution_time):
 
 def mass_threshold(A,B,momentum):
     return math.pow(  (math.pow((A)+(B),2) - math.pow(momentum,2)) ,0.5)
+#===
 
+def Resolution_term_1(theta,Resolution_time,momentum):
+    Pion_mass = 0.134 #GeV
+    Kaon_mass = 0.493 #GeV
+    Neutron_mass = 0.939 #GeV
+    Resolution_time_pico = Resolution_time * math.pow(10,-12)
+    P_Z = momentum * math.cos(theta)
+    C = 3 * (math.pow(10,8))
+    Energy_dif = math.pow( (math.pow(Neutron_mass,2)+math.pow(momentum,2) ),0.5 ) - math.pow( (math.pow(Pion_mass,2)+math.pow(momentum,2) ),0.5 )
+    return (3*Resolution_time_pico*P_Z*C/(Energy_dif))*100/math.cos(theta)
+
+#===
 
 yarray=array("f",[])
 xarray=array("f",[])
@@ -48,6 +60,7 @@ xarrayerror=array("f",[])
 yarrayerror=array("f",[])
 
 #h1 = TF1("f1","[0]*x*sin([1]*x)",-3,3);
+'''
 for i in range(1,101):
     Pion_mass = 0.134 #GeV
     Kaon_mass = 0.493 #GeV
@@ -70,7 +83,32 @@ for i in range(1,101):
     #==============================================================================================================#
     xarrayerror.append(0)
     yarrayerror.append(0)
-
+'''
+for i in range(1,101):
+    #Resolution = 10,20,30,100,500,1000
+    yarray.append(i*0.1)
+    #==============================================================================================================#
+    M  =Resolution_term_1(Theta_transformation(1),10,i*0.1  )
+    print str(M)
+    xarray.append(M)
+    
+    M_1=Resolution_term_1(Theta_transformation(1),20,i*0.1  )
+    xarray1.append(M_1)
+    
+    M_2=Resolution_term_1(Theta_transformation(1),30,i*0.1  )
+    xarray2.append(M_2)
+                   
+    M_3=Resolution_term_1(Theta_transformation(1),100,i*0.1  )
+    xarray3.append(M_3)
+                   
+    M_4=Resolution_term_1(Theta_transformation(1),500,i*0.1 )
+    xarray4.append(M_4)
+    
+    M_5=Resolution_term_1(Theta_transformation(1),1000,i*0.1  )
+    xarray5.append(M_5)
+    #==============================================================================================================#
+    xarrayerror.append(0)
+    yarrayerror.append(0)
 
 c = TCanvas("c1", "c1",0,0,500,500)
 gStyle.SetOptStat(0)
@@ -113,9 +151,10 @@ gr5.SetMarkerColor(7)
 gr5.SetMarkerStyle(8)
 gr5.SetLineWidth(2)
 
-gr.SetTitle(";mass[GeV] ;Log_{10}P  [GeV] ")
-gr.GetXaxis().SetRangeUser(0,10)
-gr.GetYaxis().SetRangeUser(0,2)
+#gr.SetTitle(";mass[GeV] ;Log_{10}P  [GeV] ")
+gr.SetTitle(";L[cm] ;p[GeV] ")
+gr.GetXaxis().SetRangeUser(0,200)
+gr.GetYaxis().SetRangeUser(0,14)
 #gr.GetHistogram().SetMaximum(6)
 #gr.GetHistogram().SetMinimum(-2)
 #gr.GetXaxis().SetLimits(0,1000)
@@ -141,6 +180,7 @@ leg1.SetTextSize(0.05)
 leg1.SetBorderSize(0)
 leg1.SetTextFont(22)
 leg1.AddEntry("","FD group - SiFCC","")
+leg1.AddEntry("","Neutron","")
 #leg.AddEntry(h1,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet","l")
 #leg.AddEntry(h2,"Z'(5TeV)#rightarrowq#bar{q}#rightarrow1 subjet(#eta cut)","l")
 leg1.AddEntry(gr, "10ps","lp")
@@ -158,7 +198,7 @@ gr3.Draw("LPsame")
 gr4.Draw("LPsame")
 gr5.Draw("LPsame")
 leg1.Draw()
-c.Print("3_sigma_kaon_hypothesis_eta_0.pdf")
+c.Print("3_sigma_pion_hypothesis_eta_0_L_versus_p_Neutron.pdf")
 
 
 

@@ -1095,7 +1095,7 @@ Event_reco = nEvents;
    vector<LParticle> truthjets;
    int nn=0;
    int check=4;
- 
+    vector<TLorentzVector> Truthjets_axis;
 
 
 
@@ -1188,7 +1188,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               p.SetParameter(splittingscale(sjets_truth[k])); // 4 
               p.SetParameter(eccentricity(sjets_truth[k],sjets_truth[k].constituents())); // 5
               truthjets.push_back(p);
-		
+              Truthjets_axis.push_back(p_using);
 
 	      
                  for (int i=0; i<csize; i++) {
@@ -1840,13 +1840,14 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
   // cout << "Calo clus sum=" << calo_sum << endl;
 
 
-
+*/
   // HCAL simulated raw hits
   double hcalsum_raw=0;
   vector<PseudoJet> avec_hits_raw;
   vector<double> avec_hittime_raw;
   vector<PseudoJet> avec_hits_raw_sf;
   vector<LParticle> simhits;
+
 
   IMPL::LCCollectionVec* col50 = (IMPL::LCCollectionVec*) evt->getCollection("HcalBarrelHits") ;
   //IMPL::LCCollectionVec* col50 = (IMPL::LCCollectionVec*) evt->getCollection("HAD_BARREL") ;
@@ -1903,6 +1904,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     double pz =  e*z/_tmp;
     hcalsum_raw=hcalsum_raw+e;
     PseudoJet pj(px,py,pz,e);
+    fastjet::PseudoJet p(px,py,pz,e);
+
     //double eta_r=pj.pseudorapidity();
     //double phi_r=pj.phi();
     //double pt_r=pj.pt();
@@ -1954,7 +1957,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 
 
-     simhits.push_back(p);
+    // simhits.push_back(p);
 
      // cuts as in the default reconstruction
      if (e>0.0005) h_hits_time_abovecut->Fill(Thit,e);
@@ -1966,32 +1969,18 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     py =  e*y/_tmp;
     pz =  e*z/_tmp;
     PseudoJet pj_sf(px,py,pz,e);
+    avec_hits_raw_sf.push_back( pj_sf );
 
 
     } // end fill of hits
 
 
-*/
   vector<PseudoJet> avec_hits_raw;
   vector<double> avec_hittime_raw;
-  vector<PseudoJet> avec_hits_raw_sf;
   vector<LParticle> simhits;
  
   double ecalsum_raw=0;
 
-      vector<vector<TLorentzVector>> FourP_dR_Reco(2,vector<TLorentzVector>());
-      vector<vector<int>>         PDG_Reco(2,vector<int>());
-      vector<vector<double>>      PT_Reco_sort(2,vector<double>());
-      vector<vector<double>>      PT_Reco(2,vector<double>());
-      vector<vector<double>>      PT_sort_number_only(2,vector<double>());
-      vector<vector<double>>      T_Reco_sort(2,vector<double>());
-      vector<vector<double>>      T_Reco(2,vector<double>());
-      vector<vector<double>>      T_sort_number_only(2,vector<double>());
-      vector<double>  mass_Reco={0,0};
-      vector<int> event_number_Reco={0,0};
-      vector<int> Eta_smaller_than_1_event={0,0};
-      vector<int> event_number_Reco_for_mass={0,0};
-      vector<int> Eta_smaller_than_1_event_for_mass={0,0};
 
 // ECAL hits
   IMPL::LCCollectionVec* col53 = (IMPL::LCCollectionVec*) evt->getCollection("EcalBarrelHits") ;
@@ -2098,251 +2087,94 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 
     }
-// find center of truth jet in terms of X,Y,Z
-// use EM hits
-	cout << "truthjets.size(): " << truthjets.size() << endl;
-   vector<LParticle> truthjets_formatching;
-   for (unsigned int j1=0; j1<truthjets.size(); j1++) {
-                            LParticle p1=(LParticle)truthjets.at(j1);
-                            TLorentzVector L1= p1.GetP();
-                            double pt_t =  L1.Perp();
-                            double phi_t =  L1.Phi();
-                            double eta_t =  L1.PseudoRapidity();
-                            double e_t =  L1.E();
-                            // find jet center in terms of X,Y,Z
-                            double Xcenter_ecal=0;
-                            double Ycenter_ecal=0;
-                            double Zcenter_ecal=0;
+    if(Truthjets_axis.size()>0)
+      {
+      fastjet::ClusterSequenceArea* thisClustering_reco = new fastjet::ClusterSequenceArea(avec_hits_raw_sf, jet_def, fjAreaDefinition);
+      vector<fastjet::PseudoJet> sjets_reco = sorted_by_pt(thisClustering_reco->inclusive_jets(25.0));
+      vector<TLorentzVector> Recojets;
+          for (unsigned int k = 0; k<sjets_reco.size(); k++)
+          {
+              TLorentzVector p_using_reco;
+              p_using_reco.SetPxPyPzE(( sjets_reco[k].px(), sjets_reco[k].py(), sjets_reco[k].pz(),  sjets_reco[k].e());
+              for(int iii=0 ; iii<Truthjets_axis.size() ; iii++)
+              {
+                  if(p_using_reco.DeltaR(Truthjets_axis[iii])<0.4) Recojets.push_back(p_using_reco);
+                  
+              }
+              
+          }
+        cout << "Truthjets_axis.size(): " << Truthjets_axis.size() << endl;
+        cout << "Recojets.size(): " << Recojets.size() << endl;
+        cout << "sjets_reco.size(): "<<  sjets_reco.size() << endl;
+      vector<vector<TLorentzVector>> FourP_dR_Reco(Recojets.size(),vector<TLorentzVector>());
+      vector<vector<int>>         PDG_Reco(Recojets.size(),vector<int>());
+      vector<vector<double>>      PT_Reco_sort(Recojets.size(),vector<double>());
+      vector<vector<double>>      PT_Reco(Recojets.size(),vector<double>());
+      vector<vector<double>>      PT_sort_number_only(Recojets.size(),vector<double>());
+      vector<vector<double>>      T_Reco_sort(Recojets.size(),vector<double>());
+      vector<vector<double>>      T_Reco(Recojets.size(),vector<double>());
+      vector<vector<double>>      T_sort_number_only(Recojets.size(),vector<double>());
+      vector<double>  mass_Reco;
+      vector<int> event_number_Reco;
+      vector<int> Eta_smaller_than_1_event;
+      vector<int> event_number_Reco_for_mass;
+      vector<int> Eta_smaller_than_1_event_for_mass;
+    if(Recojets.size()>0){
+        for (unsigned int Back_forth=0; Back_forth<Recojets.size(); Back_forth++) {
 
-                            double Xcenter_hcal=0;
-                            double Ycenter_hcal=0;
-                            double Zcenter_hcal=0;
+        for (unsigned int j1=0; j1<simhits.size(); j1++) {
+          LParticle hit=simhits.at(j1);
+          TLorentzVector LE=hit.GetP();
+          double e_h=LE.E();
+          double phi_h=LE.Phi();
+          double eta_h=LE.PseudoRapidity();
+          vector<double> par=hit.GetParameters();
+          int type= hit.GetType(); // ECAL or HCAL
+          int layer=hit.GetCharge();
+          double x=par[0];
+          double y=par[1];
+          double z=par[2];
+          double layer_pos_cm=par[3];
+          double Thit=par[4];
+          double LogTime=TMath::Log10(Thit);
+          double avt=par[5];
+          int    pdg=int(par[6]);
+          int    stat=int(par[7]);
 
-                            double dMin_ecal=100000;
-                            double dMin_hcal=100000;
-                            for (unsigned int j2=0; j2<simhits.size(); j2++) {
-                                  LParticle hit=simhits.at(j2);
-                                  TLorentzVector LE=hit.GetP();
-                                  int type=hit.GetType();
-                                  double phi_h=LE.Phi();
-                                  double eta_h=LE.PseudoRapidity();
-                                  double dphi=phi_h-phi_t;
-                                  if (abs(dphi)>kPI) dphi=k2PI-abs(dphi);
-                                  double deta=eta_h-eta_t;
-                                  double delta=sqrt(dphi*dphi+deta*deta); // distance parameter 
-
-                                 // HCAL
-                                 if (type==1) {
-                                 if (delta<dMin_hcal) {
-                                    dMin_hcal=delta;
-                                    vector<double> parh=hit.GetParameters();
-                                    Xcenter_hcal=parh[0];
-                                    Ycenter_hcal=parh[1];
-                                    Zcenter_hcal=parh[2]; 
-                                  } 
-                                }
-                             
-                                // ECAL 
-                                if (type==2) {
-                                 if (delta<dMin_ecal) {
-                                    dMin_ecal=delta;
-                                    vector<double> parh=hit.GetParameters();
-                                    Xcenter_ecal=parh[0];
-                                    Ycenter_ecal=parh[1];
-                                    Zcenter_ecal=parh[2];
-                                  }
-                                }
-
-                               } // end loop 
-
-                               // rebuild truth jets for matching with hits
-                               LParticle p(L1.Px(), L1.Py(), L1.Pz(), L1.E(), 0); 
-                               p.SetParameter(Xcenter_hcal); //0 
-                               p.SetParameter(Ycenter_hcal); //1 
-                               p.SetParameter(Zcenter_hcal); //2 
-                               // position as found in ECAL (more precise)
-                               p.SetParameter(Xcenter_ecal); //3 
-                               p.SetParameter(Ycenter_ecal); //4 
-                               p.SetParameter(Zcenter_ecal); //5 
-
-                               truthjets_formatching.push_back(p);
-
-      }
-
-// associate hits with jets taking into account jet centers
-    for (unsigned int j1=0; j1<simhits.size(); j1++) {
-                      LParticle hit=simhits.at(j1);
-                      TLorentzVector LE=hit.GetP();
-                      double m_h=LE.M();
-                      double e_h=LE.E();
-                      double phi_h=LE.Phi();
-                      double eta_h=LE.PseudoRapidity();
-                      vector<double> par=hit.GetParameters();
-                      int type= hit.GetType(); // ECAL or HCAL 
-                      int layer=hit.GetCharge();
-                      double x=par[0];
-                      double y=par[1];
-                      double z=par[2];
-                      double layer_pos_cm=par[3];
-                      double Thit=par[4];
-                      double LogTime=TMath::Log10(Thit);
-                      double avt=par[5];
-                      int    pdg=int(par[6]);
-                      int    stat=int(par[7]);
-		      float  Mass = par[8];
-		      int    Forward=0;
-			TLorentzVector constit_vec_0;
-                             if(j1==0){                        
-                                constit_vec_0=LE;}
-
-                    // associate hits with truth jets 
-                      for (unsigned int j2=0; j2<truthjets_formatching.size(); j2++) {
-                            LParticle p1=(LParticle)truthjets_formatching.at(j2);
-                            TLorentzVector L1= p1.GetP();
-                            double pt_t =  L1.Perp();
-                            double phi_t = L1.Phi();
-                            double eta_t = L1.PseudoRapidity();
-                            double e_t =  L1.E();
-			  if(Forth_And_Back_Vector[0].DeltaR(L1)<1) Forward=1;
-			  else{Forward=2;} 
-			    //cout << "Forth_And_Back_Vector[0].DeltaR(L1): " << Forth_And_Back_Vector[0].DeltaR(L1)<< endl ;
-                            //cout << "Forth_And_Back_Vector[1].DeltaR(L1): " << Forth_And_Back_Vector[1].DeltaR(L1)<< endl ;
-                            //if(j1==0)cout << "Jet_axis_Phi: " << phi_t << endl;
-                            //if(j1==0)cout << "Jet_axis_Eta: " << eta_t << endl;
-
-			    vector<double> par1=p1.GetParameters();
-                            double dphi=phi_h-phi_t;
-                            //if (abs(dphi)>kPI) dphi=k2PI-abs(dphi);
-                            double deta=eta_h-eta_t;
-                            double delta=sqrt(dphi*dphi+deta*deta); // distance parameter 
-                            if (type==1 && Thit<1000 && delta<Rparam) { // HCAL
-                         
-                            //use ECAL postion as most precise 
-                            double Xcenter=par1[3];
-                            double Ycenter=par1[4];
-                            double Zcenter=par1[5];
-                            double xhit=0.1*(x-Xcenter); // in cm 
-                            double yhit=0.1*(y-Ycenter); // in cm 
-                            double zhit=0.1*(z-Zcenter); // in cm 
-
-                            // http://lcio.desy.de/v01-10/doc/doxygen_api/html/classEVENT_1_1MCParticle.html#
-                            if (Thit>300) {
-                             h_jet_pdg_hit300->Fill(pdg,e_h);
-                             // cout << "pdg=" << pdg << " time=" << Thit << " ns" << " status=" << stat << endl;
-                             }
-
-                            
-                             // weigted energy
-                             XEnergy=XEnergy+e_h;
-                             XTime = XTime + Thit*e_h;
-
-                             h_jet_energy_hit->Fill( TMath::Log10(e_h) ); // hit energy 
-
-                             // for each event
-                             if (hist_ev<nXevents) h_jet_hitsjetXY_EV[hist_ev]->Fill(xhit,yhit,Thit);
-                             // time for each layer
-                             if (layer<nLayersHCAL) h_jet_time_layerHCAL[layer]->Fill(Thit,e_h);
-
-                            //cout  << " x ="<< xhit << " y=" << yhit << endl;
-                            // as for slicPandora, look at first time contribution
-                             h_jet_hitstime_log->Fill(LogTime, e_h); 
-                             h_jet_hitstime->Fill(Thit, e_h);
-                             h_jet_hitstime2D->Fill(LogTime, TMath::Log10(e_h), e_h);
-                             h_jet_hitstime_prof->Fill(Thit, e_h);
-                             h_jet_hitstime_prof_log->Fill(LogTime, e_h);
-
-                             double dtrans_cm=sqrt(xhit*xhit+yhit*yhit); 
-                             h_jet_hitsRLE->Fill(dtrans_cm,layer_pos_cm,e_h);
-                             h_jet_hitsjetXY->Fill(xhit,yhit, e_h);
-                             if (delta<Rparam) { 
-                                             h_jet_hitsjetXY_jet->Fill(xhit,yhit, e_h);  } 
-                             h_jet_hitsjet_Trans->Fill(dtrans_cm,e_h);
-                             h_jet_hitsjet_Depth->Fill(layer_pos_cm,e_h);
-
-                             h_jet_hitspos_prof->Fill(dtrans_cm, Thit,e_h);
-                             h_jet_ehitspos_prof->Fill(dtrans_cm,e_h);
-
-                             h_jet_hitlayer_prof->Fill((double)layer, Thit,e_h);
-                             h_jet_hitdist_prof->Fill(layer_pos_cm,Thit,e_h);
-                             h_jet_ehitdist_prof->Fill(layer_pos_cm,e_h);
-
-                             h_jet_hitlayer_hcal_prof->Fill((double)layer, Thit, e_h);
-
-                             h_jet_hitsRLT->Fill(dtrans_cm,layer_pos_cm,Thit);
-                             h_jet_hitsjetXY_prof1->Fill(xhit,yhit, e_h);
-                             h_jet_hitsjetXY_prof2->Fill(xhit,yhit, Thit);
-
-                             h_jet_avhitstime2D->Fill(TMath::Log10(avt), TMath::Log10(e_h), e_h);
-                             h_jet_avhitstime->Fill(TMath::Log10(avt),  e_h);
-                             h_jet_hits_energy_frac->Fill(TMath::Log10(e_h), e_h/e_t);
-                             h_jet_hits_energytime_frac->Fill(LogTime, e_h/e_t);
-                  } // hcal 
-
-    	         if (type==2 and delta<Rparam and layer==31 and Thit<1000) 
-			{
-			cout << "Thit: " << Thit << endl;
-			Timing_detector_Reco_TOF->Fill(Thit);
-                        cout << "Thit: " << Thit << endl;
-			}
-                 if (type==2 and delta<Rparam and layer==31 and Thit<cut_Time  ) {  // ECAL
-                            
-                            //cout << "delta: " << delta << endl;
-			    //cout << "pdg: " << pdg << endl;
-			// ECAL
-                     double Xcenter=par1[3];
-                     double Ycenter=par1[4];
-                     double Zcenter=par1[5];
-                     double xhit=0.1*(x-Xcenter); // in cm 
-                     double yhit=0.1*(y-Ycenter); // in cm 
-                     double zhit=0.1*(z-Zcenter); // in cm 
-                     double dtrans_cm=sqrt(xhit*xhit+yhit*yhit);
- 
-                     // for each event
-                     if (hist_ev<nXevents) h_jet_hitsjetXY_EV[hist_ev]->Fill(xhit,yhit,Thit);
-                     if (layer<nLayersECAL) h_jet_time_layerECAL[layer]->Fill(Thit,e_h);
-
-                     h_jet_hitspos_ecal_prof->Fill(dtrans_cm, Thit, e_h);
-                     h_jet_hitlayer_ecal_prof->Fill((double)layer, Thit, e_h);
-                     h_jet_hitsjetXY_ECAL->Fill(xhit,yhit, e_h);
-                     h_jet_hitsjetXY_ECAL_prof2->Fill(xhit,yhit, Thit);
-                     h_jet_hitstime2D_ECAL->Fill(LogTime, TMath::Log10(e_h), e_h);
-                     
-                     // Study of the dR
-                     for(int Back_forth=0 ; Back_forth<2 ; Back_forth++)
-                     {
-                                 //Hadronic decays checking
-             if((Back_forth==0 and Check_Forth_And_Back_Bool[0]==1 and Forward==1) or (Back_forth==1 and Check_Forth_And_Back_Bool[1]==1 and Forward==2))
-                                 {
-				  //   cout << "Back_forth: " << Back_forth  << endl;
-                                     if(abs(pdg)!=22){
-					 //Mass
-					 mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;		
-                                         //Timing
-                                         T_Reco_sort[Back_forth].push_back(LogTime);
-                                         T_Reco[Back_forth].push_back(LogTime);
-                                         //Four_momentum
-                                         FourP_dR_Reco[Back_forth].push_back(LE);
-					//PT
-                                         PT_Reco_sort[Back_forth].push_back(LE.Perp());
-                                         PT_Reco[Back_forth].push_back(LE.Perp());
-                                         //PDG
-                                         PDG_Reco[Back_forth].push_back(abs(pdg));
-                                         //Eta_selection
-                                         event_number_Reco[Back_forth] = event_number_Reco[Back_forth] + 1;
-                                         if(abs(eta_h)<1) Eta_smaller_than_1_event[Back_forth] = Eta_smaller_than_1_event[Back_forth] + 1;
-                                     }}}
-                 }}}
-                     sort(T_Reco_sort[0].begin(), T_Reco_sort[0].end());
-                     sort(PT_Reco_sort[0].begin(), PT_Reco_sort[0].end());
-                     sort(T_Reco_sort[1].begin(), T_Reco_sort[1].end());
-                     sort(PT_Reco_sort[1].begin(), PT_Reco_sort[1].end());
+          // Study of the dR
+              //Hadronic decays checking
+          
+                  //   cout << "Back_forth: " << Back_forth  << endl;
+                  if(abs(pdg)!=22 and (Recojets[Back_forth].DeltaR(LE))<0.4){
+                      //Mass
+                      mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
+                      //Timing
+                      T_Reco_sort[Back_forth].push_back(LogTime);
+                      T_Reco[Back_forth].push_back(LogTime);
+                      //Four_momentum
+                      FourP_dR_Reco[Back_forth].push_back(LE);
+                      //PT
+                      PT_Reco_sort[Back_forth].push_back(LE.Perp());
+                      PT_Reco[Back_forth].push_back(LE.Perp());
+                      //PDG
+                      PDG_Reco[Back_forth].push_back(abs(pdg));
+                      //Eta_selection
+                      event_number_Reco[Back_forth] = event_number_Reco[Back_forth] + 1;
+                      if(abs(eta_h)<1) Eta_smaller_than_1_event[Back_forth] = Eta_smaller_than_1_event[Back_forth] + 1;
+                  }}}
+          // int    genstat=int(par[8]);
+      
+      //======================+Cut-up line===============//
+        for (unsigned int Back_forth=0; Back_forth<Recojets.size(); Back_forth++) {
+                     sort(T_Reco_sort[Back_forth].begin(), T_Reco_sort[Back_forth].end());
+            sort(PT_Reco_sort[Back_forth].begin(), PT_Reco_sort[Back_forth].end());}
         
 		   
 
-                     vector<vector<TLorentzVector>> Highest_PT_FourP(2,vector<TLorentzVector>());
+                     vector<vector<TLorentzVector>> Highest_PT_FourP(Recojets.size(),vector<TLorentzVector>());
                      
  		      cout << "New1 " << endl;              
-                     for(int Back_forth=0 ; Back_forth<2 ; Back_forth++)
+                     for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
                      {
 			 //
                          if(T_Reco_sort[Back_forth].size()>0){
@@ -2354,37 +2186,32 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                  if(T_Reco_sort[Back_forth][uuu] != T_sort_number_only[Back_forth].back()) T_sort_number_only[Back_forth].push_back(T_Reco_sort[Back_forth][uuu]);
                      }}}
         cout << "Check_point_fully_contained" << endl;
-                     int Full_contain_forth=0; int Full_contain_back=0;
-                     if(event_number_Reco[0]>0){
-                         cout << "Fraction_of_the_event_forth====> " << Eta_smaller_than_1_event[0]/event_number_Reco[0] << endl;
-                         if((Eta_smaller_than_1_event[0]/event_number_Reco[0])>0.9)
+                    vector<int> Full_contain;
+                    int check_point_eta;
+                for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
+                    {
+                     if(event_number_Reco[Back_forth]>0){
+                         cout << "Fraction_of_the_event_forth====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                         if((Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth])>0.9)
                          {
-                             Full_contain_forth=1;
-		             for(int ppp=0 ; ppp<FourP_dR_Reco[0].size() ; ppp++){
-			//	cout << "Phi: " << FourP_dR_Reco[0][ppp].Phi() << endl;
-			//	cout << "Eta: " << FourP_dR_Reco[0][ppp].Eta() << endl;
-                         //       cout << "PDG: " << PDG_Reco[0][ppp] << endl;
-			//	cout << "dR_checking: " << FourP_dR_Reco[0][0].DeltaR(FourP_dR_Reco[0][ppp]) << endl;}
-                         }}
-                     }
-                     if(event_number_Reco[1]>0){
-                         cout << "Fraction_of_the_event_back====> " <<  Eta_smaller_than_1_event[1]/event_number_Reco[1] << endl;
-                         if((Eta_smaller_than_1_event[1]/event_number_Reco[1])>0.9)
-                         {
-                             Full_contain_back=1;
+                             Full_contain[Back_forth].push_back(1);
                          }
+                     }   else{Full_contain[Back_forth].push_back(0); check_point_eta = check_point_eta +1;}
+                     else{Full_contain[Back_forth].push_back(0);check_point_eta = check_point_eta +1}
                      }
-                     if(Full_contain_back==0 and Full_contain_forth==0) {cout << "x" ;  continue;}
-                     
-                     vector<float> dR_Highest_PT_T_Reco;
-                     vector<float> dR_Highest_PT_PT_Reco;
-		     vector<vector<int>>         PT_PDG_Reco(2,vector<int>());
-      		     vector<vector<int>>         T_PDG_Reco(2,vector<int>());
+            
+                     if(check_point_eta==Recojets.size()) continue;
+            
+            
+                 vector<float> dR_Highest_PT_T_Reco;
+                 vector<float> dR_Highest_PT_PT_Reco;
+                 vector<vector<int>>         PT_PDG_Reco(Recojets.size(),vector<int>());
+      		     vector<vector<int>>         T_PDG_Reco(Recojets.size(),vector<int>());
 
         cout << "Check_point_dR_calculation" << endl;
-                     for(int Back_forth=0 ; Back_forth<2 ; Back_forth++)
+                     for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
                      {
-                         if((Back_forth==0 and Full_contain_forth==1) or (Back_forth==1 and Full_contain_back==1)){
+                         if(Full_contain[Back_forth]==1){
                              cout << "Back_forth_number====>: " << Back_forth << endl;
                              if(T_Reco_sort[Back_forth].size()>0)
                              {
@@ -2437,7 +2264,7 @@ for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
         for(int jjjjj=0; jjjjj<PT_PDG_Reco[Back_forth].size();jjjjj++) cout << "PT_PDG_Reco[Back_forth]: " << PT_PDG_Reco[Back_forth][jjjjj] << endl;}
 }
 */
-for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
+for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
         for(int j=0 ; j<5 ; j++)
         {
 	if(T_PDG_Reco[Back_forth].size()>0){
@@ -2542,23 +2369,24 @@ for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
         
 
      // } // close loop over  hits
-
-	             if(event_number_Reco[0]>0){
-                         cout << "Fraction_of_the_event_forth_for_mass====> " << Eta_smaller_than_1_event[0]/event_number_Reco[0] << endl;
-                         if((Eta_smaller_than_1_event[0]/event_number_Reco[0])>0.9)
+            for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
+	             if(event_number_Reco[Back_forth]>0){
+                         cout << "Fraction_of_the_event_forth_for_mass====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                         if((Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth])>0.9)
                          {
-                             mass_sum_average_Reco->Fill(mass_Reco[0]/event_number_Reco[0]);
-                             cout << "mass_sum_average_Reco_forth_for_mass====> " << mass_Reco[0]/event_number_Reco[0] << endl;
+                             mass_sum_average_Reco->Fill(mass_Reco[Back_forth]/event_number_Reco[Back_forth]);
+                             cout << "mass_sum_average_Reco_forth_for_mass====> " << mass_Reco[Back_forth]/event_number_Reco[Back_forth] << endl;
                          }
                      }
-                     if(event_number_Reco[1]>0){
-                         cout << "Fraction_of_the_event_back_for_mass====> " <<  Eta_smaller_than_1_event[1]/event_number_Reco[1] << endl;
-                         if((Eta_smaller_than_1_event[1]/event_number_Reco[1])>0.9)
+                     if(event_number_Reco[Back_forth]>0){
+                         cout << "Fraction_of_the_event_back_for_mass====> " <<  Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                         if((Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth])>0.9)
                          {
-                             mass_sum_average_Reco->Fill(mass_Reco[1]/event_number_Reco[1]);
-                             cout << "mass_sum_average_Reco_back_for_mass====> " << mass_Reco[1]/event_number_Reco[1] << endl;
+                             mass_sum_average_Reco->Fill(mass_Reco[Back_forth]/event_number_Reco[Back_forth]);
+                             cout << "mass_sum_average_Reco_back_for_mass====> " << mass_Reco[Back_forth]/event_number_Reco[Back_forth] << endl;
                          }
-                     }
+                     }}
+    }}
 
 /*
    hist_ev++;
