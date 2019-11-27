@@ -2095,7 +2095,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
           for (unsigned int k = 0; k<sjets_reco.size(); k++)
           {
               TLorentzVector p_using_reco;
-              p_using_reco.SetPxPyPzE(( sjets_reco[k].px(), sjets_reco[k].py(), sjets_reco[k].pz(),  sjets_reco[k].e());
+              p_using_reco.SetPxPyPzE( sjets_reco[k].px(), sjets_reco[k].py(), sjets_reco[k].pz(),  sjets_reco[k].e());
               for(int iii=0 ; iii<Truthjets_axis.size() ; iii++)
               {
                   if(p_using_reco.DeltaR(Truthjets_axis[iii])<0.4) Recojets.push_back(p_using_reco);
@@ -2119,7 +2119,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
       vector<int> Eta_smaller_than_1_event;
       vector<int> event_number_Reco_for_mass;
       vector<int> Eta_smaller_than_1_event_for_mass;
-    if(Recojets.size()>0){
+    if(Recojets.size()>0)
+          {
         for (unsigned int Back_forth=0; Back_forth<Recojets.size(); Back_forth++) {
 
         for (unsigned int j1=0; j1<simhits.size(); j1++) {
@@ -2140,7 +2141,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
           double avt=par[5];
           int    pdg=int(par[6]);
           int    stat=int(par[7]);
-
+          double Mass=par[8];
           // Study of the dR
               //Hadronic decays checking
           
@@ -2166,12 +2167,12 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
       
       //======================+Cut-up line===============//
         for (unsigned int Back_forth=0; Back_forth<Recojets.size(); Back_forth++) {
-                     sort(T_Reco_sort[Back_forth].begin(), T_Reco_sort[Back_forth].end());
+            sort(T_Reco_sort[Back_forth].begin() , T_Reco_sort[Back_forth].end());
             sort(PT_Reco_sort[Back_forth].begin(), PT_Reco_sort[Back_forth].end());}
         
 		   
 
-                     vector<vector<TLorentzVector>> Highest_PT_FourP(Recojets.size(),vector<TLorentzVector>());
+            vector<vector<TLorentzVector>> Highest_PT_FourP(Recojets.size(),vector<TLorentzVector>());
                      
  		      cout << "New1 " << endl;              
                      for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
@@ -2196,7 +2197,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                          {
                              Full_contain[Back_forth].push_back(1);
                          }
-                     }   else{Full_contain[Back_forth].push_back(0); check_point_eta = check_point_eta +1;}
+                         else{Full_contain[Back_forth].push_back(0); check_point_eta = check_point_eta +1;}
+                     }
                      else{Full_contain[Back_forth].push_back(0);check_point_eta = check_point_eta +1}
                      }
             
@@ -2230,7 +2232,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                              for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
                                                  if(T_sort_number_only[Back_forth][T_sort_number_only[Back_forth].size()-1-jkl]==T_Reco[Back_forth][ijk])
                                                  {
-						     cout << "ijk: " << ijk << endl;
+						     //cout << "ijk: " << ijk << endl;
                                                      identify_1 = identify_1+1;
                                                      T_PDG_Reco[Back_forth].push_back(PDG_Reco[Back_forth][ijk]);
                                                      cout << "T_PDG_Reco[Back_forth][ijk]: " << PDG_Reco[Back_forth][ijk] << endl;
@@ -2245,7 +2247,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                              for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
                                                  if(PT_sort_number_only[Back_forth][jkl]==PT_Reco[Back_forth][ijk])
                                                  {
-						     cout << "ijk: " << ijk << endl;
+						     //cout << "ijk: " << ijk << endl;
                                                      identify = identify+1;
                                                      PT_PDG_Reco[Back_forth].push_back(PDG_Reco[Back_forth][ijk]);
                                                      cout << "PT_PDG_Reco[Back_forth][ijk]: " << PDG_Reco[Back_forth][ijk] << endl;
@@ -2386,7 +2388,7 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
                              cout << "mass_sum_average_Reco_back_for_mass====> " << mass_Reco[Back_forth]/event_number_Reco[Back_forth] << endl;
                          }
                      }}
-    }}
+        }}
 
 /*
    hist_ev++;
