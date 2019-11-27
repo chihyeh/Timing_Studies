@@ -1851,7 +1851,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
   IMPL::LCCollectionVec* col50 = (IMPL::LCCollectionVec*) evt->getCollection("HcalBarrelHits") ;
   //IMPL::LCCollectionVec* col50 = (IMPL::LCCollectionVec*) evt->getCollection("HAD_BARREL") ;
-  nCL = col50->getNumberOfElements() ;
+  int nCL = col50->getNumberOfElements() ;
    for(int i=0 ; i<nCL ; ++i){
     EVENT::SimCalorimeterHit* mcp =  (EVENT::SimCalorimeterHit*) col50->getElementAt(i) ;
     // EVENT::CalorimeterHit* mcp =  (EVENT::CalorimeterHit*) col50->getElementAt(i) ;
@@ -1903,14 +1903,11 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     double py =  e*y/_tmp;
     double pz =  e*z/_tmp;
     hcalsum_raw=hcalsum_raw+e;
-    PseudoJet pj(px,py,pz,e);
-    fastjet::PseudoJet p(px,py,pz,e);
 
     //double eta_r=pj.pseudorapidity();
     //double phi_r=pj.phi();
     //double pt_r=pj.pt();
     //cout << " e=" << e <<  " phi=" << pj.phi() << " eta=" << pj.eta() << endl;
-    avec_hits_raw.push_back( pj );
     avec_hittime_raw.push_back(avt);
 
     // fill hits
@@ -2027,7 +2024,6 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     double phi_r=pj.phi();
     double pt_r=pj.pt();
     //cout << " e=" << e <<  " phi=" << pj.phi() << " eta=" << pj.eta() << endl;
-    avec_hits_raw.push_back( pj );
 
 
     // fill hits
