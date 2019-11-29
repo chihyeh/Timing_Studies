@@ -80,11 +80,11 @@ for j in range(2):
         h4.SetMarkerStyle(9)
         h5.SetMarkerStyle(9)
         if(j==0):
-            h3.GetXaxis().SetRangeUser(0,1)
-            h3.GetYaxis().SetRangeUser(0,0.12)
+            h3.GetXaxis().SetRangeUser(0,0.5)
+            h3.GetYaxis().SetRangeUser(0,0.8)
         if(j==1):
-            h3.GetXaxis().SetRangeUser(0,1)
-            h3.GetYaxis().SetRangeUser(0,0.12)
+            h3.GetXaxis().SetRangeUser(0,0.5)
+            h3.GetYaxis().SetRangeUser(0,0.8)
 
 
         h3.SetTitle("#DeltaR_"+str(list_PT_T[j])+"_"+str(i))

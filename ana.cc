@@ -668,7 +668,7 @@ int main(int argc, char **argv)
   TH1F *Next_to_trailing_particle_ID_PT = new TH1F("Next_to_trailing_particle_ID_PT","Next_to_trailing_particle_ID_PT",20,0,20); 
   */
 
-  TH1F *Timing_detector_Reco_TOF = new TH1F("Timing_detector_Reco_TOF","Timing_detector_Reco_TOF",4000,0,1000);
+  TH1F *Timing_detector_Reco_TOF = new TH1F("Timing_detector_Reco_TOF","Timing_detector_Reco_TOF",200,0,50);
 
   TH1F *h_Particles_Rank_T[5];
   TH1F *h_Particles_Rank_PT[5];
@@ -693,8 +693,8 @@ int main(int argc, char **argv)
   TH1F *h_Particles_dR_Highest_PT_T_Reco[5];
   TH1F *h_Particles_dR_Highest_PT_PT_Reco[5];
   for (int j=0; j<5; j++){
-  h_Particles_dR_Highest_PT_T_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),400,0,4 );
-  h_Particles_dR_Highest_PT_PT_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),400,0,4 );
+  h_Particles_dR_Highest_PT_T_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),100,0,1 );
+  h_Particles_dR_Highest_PT_PT_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),100,0,1 );
   }
 
 
@@ -884,7 +884,8 @@ int main(int argc, char **argv)
    vector<double> Trailing_particle_kind_mass={0.0005,0,0.1057,0,0,0.497648,0.1349766,0.497648,0.493,0.938,0.939,1.197,1.115,1.321,1.189,1.314,0,1.672,1.86};
    vector<int> Baryons_particle_kind ={2112,2212,3112,3122,3312,3222,3322};
    int Trailing_photon=0;
-   // loop over all files
+  int Forth=1 ; int Back=-1; vector<int> Check_Forth_And_Back={Forth,Back}; 
+  // loop over all files
   for(unsigned int mfile=0; mfile < files.size(); mfile++){
   
   
@@ -916,7 +917,9 @@ int main(int argc, char **argv)
     // UTIL::LCTOOLS::dumpEvent( evt ) ;
 
     nEvents ++ ;
-   // if ( (nEvents<100 && nEvents%10==0 ) || (nEvents>100 && nEvents%200==0 ) )
+	//if(nEvents!=194) continue;
+   	
+	// if ( (nEvents<100 && nEvents%10==0 ) || (nEvents>100 && nEvents%200==0 ) )
           cout <<  " # Events=" << nEvents << endl;
    Event = nEvents;
 Event_reco = nEvents;
@@ -925,8 +928,6 @@ Event_reco = nEvents;
    int Status2=0;
    int Status3=0;
    vector<int> No_charge_PDG; 
-   vector<int> aaa;
-   aaa.push_back(10);
 
   // cout << "aaa.size(): " << aaa.size() << endl;
 
@@ -947,8 +948,7 @@ Event_reco = nEvents;
     vector<PseudoJet> avec_truth_sim; // also created by geant 
   
 //==============================================================//
-    int Forth=1 ; int Back=-1; vector<int> Check_Forth_And_Back={Forth,Back};vector<bool> Check_Forth_And_Back_Bool;
-    vector<TLorentzVector> Forth_And_Back_Vector;
+    vector<bool> Check_Forth_And_Back_Bool; vector<TLorentzVector> Forth_And_Back_Vector;
     int Zprime_pdg=32; int Photon_pdg=22; int Muon_pdg=13; int W_pdg=24;
    //Check the leptonic decay and hadronic decay
    for(int CFAB=0 ; CFAB < 2 ; CFAB++)
@@ -1043,7 +1043,9 @@ Event_reco = nEvents;
       cout << "nd: " << nd << endl;
       cout << "gs: " << gs << endl;}
 */    	
-      if(abs(pdg)==22 and gs==1 and abs(mcp->getParents()[0]->getPDG())==13 and abs(mcp->getParents()[0]->getMomentum()[2])>2000) {cout << "ISR_Photon_cut_off" << endl; continue;}
+      if(abs(pdg)==22 and gs==1 and abs(mcp->getParents()[0]->getPDG())==13 and abs(mcp->getParents()[0]->getMomentum()[2])>2000) {
+	//cout << "ISR_Photon_cut_off" << endl; 
+		continue;}
       if(gs==0) Status0 = Status0+1;
       if(gs==1) Status1 = Status1+1;
       if(gs==2) Status2 = Status2+1;
@@ -1189,8 +1191,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               p.SetParameter(eccentricity(sjets_truth[k],sjets_truth[k].constituents())); // 5
               truthjets.push_back(p);
               Truthjets_axis.push_back(p_using);
-
-	      
+		
+	     
                  for (int i=0; i<csize; i++) {
                         fastjet::PseudoJet constituent(constit[i].px(),constit[i].py(),constit[i].pz(),constit[i].e());
                         TLorentzVector constit_vec;
@@ -1242,7 +1244,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 		   int ID1=0;
 		   ID1 = find(PDG_with_no_charge.begin(),PDG_with_no_charge.end(),abs(constit[i].user_index()))[0];
 		//   if(abs(constit[i].user_index())==211) cout << "Pion matching charged: " << ID << endl;
-		  /* 
+		   
 			if(constit[i].perp()<1.5 and ID!=abs(constit[i].user_index()) ) 
 							{cout << "Cut-off event" << endl; 
 							 cout << "constit[i].perp(): " << constit[i].perp()<< endl;  
@@ -1250,7 +1252,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 							continue;}
 		    
 		   if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
-		*/
+		
 //		h_jet_econst_truth->Fill(constit[i].e(), constit[i].e());
   //                h_jet_econst_truth_frac->Fill(TMath::Log10(constit[i].e()), constit[i].e()/e);
     //              h_truth_jets_const_Et->Fill(constit[i].Et());
@@ -1371,7 +1373,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 				Timing_checking.push_back(jet_time[i]);			
 				Particle_ID_T.push_back(constit_PDG[i]);
 				dR_Highest_PT_T.push_back(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
-				cout << "HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]): " << HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]) << endl; 
+	//			cout << "HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]): " << HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]) << endl; 
 				if(j<5)h_Particles_dR_Highest_PT_T[j]->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
 				}}}
 	//======================================================================================
@@ -1523,6 +1525,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 		//if(jet_time_sort[0]<jet_time_sort[1] and jet_time_sort[1]<jet_time_sort[2]) cout << "Let go party party all night oh oh!~" << endl;
 		 
 	//cout << "jet_time_for_rank_sort.size(): " << jet_time_for_rank_sort.size() << endl;
+	
         int event_checkk=0;
 	for(int j=0 ; j<jet_time_for_rank_sort.size() ; j++){
 		for(int i=0 ; i<jet_time_for_rank.size() ; i++){
@@ -1615,7 +1618,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               //if (nn==2) break; // take first 3 jets
 
   }
-/*		cout << "check*0.1: " << check*0.1 << endl;
+/*
+		cout << "check*0.1: " << check*0.1 << endl;
 		if(check*0.1==0.3) cout << "Yes! " << endl; 
 		cout << "Forth_jet_number: "<< Forth_jet << endl;
                 cout << "Back_jet_number: "<< Back_jet << endl; 
@@ -1623,7 +1627,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
         else if(check*0.1==0.3){ cout << "2" << endl;    Check_matching_0P3->Fill(Forth_jet); Check_matching_0P3->Fill(Back_jet);}
         else if(check*0.1==0.4){ cout << "3" << endl;    Check_matching_0P4->Fill(Forth_jet); Check_matching_0P4->Fill(Back_jet);}
 }
-*/
+
 // includes Geant4
 /*
    ClusterSequence clust_seq1(avec_truth_sim, jet_def);
@@ -1841,25 +1845,83 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 
 */
-  // HCAL simulated raw hits
+
+
+
+
+ // HCAL simulated raw hits
   double hcalsum_raw=0;
   vector<PseudoJet> avec_hits_raw_sf;
+  vector<LParticle> Calhits;
   vector<LParticle> simhits;
+  IMPL::LCCollectionVec* col50_1 = (IMPL::LCCollectionVec*) evt->getCollection("HAD_BARREL") ;
+  int nCL11 = col50_1->getNumberOfElements() ;
+  for(int i=0 ; i<nCL11 ; ++i){
+        EVENT::CalorimeterHit* mcp_1 =  (EVENT::CalorimeterHit*) col50_1->getElementAt(i) ;
+    const float* pos= mcp_1->getPosition();
+    float x=pos[0];
+    float y=pos[1];
+    float z=pos[2];
+    //cout << "xyzCal: " << x << " " << y << " " << z << " " << endl;
+    double e = mcp_1->getEnergy();
+    double _tmp = std::sqrt(x*x + y*y + z*z);
+    double px =  e*x/_tmp;
+    double py =  e*y/_tmp;
+    double pz =  e*z/_tmp;
+    int cellId0 = mcp_1->getCellID0();
+    int cellId1 = mcp_1->getCellID1();
+    long long cellId = ((long long)cellId1) << 32 | cellId0;
+    int layer = decoder->getFieldValue("layer", cellId);
+    PseudoJet pj_sf(px,py,pz,e);
+    LParticle p(px,py,pz,e,layer);
+    p.SetParameter( x*1000 );
+    p.SetParameter( y*1000 );
+    p.SetParameter( z*1000 );
+        if(e>0.5) {avec_hits_raw_sf.push_back(pj_sf);
+		    Calhits.push_back(p);		
+						}
+        }
+  IMPL::LCCollectionVec* col50_2 = (IMPL::LCCollectionVec*) evt->getCollection("EM_BARREL") ;
+  int nCL12 = col50_2->getNumberOfElements() ;
+  for(int i=0 ; i<nCL12 ; ++i){
+        EVENT::CalorimeterHit* mcp_1 =  (EVENT::CalorimeterHit*) col50_2->getElementAt(i) ;
+    const float* pos= mcp_1->getPosition();
+    float x=pos[0];
+    float y=pos[1];
+    float z=pos[2];
+    double e = mcp_1->getEnergy();
+    double _tmp = std::sqrt(x*x + y*y + z*z);
+    double px =  e*x/_tmp;
+    double py =  e*y/_tmp;
+    double pz =  e*z/_tmp;
+    int cellId0 = mcp_1->getCellID0();
+    int cellId1 = mcp_1->getCellID1();
+    long long cellId = ((long long)cellId1) << 32 | cellId0;
+    int layer = decoder->getFieldValue("layer", cellId);
+    LParticle p(px,py,pz,e,layer);
+    PseudoJet pj_sf(px,py,pz,e);
+    p.SetParameter( x*1000 );
+    p.SetParameter( y*1000 );
+    p.SetParameter( z*1000 ); 
+       if(e>0.5) {avec_hits_raw_sf.push_back(pj_sf);
+		   Calhits.push_back(p);
+		   	     }
+							
+        }
 
-
+  int check_cell=0;
   IMPL::LCCollectionVec* col50 = (IMPL::LCCollectionVec*) evt->getCollection("HcalBarrelHits") ;
-  //IMPL::LCCollectionVec* col50 = (IMPL::LCCollectionVec*) evt->getCollection("HAD_BARREL") ;
   int nCL = col50->getNumberOfElements() ;
    for(int i=0 ; i<nCL ; ++i){
-    EVENT::SimCalorimeterHit* mcp =  (EVENT::SimCalorimeterHit*) col50->getElementAt(i) ;
-    // EVENT::CalorimeterHit* mcp =  (EVENT::CalorimeterHit*) col50->getElementAt(i) ;
+    check_cell = check_cell + 1;
+        EVENT::SimCalorimeterHit* mcp =  (EVENT::SimCalorimeterHit*) col50->getElementAt(i) ;
     const float* pos= mcp->getPosition();
     float x=pos[0];
     float y=pos[1];
     float z=pos[2];
     double e = mcp->getEnergy();
     double Thit=mcp->getTimeCont(0);
-
+       // cout << "xyzSim: " << x << " " << y << " " << z << " " << endl;
      // Get the two 32-bit chunks of the ID.
      int cellId0 = mcp->getCellID0();
      int cellId1 = mcp->getCellID1();
@@ -1892,16 +1954,15 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                ave=ave+mcp->getEnergyCont(jj);
     }
     avt=avt/ave;
-
- 
-
+    
+    //if(e>0.5) cout << "e: " << endl;
     double Rpos_cm=0.1*std::sqrt(x*x+y*y);
     double _tmp = std::sqrt(x*x + y*y + z*z);
     double px =  e*x/_tmp;
     double py =  e*y/_tmp;
     double pz =  e*z/_tmp;
     hcalsum_raw=hcalsum_raw+e;
-
+    PseudoJet pj_sf(px,py,pz,e);
     //double eta_r=pj.pseudorapidity();
     //double phi_r=pj.phi();
     //double pt_r=pj.pt();
@@ -1916,8 +1977,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
      p.SetParameter( y  );
      p.SetParameter( z  );
      p.SetParameter( layer_pos_cm ); 
-
-    // find fastest hit
+	// find fastest hit
     float timeCont = mcp->getTimeCont(0);
     EVENT::MCParticle* pmm =mcp->getParticleCont(0); 
     int pdg=pmm->getPDG ();
@@ -1936,7 +1996,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
      p.SetParameter(avt);     // average hit time  
      p.SetParameter( (double)pdg  ); 
      p.SetParameter( (double)status  );
-
+     p.SetParameter(  cellId0 );
+     p.SetParameter(  cellId1 );
      
 
      // PDG of first constribution 
@@ -1951,10 +2012,11 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 
 
-    // simhits.push_back(p);
+      //simhits.push_back(p);
 
      // cuts as in the default reconstruction
      if (e>0.0005) h_hits_time_abovecut->Fill(Thit,e);
+ 
 
  // corrected by sampling fraction 
     double HCAL_SF=0.031;
@@ -1962,22 +2024,19 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     px =  e*x/_tmp;
     py =  e*y/_tmp;
     pz =  e*z/_tmp;
-    PseudoJet pj_sf(px,py,pz,e);
-    avec_hits_raw_sf.push_back( pj_sf );
-
 
     } // end fill of hits
-
- 
+ //cout << " check_cell: " << check_cell << endl;
   double ecalsum_raw=0;
 
 
 // ECAL hits
   IMPL::LCCollectionVec* col53 = (IMPL::LCCollectionVec*) evt->getCollection("EcalBarrelHits") ;
+  //IMPL::LCCollectionVec* col53 = (IMPL::LCCollectionVec*) evt->getCollection("EM_BARREL") ;
   int nCL1 = col53->getNumberOfElements() ;
    for(int i=0 ; i<nCL1 ; ++i){
-    EVENT::SimCalorimeterHit* mcp =  (EVENT::SimCalorimeterHit*) col53->getElementAt(i) ;
-    // EVENT::CalorimeterHit* mcp =  (EVENT::CalorimeterHit*) col53->getElementAt(i) ;
+     EVENT::SimCalorimeterHit* mcp =  (EVENT::SimCalorimeterHit*) col53->getElementAt(i) ;
+     //EVENT::CalorimeterHit* mcp =  (EVENT::CalorimeterHit*) col53->getElementAt(i) ;
 
     const float* pos= mcp->getPosition();
     float x=pos[0];
@@ -1989,8 +2048,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     double py =  e*y/_tmp;
     double pz =  e*z/_tmp;
 
-
-     // Get the two 32-bit chunks of the ID.
+	// Get the two 32-bit chunks of the ID.
      int cellId0 = mcp->getCellID0();
      int cellId1 = mcp->getCellID1();
     // Make a 64-bit id for the IDDecoder.  The type MUST be "long long" and not "long".  (from Tony Johnson)
@@ -2024,9 +2082,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
      p.SetCharge(layer);
      p.SetType(2); // ECAL 
      p.SetStatus(mcp->getNMCContributions());
-     p.SetParameter( x  );
-     p.SetParameter( y  );
-     p.SetParameter( z  );
+     p.SetParameter( x*1000  );
+     p.SetParameter( y*1000  );
+     p.SetParameter( z*1000  );
      p.SetParameter( layer_pos_cm );
 
     // find fastest hit
@@ -2049,6 +2107,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
      p.SetParameter( (double)pdg  );
      p.SetParameter( (double)status  );
      p.SetParameter( (double)FAM );
+//    avec_hits_raw_sf.push_back( pj );
 
 
 // PDG of first constribution 
@@ -2061,8 +2120,13 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
          //p.SetParameter( (double)(mcp->getGeneratorStatus()));
      }
 
-     simhits.push_back(p);
+     if(layer==31)
+	{
+	simhits.push_back(p);
+	}
 
+
+        
 
     // correct by SF (1st, 2nd, 3rd layer are 1., 0.0184, 0.0092)
     double ECAL_SF=0.0184;
@@ -2070,15 +2134,17 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
     px =  e*x/_tmp;
     py =  e*y/_tmp;
     pz =  e*z/_tmp;
-    PseudoJet pj_sf(px,py,pz,e);
-    avec_hits_raw_sf.push_back( pj_sf );
-
 
 
     }
     if(Truthjets_axis.size()>0)
       {
-      fastjet::ClusterSequenceArea* thisClustering_reco = new fastjet::ClusterSequenceArea(avec_hits_raw_sf, jet_def, fjAreaDefinition);
+    int activeAreaRepeats_1 = 1;
+    double ghostArea_1 = 0.01;
+    double ghostEtaMax_1 = 7.0;
+      fastjet::GhostedAreaSpec fjActiveArea_1(ghostEtaMax_1,activeAreaRepeats_1,ghostArea_1);
+      fastjet::AreaDefinition fjAreaDefinition_1( fastjet::active_area, fjActiveArea_1 );
+      fastjet::ClusterSequenceArea* thisClustering_reco = new fastjet::ClusterSequenceArea(avec_hits_raw_sf, jet_def, fjAreaDefinition_1);
       vector<fastjet::PseudoJet> sjets_reco = sorted_by_pt(thisClustering_reco->inclusive_jets(25.0));
       vector<TLorentzVector> Recojets;
           for (unsigned int k = 0; k<sjets_reco.size(); k++)
@@ -2092,9 +2158,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               }
               
           }
-        cout << "Truthjets_axis.size(): " << Truthjets_axis.size() << endl;
-        cout << "Recojets.size(): " << Recojets.size() << endl;
-        cout << "sjets_reco.size(): "<<  sjets_reco.size() << endl;
+// cou << "Truthjets_axis.size(): " << Truthjets_axis.size() << endl;
+       // cout << "sjets_reco.size(): "<<  sjets_reco.size() << endl;
+//	cout << "Recojets.size(): " << Recojets.size() << endl;
       vector<vector<TLorentzVector>> FourP_dR_Reco(Recojets.size(),vector<TLorentzVector>());
       vector<vector<int>>         PDG_Reco(Recojets.size(),vector<int>());
       vector<vector<double>>      PT_Reco_sort(Recojets.size(),vector<double>());
@@ -2103,68 +2169,80 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
       vector<vector<double>>      T_Reco_sort(Recojets.size(),vector<double>());
       vector<vector<double>>      T_Reco(Recojets.size(),vector<double>());
       vector<vector<double>>      T_sort_number_only(Recojets.size(),vector<double>());
-      vector<double>  mass_Reco;
-      vector<int> event_number_Reco;
-      vector<int> Eta_smaller_than_1_event;
-      vector<int> event_number_Reco_for_mass;
-      vector<int> Eta_smaller_than_1_event_for_mass;
+      vector<double>  mass_Reco={0,0,0,0,0,0,0,0,0,0};
+      vector<int> event_number_Reco={0,0,0,0,0,0,0,0,0,0};
+      vector<int> Eta_smaller_than_1_event={0,0,0,0,0,0,0,0,0,0};
+      vector<int> event_number_Reco_for_mass={0,0,0,0,0,0,0,0,0,0};
+      vector<int> Eta_smaller_than_1_event_for_mass={0,0,0,0,0,0,0,0,0,0};
     if(Recojets.size()>0)
           {
         for (unsigned int Back_forth=0; Back_forth<Recojets.size(); Back_forth++) {
-
         for (unsigned int j1=0; j1<simhits.size(); j1++) {
-          LParticle hit=simhits.at(j1);
-          TLorentzVector LE=hit.GetP();
+        //cout << "j1: " << j1 ;
+        LParticle hit=simhits.at(j1);  
+	TLorentzVector LE=hit.GetP();
           double e_h=LE.E();
           double phi_h=LE.Phi();
           double eta_h=LE.PseudoRapidity();
           vector<double> par=hit.GetParameters();
           int type= hit.GetType(); // ECAL or HCAL
           int layer=hit.GetCharge();
-          double x=par[0];
-          double y=par[1];
-          double z=par[2];
+          int x=int(par[0]);
+          int y=int(par[1]);
+          int z=int(par[2]);
           double layer_pos_cm=par[3];
           double Thit=par[4];
           double LogTime=TMath::Log10(Thit);
           double avt=par[5];
           int    pdg=int(par[6]);
           int    stat=int(par[7]);
-          double Mass=par[8];
-          // Study of the dR
+          double Mass  = par[8];
+      //   if(Back_forth==0) cout << "Mass: " << Mass << endl;
+	  // Study of the dR
               //Hadronic decays checking
-          
-                  //   cout << "Back_forth: " << Back_forth  << endl;
-                  if(abs(pdg)!=22 and (Recojets[Back_forth].DeltaR(LE))<0.4){
-                      //Mass
+          //      cout << "Calhits.size(): " << Calhits.size() << endl;
+          	for(int k1=0 ; k1<Calhits.size(); k1++){
+			LParticle Calhit=Calhits.at(k1);
+			TLorentzVector LE_1=Calhit.GetP();
+			vector<double> par1=Calhit.GetParameters();
+			int CellX_Cal=int(par1[0]);
+                        int CellY_Cal=int(par1[1]);
+			int CellZ_Cal=int(par1[2]);
+		//   cout << "Back_forth: " << Back_forth  << endl;
+                  if(abs(pdg)!=22 and (Recojets[Back_forth].DeltaR(LE_1))<0.4 and x==CellX_Cal and y==CellY_Cal and z==CellZ_Cal){
+			//Mass
                       mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
-                      //Timing
-                      cout << "Timing: " <<Thit << endl;
-                      T_Reco_sort[Back_forth].push_back(LogTime);
-                      T_Reco[Back_forth].push_back(LogTime);
-                      //Four_momentum
+			//Timing
+       //               cout << "Timing: " <<Thit << endl;
+                      T_Reco_sort[Back_forth].push_back(Thit);
+                      T_Reco[Back_forth].push_back(Thit);
+	            //Four_momentum
                       FourP_dR_Reco[Back_forth].push_back(LE);
-                      //PT
+		    //PT
                       PT_Reco_sort[Back_forth].push_back(LE.Perp());
-                      PT_Reco[Back_forth].push_back(LE.Perp());
+		      PT_Reco[Back_forth].push_back(LE.Perp());
                       //PDG
-                      PDG_Reco[Back_forth].push_back(abs(pdg));
+			PDG_Reco[Back_forth].push_back(abs(pdg));
                       //Eta_selection
                       event_number_Reco[Back_forth] = event_number_Reco[Back_forth] + 1;
                       if(abs(eta_h)<1) Eta_smaller_than_1_event[Back_forth] = Eta_smaller_than_1_event[Back_forth] + 1;
-                  }}}
+		 }
+		}}}
           // int    genstat=int(par[8]);
-      
       //======================+Cut-up line===============//
+        
         for (unsigned int Back_forth=0; Back_forth<Recojets.size(); Back_forth++) {
             sort(T_Reco_sort[Back_forth].begin() , T_Reco_sort[Back_forth].end());
             sort(PT_Reco_sort[Back_forth].begin(), PT_Reco_sort[Back_forth].end());}
-        
-		   
-
+        if(T_Reco_sort[0].size()>3){ 
+		for(int i=0 ; i<T_Reco_sort[0].size() ; i++){
+			cout << "T_Reco_sort[i]: "<< T_Reco_sort[0][i] << endl;	 
+			cout << "PT_Reco_sort[i]: "<< PT_Reco_sort[0][i] << endl;  
+								}  
+	}
             vector<vector<TLorentzVector>> Highest_PT_FourP(Recojets.size(),vector<TLorentzVector>());
                      
- 		      cout << "New1 " << endl;              
+ //		      cout << "New1 " << endl;              
                      for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
                      {
 			 //
@@ -2176,13 +2254,13 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                  if(PT_Reco_sort[Back_forth][uuu]!=PT_sort_number_only[Back_forth].back()) PT_sort_number_only[Back_forth].push_back(PT_Reco_sort[Back_forth][uuu]);
                                  if(T_Reco_sort[Back_forth][uuu] != T_sort_number_only[Back_forth].back()) T_sort_number_only[Back_forth].push_back(T_Reco_sort[Back_forth][uuu]);
                      }}}
-        cout << "Check_point_fully_contained" << endl;
+  //      cout << "Check_point_fully_contained" << endl;
                     vector<int> Full_contain;
                     int check_point_eta;
                 for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
                     {
                      if(event_number_Reco[Back_forth]>0){
-                         cout << "Fraction_of_the_event_forth====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                         //cout << "Fraction_of_the_event_forth====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
                          if((Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth])>0.9)
                          {
                              Full_contain.push_back(1);
@@ -2198,19 +2276,20 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                  vector<float> dR_Highest_PT_T_Reco;
                  vector<float> dR_Highest_PT_PT_Reco;
                  vector<vector<int>>         PT_PDG_Reco(Recojets.size(),vector<int>());
-      		     vector<vector<int>>         T_PDG_Reco(Recojets.size(),vector<int>());
+      		 vector<vector<int>>         T_PDG_Reco(Recojets.size(),vector<int>());
 
-        cout << "Check_point_dR_calculation" << endl;
+   //     cout << "Check_point_dR_calculation" << endl;
                      for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
                      {
                          if(Full_contain[Back_forth]==1){
-                             cout << "Back_forth_number====>: " << Back_forth << endl;
+     //                        cout << "Back_forth_number====>: " << Back_forth << endl;
                              if(T_Reco_sort[Back_forth].size()>0)
                              {
                                  int Size_T_PT=T_Reco_sort[Back_forth].size();
                                  for(int jkl=0 ; jkl<Size_T_PT ; jkl++){
                                      if(PT_Reco_sort[Back_forth][Size_T_PT-1]==PT_Reco[Back_forth][jkl]) Highest_PT_FourP[Back_forth].push_back(FourP_dR_Reco[Back_forth][jkl]);
                                  }
+				 
                                  for(int jkl=0 ; jkl<5 ; jkl++)
                                  {
                                      cout << "jkl: " << jkl << endl;
@@ -2222,6 +2301,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                              for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
                                                  if(T_sort_number_only[Back_forth][T_sort_number_only[Back_forth].size()-1-jkl]==T_Reco[Back_forth][ijk])
                                                  {
+						     if(ijk==0)Timing_detector_Reco_TOF->Fill(T_Reco[Back_forth][ijk]);
+						     cout << "T_Reco[Back_forth][ijk]: " << T_Reco[Back_forth][ijk] << endl;
 						     //cout << "ijk: " << ijk << endl;
                                                      identify_1 = identify_1+1;
                                                      T_PDG_Reco[Back_forth].push_back(PDG_Reco[Back_forth][ijk]);
@@ -2232,7 +2313,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                                  }}
                                              if(identify_1>1) cout << "Weird! Check!"<< endl;}
                                          //===================================================/
-                                         if( jkl < PT_sort_number_only[Back_forth].size() ){
+                                         
+					if( jkl < PT_sort_number_only[Back_forth].size() ){
                                              int identify=0;
                                              for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
                                                  if(PT_sort_number_only[Back_forth][jkl]==PT_Reco[Back_forth][ijk])
@@ -2363,7 +2445,8 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
      // } // close loop over  hits
             for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
 	             if(event_number_Reco[Back_forth]>0){
-                         cout << "Fraction_of_the_event_forth_for_mass====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+			// cout << "event_number_Reco[Back_forth]: " << event_number_Reco[Back_forth] << endl;
+                        // cout << "Fraction_of_the_event_forth_for_mass====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
                          if((Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth])>0.9)
                          {
                              mass_sum_average_Reco->Fill(mass_Reco[Back_forth]/event_number_Reco[Back_forth]);
@@ -2371,14 +2454,40 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
                          }
                      }
                      if(event_number_Reco[Back_forth]>0){
-                         cout << "Fraction_of_the_event_back_for_mass====> " <<  Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                         //cout << "event_number_Reco[Back_forth]: " << event_number_Reco[Back_forth] << endl;
+                         //cout << "Fraction_of_the_event_back_for_mass====> " <<  Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
                          if((Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth])>0.9)
                          {
                              mass_sum_average_Reco->Fill(mass_Reco[Back_forth]/event_number_Reco[Back_forth]);
                              cout << "mass_sum_average_Reco_back_for_mass====> " << mass_Reco[Back_forth]/event_number_Reco[Back_forth] << endl;
                          }
                      }}
-        }}
+      dR_Highest_PT_T_Reco.clear();
+      dR_Highest_PT_PT_Reco.clear();
+      PT_PDG_Reco.clear();
+      T_PDG_Reco.clear();
+      Full_contain.clear();
+	 }
+      FourP_dR_Reco.clear();
+      PDG_Reco.clear();
+      PT_Reco_sort.clear();
+      PT_Reco_sort.clear();
+      PT_sort_number_only.clear();
+      T_Reco_sort.clear();
+      T_Reco.clear();
+      T_sort_number_only.clear();
+      mass_Reco.clear();
+      event_number_Reco.clear();
+      Eta_smaller_than_1_event.clear();
+      event_number_Reco_for_mass.clear();
+      Eta_smaller_than_1_event_for_mass.clear();
+      Recojets.clear();
+      //sjets_reco.clear();
+      //thisClustering_reco->Clear();
+	}
+      avec_hits_raw_sf.clear();
+      simhits.clear();
+
 
 /*
    hist_ev++;
@@ -2772,9 +2881,14 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
   } // end single particle track resolution
 
 */
-
- 
-
+sjets_truth.clear();
+Truthjets_axis.clear();
+truthjets.clear();
+Check_Forth_And_Back_Bool.clear();
+Forth_And_Back_Vector.clear();
+No_charge_PDG.clear();
+avec_truth.clear();     // created by generator 
+avec_truth_sim.clear(); // also created by geant 
 
  T->Fill();
 T_Reco_T->Fill();
