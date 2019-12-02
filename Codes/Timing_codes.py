@@ -20,8 +20,8 @@ f4= ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/tev5mm_pythia6
 
 h1 = f1.Get("Timing_detector_Trailing")
 h2 = f2.Get("Timing_detector_Trailing")
-h3 = f3.Get("Timing_detector_Reco_TOF_trailing")
-h4 = f4.Get("Timing_detector_Reco_TOF_trailing")
+h3 = f3.Get("Timing_detector_Reco_TOF")
+h4 = f4.Get("Timing_detector_Reco_TOF")
 h5 = f1.Get("Timing_detector_Average")
 
 h1.Sumw2()
@@ -42,7 +42,7 @@ a.Fill(1)
 c = TCanvas("c1", "c1",0,0,500,500)
 gStyle.SetOptStat(0)
 
-leg = TLegend(0.15,0.7,0.45,0.9)
+leg = TLegend(0.25,0.7,0.55,0.9)
 leg.SetFillColor(0)
 leg.SetFillStyle(0)
 leg.SetTextSize(0.04)
@@ -76,9 +76,9 @@ h3.SetMarkerStyle(9)
 h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
-h3.GetXaxis().SetRangeUser(7,20)
-h3.GetYaxis().SetRangeUser(0,1)
-h3.GetYaxis().SetRangeUser(0,1)
+h3.GetXaxis().SetRangeUser(7,14)
+h3.GetYaxis().SetRangeUser(0,0.3)
+h3.GetYaxis().SetRangeUser(0,0.3)
 
 
 h3.SetTitle("Time of flight - collision point to HCAL")

@@ -277,7 +277,7 @@ int main(int argc, char **argv)
 
   cout << "TMath::Power(10,2)" << TMath::Power(10,2) << endl;
   std::vector<std::string> files = open("data.in");
-  int mtype=1; // single-particles 
+  int mtype=2; // single-particles
 
  /*
   mumu="pt100";
@@ -654,6 +654,8 @@ int main(int argc, char **argv)
   TH2F *Timing_P_rank_difference_momentum_correlation = new TH2F("Timing_P_rank_difference_momentum_correlation","Timing_P_rank_difference_momentum_correlation",6,0,3,40,-2,2);
   TH1F *mass_sum_average = new TH1F("mass_sum_average","mass_sum_average",100,0.5,2.5);
   TH1F *mass_sum_average_Reco = new TH1F("mass_sum_average_Reco","mass_sum_average_Reco",200,0.5,4.5);
+  TH1F *mass_sum_average_Reco_track = new TH1F("mass_sum_average_Reco_track","mass_sum_average_Reco_track",200,0.5,4.5);
+
   TH1F *check_jet_particle_number = new TH1F("check_jet_particle_number","check_jet_particle_number",100,0,100);
   TH1F *Highest_rank = new TH1F("Highest_rank","Highest_rank",100,0,100);
   TH1F *Total_particle_ID_no_cut = new TH1F("Total_particle_ID_no_cut","Total_particle_ID_no_cut",20,0,20);
@@ -669,6 +671,7 @@ int main(int argc, char **argv)
   */
 
   TH1F *Timing_detector_Reco_TOF = new TH1F("Timing_detector_Reco_TOF","Timing_detector_Reco_TOF",200,0,50);
+  TH1F *Timing_detector_Reco_TOF_track = new TH1F("Timing_detector_Reco_TOF_track","Timing_detector_Reco_TOF_track",200,0,50);
 
   TH1F *h_Particles_Rank_T[5];
   TH1F *h_Particles_Rank_PT[5];
@@ -693,10 +696,15 @@ int main(int argc, char **argv)
   TH1F *h_Particles_dR_Highest_PT_T_Reco[5];
   TH1F *h_Particles_dR_Highest_PT_PT_Reco[5];
   for (int j=0; j<5; j++){
-  h_Particles_dR_Highest_PT_T_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),100,0,1 );
-  h_Particles_dR_Highest_PT_PT_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),100,0,1 );
+        h_Particles_dR_Highest_PT_T_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),Form("h_Particles_dR_Highest_PT_T_Reco_%i",j),100,0,1 );
+        h_Particles_dR_Highest_PT_PT_Reco[j] = new TH1F( Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),Form("h_Particles_dR_Highest_PT_PT_Reco_%i",j),100,0,1 );
   }
-
+  TH1F *h_Particles_dR_Highest_PT_T_Reco_track[5];
+  TH1F *h_Particles_dR_Highest_PT_PT_Reco_track[5];
+  for (int j=0; j<5; j++){
+        h_Particles_dR_Highest_PT_T_Reco_track[j] = new TH1F( Form("h_Particles_dR_Highest_PT_T_Reco_track%i",j),Form("h_Particles_dR_Highest_PT_T_Reco_track%i",j),100,0,1 );
+        h_Particles_dR_Highest_PT_PT_Reco_track[j] = new TH1F( Form("h_Particles_dR_Highest_PT_PT_Reco_track%i",j),Form("h_Particles_dR_Highest_PT_PT_Reco_track%i",j),100,0,1 );
+  }
 
   TH1F *Baryons_ID = new TH1F("Baryons_ID","Baryons_ID",20,0,20);
   TH1F *Check_matching_0P2 = new TH1F("Check_matching_0P2","Check_matching_0P2",6,-1,5);
@@ -767,6 +775,30 @@ int main(int argc, char **argv)
   T_Reco_T->Branch("dR_Tr2PT_HPt_Reco",&dR_Tr2PT_HPt_Reco,"dR_Tr2PT_HPt_Reco/F");
   T_Reco_T->Branch("dR_Tr3PT_HPt_Reco",&dR_Tr3PT_HPt_Reco,"dR_Tr3PT_HPt_Reco/F");
   T_Reco_T->Branch("dR_Tr4PT_HPt_Reco",&dR_Tr4PT_HPt_Reco,"dR_Tr4PT_HPt_Reco/F");
+
+    Int_t   Event_reco_track;
+    Float_t dR_Tr0T_HPt_Reco_track;
+    Float_t dR_Tr1T_HPt_Reco_track;
+    Float_t dR_Tr2T_HPt_Reco_track;
+    Float_t dR_Tr3T_HPt_Reco_track;
+    Float_t dR_Tr4T_HPt_Reco_track;
+    Float_t dR_Tr0PT_HPt_Reco_track;
+    Float_t dR_Tr1PT_HPt_Reco_track;
+    Float_t dR_Tr2PT_HPt_Reco_track;
+    Float_t dR_Tr3PT_HPt_Reco_track;
+    Float_t dR_Tr4PT_HPt_Reco_track;
+    TTree *T_Reco_T_track = new TTree("BDT_variables_Reco_track","BDT_variables_Reco_track");
+    T_Reco_T_track->Branch("Event_reco_track",&Event_reco_track,"Event_reco_track/I");
+    T_Reco_T_track->Branch("dR_Tr0T_HPt_Reco_track",&dR_Tr0T_HPt_Reco_track,"dR_Tr0T_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr1T_HPt_Reco_track",&dR_Tr1T_HPt_Reco_track,"dR_Tr1T_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr2T_HPt_Reco_track",&dR_Tr2T_HPt_Reco_track,"dR_Tr2T_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr3T_HPt_Reco_track",&dR_Tr3T_HPt_Reco_track,"dR_Tr3T_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr4T_HPt_Reco_track",&dR_Tr4T_HPt_Reco_track,"dR_Tr4T_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr0PT_HPt_Reco_track",&dR_Tr0PT_HPt_Reco_track,"dR_Tr0PT_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr1PT_HPt_Reco_track",&dR_Tr1PT_HPt_Reco_track,"dR_Tr1PT_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr2PT_HPt_Reco_track",&dR_Tr2PT_HPt_Reco_track,"dR_Tr2PT_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr3PT_HPt_Reco_track",&dR_Tr3PT_HPt_Reco_track,"dR_Tr3PT_HPt_Reco_track/F");
+    T_Reco_T_track->Branch("dR_Tr4PT_HPt_Reco_track",&dR_Tr4PT_HPt_Reco_track,"dR_Tr4PT_HPt_Reco_track/F");
 
   // read detector geometry for this configuration 
   string detector="./data/rfull009_sifcch7/sifcch7/sifcch7.pandora";
@@ -1848,7 +1880,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 
 
-
+/*
  // HCAL simulated raw hits
   double hcalsum_raw=0;
   vector<PseudoJet> avec_hits_raw_sf;
@@ -2158,9 +2190,6 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               }
               
           }
-// cou << "Truthjets_axis.size(): " << Truthjets_axis.size() << endl;
-       // cout << "sjets_reco.size(): "<<  sjets_reco.size() << endl;
-//	cout << "Recojets.size(): " << Recojets.size() << endl;
       vector<vector<TLorentzVector>> FourP_dR_Reco(Recojets.size(),vector<TLorentzVector>());
       vector<vector<int>>         PDG_Reco(Recojets.size(),vector<int>());
       vector<vector<double>>      PT_Reco_sort(Recojets.size(),vector<double>());
@@ -2209,7 +2238,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                         int CellY_Cal=int(par1[1]);
 			int CellZ_Cal=int(par1[2]);
 		//   cout << "Back_forth: " << Back_forth  << endl;
-                  if(abs(pdg)!=22 and (Recojets[Back_forth].DeltaR(LE_1))<0.4 and x==CellX_Cal and y==CellY_Cal and z==CellZ_Cal){
+                  if((Recojets[Back_forth].DeltaR(LE_1))<0.4 and x==CellX_Cal and y==CellY_Cal and z==CellZ_Cal){
 			//Mass
                       mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
 			//Timing
@@ -2330,14 +2359,14 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                              if(identify>1) cout << "Weird! Check_1!"<< endl;}
                                      }
                       }}}}
-/*
+===No
 for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
 	if(T_PDG_Reco[Back_forth].size()>0){
 	for(int jjjjj=0; jjjjj<T_PDG_Reco[Back_forth].size();jjjjj++) cout << "T_PDG_Reco[Back_forth]: " << T_PDG_Reco[Back_forth][jjjjj] << endl;}
 	if(PT_PDG_Reco[Back_forth].size()>0){
         for(int jjjjj=0; jjjjj<PT_PDG_Reco[Back_forth].size();jjjjj++) cout << "PT_PDG_Reco[Back_forth]: " << PT_PDG_Reco[Back_forth][jjjjj] << endl;}
 }
-*/
+====No
 for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
         for(int j=0 ; j<5 ; j++)
         {
@@ -2487,7 +2516,16 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
 	}
       avec_hits_raw_sf.clear();
       simhits.clear();
+      sjets_truth.clear();
+      Truthjets_axis.clear();
+      truthjets.clear();
+      Check_Forth_And_Back_Bool.clear();
+      Forth_And_Back_Vector.clear();
+      No_charge_PDG.clear();
+      avec_truth.clear();     // created by generator
+      avec_truth_sim.clear(); // also created by geant
 
+*/
 
 /*
    hist_ev++;
@@ -2816,22 +2854,24 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
 
 
   } // end calo loop
-
+*/
 
 
 
 
 // look at track resolution
 
-   if (mtype==2) {
 // look at reconstructed tracks using Helix
   double _bField=5;
 // Reconstructed tracks
 // look up at: /share/sl6/ilcsoft/slic/release-v05-00-00/slicPandora/HEAD/lcio/v02-04-03/build/include/EVENT
  vector<PseudoJet> avec_tracks;
+ vector<LParticle> trackhits;
+
  IMPL::LCCollectionVec* colT = (IMPL::LCCollectionVec*) evt->getCollection( "Tracks"  ) ;
  unsigned int  nTracks = colT->getNumberOfElements() ;
-    for(unsigned int i=0 ; i<nTracks ; ++i){
+ 
+ for(unsigned int i=0 ; i<nTracks ; ++i){
       EVENT::Track* track =  (EVENT::Track*) colT->getElementAt(i) ;
       float d0 = track->getD0();
       float z0 = track->getZ0();
@@ -2852,46 +2892,253 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
       double eta_r=pp.pseudorapidity();
       double phi_r=pp.phi();
       double pt_r=pp.pt();
-      h_pt_track->Fill(pt_r);
-      h_eta_track->Fill(eta_r);
-
+     // Get the two 32-bit chunks of the ID.
+     int cellId0 = track->getTrackerHits()[ppp]->getCellID0();
+     int cellId1 = track->getTrackerHits()[ppp]->getCellID1();
+     // Make a 64-bit id for the IDDecoder.  The type MUST be "long long" and not "long".  (from Tony Johnson)
+     long long cellId = ((long long)cellId1) << 32 | cellId0;
+     int layer = decoder->getFieldValue("layer", cellId);
+     cout << "Tracker_Layer: "<< layer  << endl;
+     
+     LParticle p(px,py,pz,e,layer);
+     
 
       // match reconstructed track with truth-level track
-      double pt_t=-1; 
-      for (unsigned int j=0; j<avec_truth.size(); j++){
-         PseudoJet ptrue=avec_truth[j];
-         double dphi=phi_r-ptrue.phi();
-         if (abs(dphi)>kPI) dphi=k2PI-abs(dphi);
-         double deta=eta_r-ptrue.pseudorapidity();
-         double delta=sqrt(dphi*dphi+deta*deta); // distance parameter 
-         double r=0;
-         if (delta<0.1) pt_t=ptrue.pt(); 
-       } // end matching
+     for (unsigned int j=0; j<avec_truth.size(); j++)
+     {
+        PseudoJet ptrue=avec_truth[j];
+        double dphi=phi_r-ptrue.phi();
+        if (abs(dphi)>kPI) dphi=k2PI-abs(dphi);
+        double deta=eta_r-ptrue.pseudorapidity();
+        double delta=sqrt(dphi*dphi+deta*deta); // distance parameter
+        double r=0;
+        if (delta<0.1) trackhits.push_back();
+     } // end matching
 
-   if (pt_t>0) {
-   for (int kk=0; kk<nmax; kk++){
-   double x1=pow(2,kk+3);
-   double x2=pow(2,kk+3+1);
-   if (pt_t>x1 && pt_t<x2) { 
-         h_track_res[kk]->Fill(pt_r/pt_t); h_track_ptr[kk]->Fill(pt_t); }
-       }
-   }
+     } // end track resolution
+   // end single particle track resolution
 
-   } // end track resolution 
-  } // end single particle track resolution
+if(Recojets_track.size()>0){
+      vector<vector<TLorentzVector>> FourP_dR_Reco_track(Recojets_track.size(),vector<TLorentzVector>());
+      vector<vector<int>>            PDG_Reco_track(Recojets_track.size(),vector<int>());
+      vector<vector<double>>         PT_Reco_sort_track(Recojets_track.size(),vector<double>());
+      vector<vector<double>>         PT_Reco_track(Recojets_track.size(),vector<double>());
+      vector<vector<double>>         PT_sort_number_only_track(Recojets_track.size(),vector<double>());
+      vector<vector<double>>         T_Reco_sort_track(Recojets_track.size(),vector<double>());
+      vector<vector<double>>         T_Reco_track(Recojets_track.size(),vector<double>());
+      vector<vector<double>>         T_sort_number_only_track(Recojets_track.size(),vector<double>());
+      vector<double>  mass_Reco_track={0,0,0,0,0,0,0,0,0,0};
+      vector<int> event_number_Reco_track={0,0,0,0,0,0,0,0,0,0};
+      vector<int> Eta_smaller_than_1_event_track={0,0,0,0,0,0,0,0,0,0};
+      vector<int> event_number_Reco_for_mass_track={0,0,0,0,0,0,0,0,0,0};
+      vector<int> Eta_smaller_than_1_event_for_mass_track={0,0,0,0,0,0,0,0,0,0};
+      if(Recojets_track.size()>0)
+      {
+          for (unsigned int Back_forth=0; Back_forth<Recojets_track.size(); Back_forth++) {
+              for (unsigned int j1=0; j1<trackhits.size(); j1++) {
+                  //cout << "j1: " << j1 ;
+                  LParticle hit=trackhits.at(j1);
+                  TLorentzVector LE=hit.GetP();
+                  double e_h=LE.E();
+                  double phi_h=LE.Phi();
+                  double eta_h=LE.PseudoRapidity();
+                  vector<double> par=hit.GetParameters();
+                  double Thit=par[3];
+                  
+                  //mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
+                  //Timing
+                  //               cout << "Timing: " <<Thit << endl;
+                  T_Reco_sort_track[Back_forth].push_back(Thit);
+                  T_Reco_track[Back_forth].push_back(Thit);
+                  //Four_momentum
+                  FourP_dR_Reco_track[Back_forth].push_back(LE);
+                  //PT
+                  PT_Reco_sort_track[Back_forth].push_back(LE.Perp());
+                  PT_Reco_track[Back_forth].push_back(LE.Perp());
+                  //PDG
+                  //PDG_Reco[Back_forth].push_back(abs(pdg));
+                  //Eta_selection
+                  event_number_Reco_track[Back_forth] = event_number_Reco_track[Back_forth] + 1;
+                  if(abs(eta_h)<1) Eta_smaller_than_1_event_track[Back_forth] = Eta_smaller_than_1_event_track[Back_forth] + 1;
+                  
+                }}
+          // int    genstat=int(par[8]);
+          //======================+Cut-up line===============//
+          
+          for (unsigned int Back_forth=0; Back_forth<Recojets_track.size(); Back_forth++) {
+              sort(T_Reco_sort_track[Back_forth].begin() , T_Reco_sort_track[Back_forth].end());
+              sort(PT_Reco_sort_track[Back_forth].begin(), PT_Reco_sort_track[Back_forth].end());}
 
-*/
-sjets_truth.clear();
-Truthjets_axis.clear();
-truthjets.clear();
-Check_Forth_And_Back_Bool.clear();
-Forth_And_Back_Vector.clear();
-No_charge_PDG.clear();
-avec_truth.clear();     // created by generator 
-avec_truth_sim.clear(); // also created by geant 
-
- T->Fill();
+          if(T_Reco_sort_track[0].size()>3){
+              for(int i=0 ; i<T_Reco_sort_track[0].size() ; i++){
+                  cout << "T_Reco_sort_track[i]: "<< T_Reco_sort_track[0][i] << endl;
+                  cout << "PT_Reco_sort_track[i]: "<< PT_Reco_sort_track[0][i] << endl;
+              }
+          }
+          vector<vector<TLorentzVector>> Highest_PT_FourP_track(Recojets_track.size(),vector<TLorentzVector>());
+          
+          //		      cout << "New1 " << endl;
+          for(int Back_forth=0 ; Back_forth<Recojets_track.size() ; Back_forth++)
+          {
+              //
+              if(T_Reco_sort_track[Back_forth].size()>0){
+                  PT_sort_number_only_track[Back_forth].push_back(PT_Reco_sort_track[Back_forth][0]);
+                  T_sort_number_only_track[Back_forth].push_back(T_Reco_sort_track[Back_forth][0]);
+                  for(int uuu=0; uuu<T_Reco_sort_track[Back_forth].size(); uuu++)
+                  {
+                      if(PT_Reco_sort_track[Back_forth][uuu]!=PT_sort_number_only_track[Back_forth].back()) PT_sort_number_only_track[Back_forth].push_back(PT_Reco_sort_track[Back_forth][uuu]);
+                      if(T_Reco_sort_track[Back_forth][uuu] != T_sort_number_only_track[Back_forth].back()) T_sort_number_only_track[Back_forth].push_back(T_Reco_sort_track[Back_forth][uuu]);
+                  }}}
+          //      cout << "Check_point_fully_contained" << endl;
+          vector<int> Full_contain_track;
+          int check_point_eta_track;
+          for(int Back_forth=0 ; Back_forth<Recojets_track.size() ; Back_forth++)
+          {
+              if(event_number_Reco_track[Back_forth]>0){
+                  //cout << "Fraction_of_the_event_forth====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                  if((Eta_smaller_than_1_event_track[Back_forth]/event_number_Reco_track[Back_forth])>0.9)
+                  {
+                      Full_contain_track.push_back(1);
+                  }
+                  else{Full_contain_track.push_back(0); check_point_eta_track = check_point_et_tracka +1;}
+              }
+              else{Full_contain_track.push_back(0);check_point_eta_track = check_point_eta_track +1;}
+          }
+          
+          if(check_point_eta_track==Recojets_track.size()) continue;
+          
+          
+          vector<float>               dR_Highest_PT_T_Reco_track;
+          vector<float>               dR_Highest_PT_PT_Reco_track;
+          vector<vector<int>>         PT_PDG_Reco_track(Recojets_track.size(),vector<int>());
+          vector<vector<int>>         T_PDG_Reco_track(Recojets_track.size(),vector<int>());
+          
+          //     cout << "Check_point_dR_calculation" << endl;
+          for(int Back_forth=0 ; Back_forth<Recojets_track.size() ; Back_forth++)
+          {
+              if(Full_contain_track[Back_forth]==1){
+                  //                        cout << "Back_forth_number====>: " << Back_forth << endl;
+                  if(T_Reco_sort_track[Back_forth].size()>0)
+                  {
+                      int Size_T_PT=T_Reco_sort_track[Back_forth].size();
+                      for(int jkl=0 ; jkl<Size_T_PT ; jkl++){
+                          if(PT_Reco_sort_track[Back_forth][Size_T_PT-1]==PT_Reco_track[Back_forth][jkl]) Highest_PT_FourP_track[Back_forth].push_back(FourP_dR_Reco_track[Back_forth][jkl]);
+                      }
+                      
+                      for(int jkl=0 ; jkl<5 ; jkl++)
+                      {
+                          cout << "jkl: " << jkl << endl;
+                          if(T_sort_number_only_track[Back_forth].size() >0 and PT_sort_number_only_track[Back_forth].size()>0)
+                          {
+                              //===================================================//
+                              if( jkl < T_sort_number_only_track[Back_forth].size() ){
+                                  int identify_1=0;
+                                  for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
+                                      if(T_sort_number_only_track[Back_forth][T_sort_number_only_track[Back_forth].size()-1-jkl]==T_Reco_track[Back_forth][ijk])
+                                      {
+                                          if(ijk==0)Timing_detector_Reco_TOF_track->Fill(T_Reco_track[Back_forth][ijk]);
+                                          cout << "T_Reco_track[Back_forth][ijk]: " << T_Reco_track[Back_forth][ijk] << endl;
+                                          //cout << "ijk: " << ijk << endl;
+                                          identify_1 = identify_1+1;
+                                          dR_Highest_PT_T_Reco_track.push_back(FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]));
+                                          h_Particles_dR_Highest_PT_T_Reco_track[jkl]->Fill(FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]));
+                                          cout << "TTT:FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]): " << FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]) << endl;
+                                      }}
+                                  if(identify_1>1) cout << "Weird! Check!_track"<< endl;}
+                              //===================================================/
+                              
+                              if( jkl < PT_sort_number_only_track[Back_forth].size() ){
+                                  int identify=0;
+                                  for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
+                                      if(PT_sort_number_only_track[Back_forth][jkl]==PT_Reco[Back_forth][ijk])
+                                      {
+                                          //cout << "ijk: " << ijk << endl;
+                                          identify = identify+1;
+                                          dR_Highest_PT_PT_Reco_track.push_back(FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]));
+                                          h_Particles_dR_Highest_PT_PT_Reco_track[jkl]->Fill(FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]));
+                                          cout << "PTPTPT:FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]): " << FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]) << endl;
+                                      }}
+                                  if(identify>1) cout << "Weird! Check_1!_track"<< endl;}
+                          }
+                      }}}}
+          /*===No
+          for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
+              if(T_PDG_Reco[Back_forth].size()>0){
+                  for(int jjjjj=0; jjjjj<T_PDG_Reco[Back_forth].size();jjjjj++) cout << "T_PDG_Reco[Back_forth]: " << T_PDG_Reco[Back_forth][jjjjj] << endl;}
+              if(PT_PDG_Reco[Back_forth].size()>0){
+                  for(int jjjjj=0; jjjjj<PT_PDG_Reco[Back_forth].size();jjjjj++) cout << "PT_PDG_Reco[Back_forth]: " << PT_PDG_Reco[Back_forth][jjjjj] << endl;}
+          }
+          ====No*/
+          //cout << "Check_point_trailing_dR_Tree" << endl;
+          //
+          if(dR_Highest_PT_PT_Reco_track.size()>=1)
+          {
+              dR_Tr0PT_HPt_Reco_track = dR_Highest_PT_PT_Reco_track[0];
+          }
+          if(dR_Highest_PT_PT_Reco_track.size()>=2)
+          {
+              dR_Tr1PT_HPt_Reco_track = dR_Highest_PT_PT_Reco_track[1];
+          }
+          if(dR_Highest_PT_PT_Reco_track.size()>=3)
+          {
+              dR_Tr2PT_HPt_Reco_track = dR_Highest_PT_PT_Reco_track[2];
+          }
+          if(dR_Highest_PT_PT_Reco_track.size()>=4)
+          {
+              dR_Tr3PT_HPt_Reco_track = dR_Highest_PT_PT_Reco_track[3];
+          }
+          if(dR_Highest_PT_PT_Reco_track.size()>=5)
+          {
+              dR_Tr4PT_HPt_Reco_track = dR_Highest_PT_PT_Reco_track[4];
+          }
+          //
+          if(dR_Highest_PT_T_Reco_track.size()>=1)
+          {
+              dR_Tr0T_HPt_Reco_track = dR_Highest_PT_T_Reco_track[0];
+          }
+          if(dR_Highest_PT_T_Reco_track.size()>=2)
+          {
+              dR_Tr1T_HPt_Reco_track = dR_Highest_PT_T_Reco_track[1];
+          }
+          if(dR_Highest_PT_T_Reco_track.size()>=3)
+          {
+              dR_Tr2T_HPt_Reco_track = dR_Highest_PT_T_Reco_track[2];
+          }
+          if(dR_Highest_PT_T_Reco_track.size()>=4)
+          {
+              dR_Tr3T_HPt_Reco_track = dR_Highest_PT_T_Reco_track[3];
+          }
+          if(dR_Highest_PT_T_Reco_track.size()>=5)
+          {
+              dR_Tr4T_HPt_Reco_track = dR_Highest_PT_T_Reco_track[4];
+          }
+          
+          
+          
+        // close loop over  hits
+          for(int Back_forth=0 ; Back_forth<Recojets_track.size() ; Back_forth++){
+	             if(event_number_Reco_track[Back_forth]>0){
+                     // cout << "event_number_Reco[Back_forth]: " << event_number_Reco[Back_forth] << endl;
+                     // cout << "Fraction_of_the_event_forth_for_mass====> " << Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                     if((Eta_smaller_than_1_event_track[Back_forth]/event_number_Reco_track[Back_forth])>0.9)
+                     {
+                         mass_sum_average_Reco_track->Fill(mass_Reco_track[Back_forth]/event_number_Reco_track[Back_forth]);
+                         cout << "mass_sum_average_track_Reco_forth_for_mass====> " << mass_Reco_track[Back_forth]/event_number_Reco_track[Back_forth] << endl;
+                     }
+                 }
+              if(event_number_Reco_track[Back_forth]>0){
+                  //cout << "event_number_Reco[Back_forth]: " << event_number_Reco[Back_forth] << endl;
+                  //cout << "Fraction_of_the_event_back_for_mass====> " <<  Eta_smaller_than_1_event[Back_forth]/event_number_Reco[Back_forth] << endl;
+                  if((Eta_smaller_than_1_event_track[Back_forth]/event_number_Reco_track[Back_forth])>0.9)
+                  {
+                      mass_sum_average_Reco_track->Fill(mass_Reco_track[Back_forth]/event_number_Reco_track[Back_forth]);
+                      cout << "mass_sum_average_Reco_track_back_for_mass====> " << mass_Reco_track[Back_forth]/event_number_Reco_track[Back_forth] << endl;
+                  }
+              }}
+      }
+T->Fill();
 T_Reco_T->Fill();
+T_Reco_T_track->Fill();
   } // end loop 
 
 

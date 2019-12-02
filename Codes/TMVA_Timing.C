@@ -33,20 +33,20 @@ void TMVA_Timing()
     dataloader->AddSignalTree(signal,1.);
     dataloader->AddBackgroundTree(background,1.);
   
-
+    dataloader->AddVariable("dR_Tr0PT_HPt_Reco", 'F');
+    dataloader->AddVariable("dR_Tr1PT_HPt_Reco", 'F');
+    dataloader->AddVariable("dR_Tr2PT_HPt_Reco", 'F');
+    dataloader->AddVariable("dR_Tr3PT_HPt_Reco", 'F');
+    dataloader->AddVariable("dR_Tr4PT_HPt_Reco", 'F');
+ 
    dataloader->AddVariable("dR_Tr0T_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr1T_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr2T_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr3T_HPt_Reco", 'F');
    dataloader->AddVariable("dR_Tr4T_HPt_Reco", 'F');
 
-   dataloader->AddVariable("dR_Tr0PT_HPt_Reco", 'F');
-   dataloader->AddVariable("dR_Tr1PT_HPt_Reco", 'F');
-   dataloader->AddVariable("dR_Tr2PT_HPt_Reco", 'F');
-   dataloader->AddVariable("dR_Tr3PT_HPt_Reco", 'F');
-   dataloader->AddVariable("dR_Tr4PT_HPt_Reco", 'F');
-
- /*
+/*
+ 
     dataloader->AddVariable("ID_Tr0T", 'F');
     dataloader->AddVariable("ID_Tr1T", 'F');
     dataloader->AddVariable("ID_Tr2T", 'F');
@@ -69,7 +69,7 @@ void TMVA_Timing()
     //TCut mycutb = "j_tau21_b1<1 && j_c2_b1<1 && j_mass_mmdt<800 && j_tau21_b1_mmdt<1 && j_tau21_b2_mmdt<1 && j_c2_b1_mmdt<1 && j_tau21_b2<1 && j_c2_b2<1 && j_c2_b2_mmdt<1 && jmass<500 && j_d2_b1<350 && j_d2_b2<350 "; // for example: TCut mycutb = "abs(var1)<0.5";
 
     dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                           "nTrain_Signal=1000:nTrain_Background=1000:SplitMode=Random:NormMode=NumEvents:!V" );
+                                           "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
     //factory->BookMethod(TMVA::Types::kFisher, "Fisher", "H:!V:Fisher:VarTransform=None:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10");
     //factory->BookMethod(TMVA::Types::kMLP,"MLP","H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator");
     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",

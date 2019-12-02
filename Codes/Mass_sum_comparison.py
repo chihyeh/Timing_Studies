@@ -77,7 +77,7 @@ h4.SetMarkerStyle(9)
 h5.SetMarkerStyle(9)
 
 h3.GetXaxis().SetLimits(0,4)
-h3.GetYaxis().SetRangeUser(0,0.05)
+h3.GetYaxis().SetRangeUser(0,0.1)
 
 h3.SetTitle("Average mass comparison(5TeV)")
 h3.SetTitle("Average mass comparison(5TeV)")
