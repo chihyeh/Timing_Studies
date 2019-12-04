@@ -2906,7 +2906,7 @@ for (unsigned int j=0; j<Forth_And_Back_Vector.size(); j++)
              cout << "Tracker_Layer: "<< layer  << endl;
               }
               
-             LParticle p(px,py,pz,e,layer);
+             LParticle p(px,py,pz,e,1);
              
              if(TLV.DeltaR(Jet_axis_Truth)<0.4 and Check_Forth_And_Back_Bool[j]==1)
              {
@@ -3141,7 +3141,7 @@ if(Recojets_track.size()>0){
 T->Fill();
 T_Reco_T->Fill();
 T_Reco_T_track->Fill();
-   // end loop
+    }// end loop
 
 
 
