@@ -916,7 +916,8 @@ int main(int argc, char **argv)
    vector<double> Trailing_particle_kind_mass={0.0005,0,0.1057,0,0,0.497648,0.1349766,0.497648,0.493,0.938,0.939,1.197,1.115,1.321,1.189,1.314,0,1.672,1.86};
    vector<int> Baryons_particle_kind ={2112,2212,3112,3122,3312,3222,3322};
    int Trailing_photon=0;
-  int Forth=1 ; int Back=-1; vector<int> Check_Forth_And_Back={Forth,Back}; 
+  int Forth=1 ; int Back=-1; vector<int> Check_Forth_And_Back={Forth,Back};
+    
   // loop over all files
   for(unsigned int mfile=0; mfile < files.size(); mfile++){
   
@@ -931,9 +932,6 @@ int main(int argc, char **argv)
   
   cout << "Process_number: " << Process_number[0] << endl;
   cout <<  " # File=" << Rfile << endl;
-  float cut_Time;
-  if(Process_number[0]==0) cut_Time=12;
-  if(Process_number[0]==1) cut_Time=10;
   IO::LCReader* lcReader = IOIMPL::LCFactory::getInstance()->createLCReader() ;
   lcReader->open( Rfile.c_str() ) ;
   cout << "File_name" << Rfile.c_str() << endl;
@@ -2899,17 +2897,18 @@ for (unsigned int j=0; j<Forth_And_Back_Vector.size(); j++)
               TLorentzVector TLV;
               TLV.SetPxPyPzE(px,py,pz,e);
              // Get the two 32-bit chunks of the ID.
-              for(int ppp=0 ; ppp<track->getTrackerHits().size; ppp++)
+              for(int ppp=0 ; ppp<track->getTrackerHits().size(); ppp++){
              int cellId0 = track->getTrackerHits()[ppp]->getCellID0();
              int cellId1 = track->getTrackerHits()[ppp]->getCellID1();
              // Make a 64-bit id for the IDDecoder.  The type MUST be "long long" and not "long".  (from Tony Johnson)
              long long cellId = ((long long)cellId1) << 32 | cellId0;
              int layer = decoder->getFieldValue("layer", cellId);
              cout << "Tracker_Layer: "<< layer  << endl;
-             
+              }
+              
              LParticle p(px,py,pz,e,layer);
              
-             if(TLV.DeltaR(Jet_axis_Truth)<0.4)
+             if(TLV.DeltaR(Jet_axis_Truth)<0.4 and Check_Forth_And_Back_Bool[j]==1)
              {
                  trackhits.push_back(p);
              }
@@ -3142,7 +3141,7 @@ if(Recojets_track.size()>0){
 T->Fill();
 T_Reco_T->Fill();
 T_Reco_T_track->Fill();
-   // end loop 
+   // end loop
 
 
 
