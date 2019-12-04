@@ -2871,49 +2871,49 @@ for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
  IMPL::LCCollectionVec* colT = (IMPL::LCCollectionVec*) evt->getCollection( "Tracks"  ) ;
  unsigned int  nTracks = colT->getNumberOfElements() ;
  
- for(unsigned int i=0 ; i<nTracks ; ++i){
-      EVENT::Track* track =  (EVENT::Track*) colT->getElementAt(i) ;
-      float d0 = track->getD0();
-      float z0 = track->getZ0();
-      float omega = track->getOmega();
-      float tanLambda = track->getTanLambda();
-      float phi0   = track->getPhi();
-      float radius =1.0/omega;
-      float x0 = radius*cos(phi0-k2PI);
-      float y0 = radius*sin(phi0-k2PI);
-      const pandora::Helix helixFit(phi0, d0, z0, omega, tanLambda, _bField);
-      const float recoMomentum(helixFit.GetMomentum().GetMagnitude());
-      double px=helixFit.GetMomentum().GetX();
-      double py=helixFit.GetMomentum().GetY();
-      double pz=helixFit.GetMomentum().GetZ();
-      double m = 0; // mcp->getMomentum()[3];
-      double e=sqrt(px*px+py*py+pz*pz+m*m);
-      PseudoJet pp(px,py,pz,e);
-      double eta_r=pp.pseudorapidity();
-      double phi_r=pp.phi();
-      double pt_r=pp.pt();
-     // Get the two 32-bit chunks of the ID.
-     int cellId0 = track->getTrackerHits()[ppp]->getCellID0();
-     int cellId1 = track->getTrackerHits()[ppp]->getCellID1();
-     // Make a 64-bit id for the IDDecoder.  The type MUST be "long long" and not "long".  (from Tony Johnson)
-     long long cellId = ((long long)cellId1) << 32 | cellId0;
-     int layer = decoder->getFieldValue("layer", cellId);
-     cout << "Tracker_Layer: "<< layer  << endl;
-     
-     LParticle p(px,py,pz,e,layer);
-     
+for (unsigned int j=0; j<Forth_And_Back_Vector.size(); j++)
+      {
+          TLorentzVector Jet_axis_Truth=Forth_And_Back_Vector[j];
 
-      // match reconstructed track with truth-level track
-     for (unsigned int j=0; j<avec_truth.size(); j++)
-     {
-        PseudoJet ptrue=avec_truth[j];
-        double dphi=phi_r-ptrue.phi();
-        if (abs(dphi)>kPI) dphi=k2PI-abs(dphi);
-        double deta=eta_r-ptrue.pseudorapidity();
-        double delta=sqrt(dphi*dphi+deta*deta); // distance parameter
-        double r=0;
-        if (delta<0.1) trackhits.push_back();
-     } // end matching
+          for(unsigned int i=0 ; i<nTracks ; ++i){
+              EVENT::Track* track =  (EVENT::Track*) colT->getElementAt(i) ;
+              float d0 = track->getD0();
+              float z0 = track->getZ0();
+              float omega = track->getOmega();
+              float tanLambda = track->getTanLambda();
+              float phi0   = track->getPhi();
+              float radius =1.0/omega;
+              float x0 = radius*cos(phi0-k2PI);
+              float y0 = radius*sin(phi0-k2PI);
+              const pandora::Helix helixFit(phi0, d0, z0, omega, tanLambda, _bField);
+              const float recoMomentum(helixFit.GetMomentum().GetMagnitude());
+              double px=helixFit.GetMomentum().GetX();
+              double py=helixFit.GetMomentum().GetY();
+              double pz=helixFit.GetMomentum().GetZ();
+              double m = 0; // mcp->getMomentum()[3];
+              double e=sqrt(px*px+py*py+pz*pz+m*m);
+              PseudoJet pp(px,py,pz,e);
+              double eta_r=pp.pseudorapidity();
+              double phi_r=pp.phi();
+              double pt_r=pp.pt();
+              TLorentzVector TLV;
+              TLV.SetPxPyPzE(px,py,pz,e);
+             // Get the two 32-bit chunks of the ID.
+             int cellId0 = track->getTrackerHits()[ppp]->getCellID0();
+             int cellId1 = track->getTrackerHits()[ppp]->getCellID1();
+             // Make a 64-bit id for the IDDecoder.  The type MUST be "long long" and not "long".  (from Tony Johnson)
+             long long cellId = ((long long)cellId1) << 32 | cellId0;
+             int layer = decoder->getFieldValue("layer", cellId);
+             cout << "Tracker_Layer: "<< layer  << endl;
+             
+             LParticle p(px,py,pz,e,layer);
+             
+             if(TLV.DeltaR(Jet_axis_Truth)<0.4)
+             {
+                 trackhits.push_back(p);
+             }
+     // match reconstructed track with truth-level track
+          } // end matching
 
      } // end track resolution
    // end single particle track resolution
@@ -2944,10 +2944,12 @@ if(Recojets_track.size()>0){
                   double eta_h=LE.PseudoRapidity();
                   vector<double> par=hit.GetParameters();
                   double Thit=par[3];
-                  
+                  TLorentzVector Jet_axis_Truth=Forth_And_Back_Vector[j];
+
                   //mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
                   //Timing
                   //               cout << "Timing: " <<Thit << endl;
+                  if( Jet_axis_Truth.DeltaR(LE)<0.4 ){
                   T_Reco_sort_track[Back_forth].push_back(Thit);
                   T_Reco_track[Back_forth].push_back(Thit);
                   //Four_momentum
@@ -2961,7 +2963,7 @@ if(Recojets_track.size()>0){
                   event_number_Reco_track[Back_forth] = event_number_Reco_track[Back_forth] + 1;
                   if(abs(eta_h)<1) Eta_smaller_than_1_event_track[Back_forth] = Eta_smaller_than_1_event_track[Back_forth] + 1;
                   
-                }}
+              }}}
           // int    genstat=int(par[8]);
           //======================+Cut-up line===============//
           
