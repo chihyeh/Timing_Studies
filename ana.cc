@@ -2875,7 +2875,7 @@ for (unsigned int j=0; j<Forth_And_Back_Vector.size(); j++)
       {
           TLorentzVector Jet_axis_Truth=Forth_And_Back_Vector[j];
 
-          for(unsigned int i=0 ; i<nTracks ; ++i){
+          for(unsigned int i=0 ; i<nTracks ; i++){
               EVENT::Track* track =  (EVENT::Track*) colT->getElementAt(i) ;
               float d0 = track->getD0();
               float z0 = track->getZ0();
@@ -2899,6 +2899,7 @@ for (unsigned int j=0; j<Forth_And_Back_Vector.size(); j++)
               TLorentzVector TLV;
               TLV.SetPxPyPzE(px,py,pz,e);
              // Get the two 32-bit chunks of the ID.
+              for(int ppp=0 ; ppp<track->getTrackerHits().size; ppp++)
              int cellId0 = track->getTrackerHits()[ppp]->getCellID0();
              int cellId1 = track->getTrackerHits()[ppp]->getCellID1();
              // Make a 64-bit id for the IDDecoder.  The type MUST be "long long" and not "long".  (from Tony Johnson)
@@ -2944,7 +2945,7 @@ if(Recojets_track.size()>0){
                   double eta_h=LE.PseudoRapidity();
                   vector<double> par=hit.GetParameters();
                   double Thit=par[3];
-                  TLorentzVector Jet_axis_Truth=Forth_And_Back_Vector[j];
+                  TLorentzVector Jet_axis_Truth=Forth_And_Back_Vector[Back_forth];
 
                   //mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
                   //Timing
@@ -3002,7 +3003,7 @@ if(Recojets_track.size()>0){
                   {
                       Full_contain_track.push_back(1);
                   }
-                  else{Full_contain_track.push_back(0); check_point_eta_track = check_point_et_tracka +1;}
+                  else{Full_contain_track.push_back(0); check_point_eta_track = check_point_et_track +1;}
               }
               else{Full_contain_track.push_back(0);check_point_eta_track = check_point_eta_track +1;}
           }
@@ -3052,7 +3053,7 @@ if(Recojets_track.size()>0){
                               if( jkl < PT_sort_number_only_track[Back_forth].size() ){
                                   int identify=0;
                                   for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
-                                      if(PT_sort_number_only_track[Back_forth][jkl]==PT_Reco[Back_forth][ijk])
+                                      if(PT_sort_number_only_track[Back_forth][jkl]==PT_Reco_track[Back_forth][ijk])
                                       {
                                           //cout << "ijk: " << ijk << endl;
                                           identify = identify+1;
@@ -3141,7 +3142,7 @@ if(Recojets_track.size()>0){
 T->Fill();
 T_Reco_T->Fill();
 T_Reco_T_track->Fill();
-  } // end loop 
+   // end loop 
 
 
 
