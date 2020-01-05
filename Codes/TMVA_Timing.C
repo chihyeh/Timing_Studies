@@ -20,12 +20,12 @@ void TMVA_Timing()
     vector<int> Energies={5,10,20,40};
 for(int energy = 0; energy<4 ; energy++)
 {
-            TFile* signalTree = new TFile(Form("/Users/ms08962476/singularity/TIming_Studies/tev%dmm_pythia6_zprime%dtev_ww_with_Eta_cut_for_component_check_1_reco.root",Energies[energy],Energies[energy]));
-            TFile* backgroundTree = new TFile(Form("/Users/ms08962476/singularity/TIming_Studies/tev%dmm_pythia6_zprime%dtev_qq_with_Eta_cut_for_component_check_1_reco.root",Energies[energy],Energies[energy]));
-            TTree *signal     = (TTree*)signalTree->Get("BDT_variables_Reco");
-            TTree *background = (TTree*)backgroundTree->Get("BDT_variables_Reco");
+            TFile* signalTree = new TFile(Form("/Users/ms08962476/singularity/TIming_Studies/tev%dmm_pythia6_zprime%dtev_ww_with_Eta_cut_for_component_check_1_Reco_Com.root",Energies[energy],Energies[energy]));
+            TFile* backgroundTree = new TFile(Form("/Users/ms08962476/singularity/TIming_Studies/tev%dmm_pythia6_zprime%dtev_qq_with_Eta_cut_for_component_check_1_Reco_Com.root",Energies[energy],Energies[energy]));
+            TTree *signal     = (TTree*)signalTree->Get("BDT_variables_Reco_track");
+            TTree *background = (TTree*)backgroundTree->Get("BDT_variables_Reco_track");
             
-            TString outfileName( Form("TMVA_for_timing_dR_PT_%dTeV_reco.root",Energies[energy]) );
+            TString outfileName( Form("TMVA_for_timing_dR_PT_%dTeV_Reco_track.root",Energies[energy]) );
             TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
             
             TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
@@ -35,17 +35,17 @@ for(int energy = 0; energy<4 ; energy++)
             dataloader->AddSignalTree(signal,1.);
             dataloader->AddBackgroundTree(background,1.);
 
-            dataloader->AddVariable("dR_Tr0PT_HPt_Reco", 'F');
-            dataloader->AddVariable("dR_Tr1PT_HPt_Reco", 'F');
-            dataloader->AddVariable("dR_Tr2PT_HPt_Reco", 'F');
-            dataloader->AddVariable("dR_Tr3PT_HPt_Reco", 'F');
-            dataloader->AddVariable("dR_Tr4PT_HPt_Reco", 'F');
+            dataloader->AddVariable("dR_Tr0PT_HPt_Reco_track", 'F');
+            dataloader->AddVariable("dR_Tr1PT_HPt_Reco_track", 'F');
+            dataloader->AddVariable("dR_Tr2PT_HPt_Reco_track", 'F');
+            dataloader->AddVariable("dR_Tr3PT_HPt_Reco_track", 'F');
+            dataloader->AddVariable("dR_Tr4PT_HPt_Reco_track", 'F');
          /*
-           dataloader->AddVariable("dR_Tr0T_HPt_Reco", 'F');
-           dataloader->AddVariable("dR_Tr1T_HPt_Reco", 'F');
-           dataloader->AddVariable("dR_Tr2T_HPt_Reco", 'F');
-           dataloader->AddVariable("dR_Tr3T_HPt_Reco", 'F');
-           dataloader->AddVariable("dR_Tr4T_HPt_Reco", 'F');
+           dataloader->AddVariable("dR_Tr0T_HPt_Reco_track", 'F');
+           dataloader->AddVariable("dR_Tr1T_HPt_Reco_track", 'F');
+           dataloader->AddVariable("dR_Tr2T_HPt_Reco_track", 'F');
+           dataloader->AddVariable("dR_Tr3T_HPt_Reco_track", 'F');
+           dataloader->AddVariable("dR_Tr4T_HPt_Reco_track", 'F');
     
             
 
@@ -61,8 +61,11 @@ for(int energy = 0; energy<4 ; energy++)
             //TCut mycutb= "j_tau21_b1<1 && j_tau21_b2<1 && j_c2_b1<1 && j_c2_b2<1 ";
             //&& j_d2_a1_b2_mmdt<1000 && j_m2_b1_mmdt<1000 && j_m2_b2_mmdt<1000 && j_n2_b1_mmdt<1000 && j_n2_b2_mmdt<1000
             //====Have mass soft drop====//
-            TCut mycuts= "dR_Tr0T_HPt_Reco<1 && dR_Tr1T_HPt_Reco<1 && dR_Tr2T_HPt_Reco<1 && dR_Tr3T_HPt_Reco<1 && dR_Tr4T_HPt_Reco<1 && dR_Tr0PT_HPt_Reco<1 && dR_Tr1PT_HPt_Reco<1 && dR_Tr2PT_HPt_Reco<1 && dR_Tr3PT_HPt_Reco<1 && dR_Tr4PT_HPt_Reco<1 && 0<dR_Tr0T_HPt_Reco && 0<dR_Tr1T_HPt_Reco && 0<dR_Tr2T_HPt_Reco && 0<dR_Tr3T_HPt_Reco && 0<dR_Tr4T_HPt_Reco && 0<dR_Tr0PT_HPt_Reco && 0<dR_Tr1PT_HPt_Reco && 0<dR_Tr2PT_HPt_Reco && 0<dR_Tr3PT_HPt_Reco && 0<dR_Tr4PT_HPt_Reco";
-            TCut mycutb= "dR_Tr0T_HPt_Reco<1 && dR_Tr1T_HPt_Reco<1 && dR_Tr2T_HPt_Reco<1 && dR_Tr3T_HPt_Reco<1 && dR_Tr4T_HPt_Reco<1 && dR_Tr0PT_HPt_Reco<1 && dR_Tr1PT_HPt_Reco<1 && dR_Tr2PT_HPt_Reco<1 && dR_Tr3PT_HPt_Reco<1 && dR_Tr4PT_HPt_Reco<1 && 0<dR_Tr0T_HPt_Reco && 0<dR_Tr1T_HPt_Reco && 0<dR_Tr2T_HPt_Reco && 0<dR_Tr3T_HPt_Reco && 0<dR_Tr4T_HPt_Reco && 0<dR_Tr0PT_HPt_Reco && 0<dR_Tr1PT_HPt_Reco && 0<dR_Tr2PT_HPt_Reco && 0<dR_Tr3PT_HPt_Reco && 0<dR_Tr4PT_HPt_Reco";
+    
+    
+            //For the tracker
+            TCut mycuts= "dR_Tr0PT_HPt_Reco_track<1 && dR_Tr1PT_HPt_Reco_track<1 && dR_Tr2PT_HPt_Reco_track<1 && dR_Tr3PT_HPt_Reco_track<1 && dR_Tr4PT_HPt_Reco_track<1 && 0<dR_Tr0PT_HPt_Reco_track && 0<dR_Tr1PT_HPt_Reco_track && 0<dR_Tr2PT_HPt_Reco_track && 0<dR_Tr3PT_HPt_Reco_track && 0<dR_Tr4PT_HPt_Reco_track";
+            TCut mycutb= "dR_Tr0PT_HPt_Reco_track<1 && dR_Tr1PT_HPt_Reco_track<1 && dR_Tr2PT_HPt_Reco_track<1 && dR_Tr3PT_HPt_Reco_track<1 && dR_Tr4PT_HPt_Reco_track<1 &&  0<dR_Tr0PT_HPt_Reco_track && 0<dR_Tr1PT_HPt_Reco_track && 0<dR_Tr2PT_HPt_Reco_track && 0<dR_Tr3PT_HPt_Reco_track && 0<dR_Tr4PT_HPt_Reco_track";
             //TCut mycuts= "j_c2_b1_mmdt<100 && j_c2_b2_mmdt<100";
             //TCut mycutb= "j_c2_b1_mmdt<100 && j_c2_b2_mmdt<100";
             //=====Have mass soft drop and no mass soft drop=====//

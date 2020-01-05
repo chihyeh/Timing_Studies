@@ -17,7 +17,7 @@ for i in range(0,4):
     c = TCanvas("c1", "c1",0,0,500,500)
     f4 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Codes/TMVA_for_timing_dR_PT_"+str(Energies[i])+"TeV_reco.root",'r')
     f5 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Codes/TMVA_for_timing_dR_PT_T_"+str(Energies[i])+"TeV_reco.root",'r')
-    f6 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Codes/TMVA_for_timing_dR_PT_5TeV_reco_track.root",'r')
+    f6 = ROOT.TFile.Open("/Users/ms08962476/singularity/TIming_Studies/Codes/TMVA_for_timing_dR_PT_"+str(Energies[i])+"TeV_reco_track.root",'r')
 
     #=====================#Get the histogram from TDirectoryFile
     h1_1 = f4.Get("dataset")
@@ -50,14 +50,14 @@ for i in range(0,4):
     leg.SetTextSize(0.04)
     leg.SetBorderSize(0)
     leg.SetTextFont(22)
-
+    leg.AddEntry("",str(Energies[i])+"TeV","")
     leg.AddEntry(h4_1,"TMVA(BDT)_dR_PT_ECAL","l")
     leg.AddEntry(h4_2,"TMVA(BDT)_dR_PT_T_ECAL","l")
-    #leg.AddEntry(h4_3,"TMVA(BDT)_dR_PT_track","l")
+    leg.AddEntry(h4_3,"TMVA(BDT)_dR_PT_track","l")
 
     h4_1.Draw("L")
     h4_2.Draw("Lsame")
-    #h4_3.Draw("Lsame")
+    h4_3.Draw("Lsame")
 
     leg.Draw()
     c.Draw()
