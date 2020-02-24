@@ -631,10 +631,12 @@ int main(int argc, char **argv)
   h_track_ptr[j] = new TH1D(Form("track_resolution_pt_%02d",j), Form("track_res_pt_%02d",j),1000,0,50000);
   h_track_res[j]->Sumw2();
   }
-
+  TH1F *Event_number_check_jet=new TH1F("Event_number_check_jet","Event_number_check_jet",12,0,12);
+  TH1F *Event_number_check=new TH1F("Event_number_check","Event_number_check",12,0,12);
   TH1F *Eta_plot = new TH1F("Eta_plot","Eta_plot",200,-10,10);
   TH1F *Eta_plot_after_cut = new TH1F("Eta_plot_after_cut","Eta_plot_after_cut",200,-10,10);
   TH1F *Timing_Standard = new TH1F("Timing_Standard","Timing_Standard",200,0,50);
+  TH1F *Timing_detecto_ECAL_TDif = new TH1F("Timing_detecto_ECAL_TDif","Timing_detecto_ECAL_TDif",200,0,50);
   TH1F *Timing_detector_Leading = new TH1F("Timing_detector_Leading","Timing_detector_Leading",200,0,50);
   TH1F *Timing_detector_Trailing = new TH1F("Timing_detector_Trailing","Timing_detector_Trailing",200,0,50);
   TH1F *Timing_detector_Average_tem = new TH1F("Timing_detector_Average_tem","Timing_detector_Average_tem",1000,7,12);
@@ -663,12 +665,12 @@ int main(int argc, char **argv)
   TH1F *Total_particle_ID_eta_PT_cut = new TH1F("Total_particle_ID_eta_PT_cut","Total_particle_ID_eta_PT_cut",20,0,20);
   TH1F *Total_particle_ID_cut = new TH1F("Total_particle_ID_cut","Total_particle_ID_cut",5000,0,5000);
   TH1F *Baryon_cut_PT = new TH1F("Baryon_cut_PT","Baryon_cut_PT",2000,0,1000);
-  /*
+  //==============Trailing_particle_ID============// 
   TH1F *Trailing_particle_ID_T  = new TH1F("Trailing_particle_ID_T" ,"Trailing_particle_ID_T",20,0,20);
   TH1F *Trailing_particle_ID_PT = new TH1F("Trailing_particle_ID_PT","Trailing_particle_ID_PT",20,0,20);
   TH1F *Next_to_trailing_particle_ID_T = new TH1F("Next_to_trailing_particle_ID_T","Next_to_trailing_particle_ID_T",20,0,20);
   TH1F *Next_to_trailing_particle_ID_PT = new TH1F("Next_to_trailing_particle_ID_PT","Next_to_trailing_particle_ID_PT",20,0,20); 
-  */
+  //=============TH2F_Trailing_ID_PT==============//
 
   TH1F *Timing_detector_Reco_TOF = new TH1F("Timing_detector_Reco_TOF","Timing_detector_Reco_TOF",200,0,50);
   TH1F *Timing_detector_Reco_TOF_track = new TH1F("Timing_detector_Reco_TOF_track","Timing_detector_Reco_TOF_track",200,0,50);
@@ -679,7 +681,22 @@ int main(int argc, char **argv)
   h_Particles_Rank_T[j] = new TH1F(Form("h_Particles_Rank_T_%i",j), Form("h_Particles_Rank_T_%i",j),20,0,20);
   h_Particles_Rank_PT[j] = new TH1F(Form("h_Particles_Rank_PT_%i",j), Form("h_Particles_Rank_PT_%i",j),20,0,20);
   }
+
+  TH2F *h_Particles_Rank_T_vs_PT[5];
+  TH2F *h_Particles_Rank_PT_vs_PT[5];
+  for (int j=0; j<5; j++){
+  h_Particles_Rank_T_vs_PT[j] = new TH2F(Form("h_Particles_Rank_T_vs_PT%i",j), Form("h_Particles_Rank_T_vs_PT%i",j),20,0,20,16,-2,6);
+  h_Particles_Rank_PT_vs_PT[j] = new TH2F(Form("h_Particles_Rank_PT_vs_PT%i",j), Form("h_Particles_Rank_PT_vs_PT%i",j),20,0,20,16,-2,6);
+  }
  
+  TH2F *h_Particles_Rank_T_vs_T[5];
+  TH2F *h_Particles_Rank_PT_vs_T[5];
+  for (int j=0; j<5; j++){
+  h_Particles_Rank_T_vs_T[j] = new TH2F(Form("h_Particles_Rank_T_vs_T%i",j), Form("h_Particles_Rank_T_vs_T%i",j),20,0,20,200,0,50);
+  h_Particles_Rank_PT_vs_T[j] = new TH2F(Form("h_Particles_Rank_PT_vs_T%i",j), Form("h_Particles_Rank_PT_vs_T%i",j),20,0,20,200,0,50);
+  }
+ 
+  TH1F *h_Jet_PT = new TH1F("h_Jet_PT","h_Jet_PT",5000,0,5000);
   TH1F *h_Particles_Rank_T_Reco[5];
   TH1F *h_Particles_Rank_PT_Reco[5];
   for (int j=0; j<5; j++){
@@ -724,6 +741,11 @@ int main(int argc, char **argv)
   Int_t   ID_Tr2T;
   Int_t   ID_Tr3T;
   Int_t   ID_Tr4T;
+  Int_t   ID_Tr0PT;
+  Int_t   ID_Tr1PT;
+  Int_t   ID_Tr2PT;
+  Int_t   ID_Tr3PT;
+  Int_t   ID_Tr4PT;
   Float_t dR_Tr0T_HPt;
   Float_t dR_Tr1T_HPt;
   Float_t dR_Tr2T_HPt;
@@ -751,6 +773,12 @@ int main(int argc, char **argv)
   T->Branch("ID_Tr2T",&ID_Tr2T,"ID_Tr2T/I");
   T->Branch("ID_Tr3T",&ID_Tr3T,"ID_Tr3T/I");
   T->Branch("ID_Tr4T",&ID_Tr4T,"ID_Tr4T/I");
+  T->Branch("ID_Tr0PT",&ID_Tr0PT,"ID_Tr0PT/I");
+  T->Branch("ID_Tr1PT",&ID_Tr1PT,"ID_Tr1PT/I");
+  T->Branch("ID_Tr2PT",&ID_Tr2PT,"ID_Tr2PT/I");
+  T->Branch("ID_Tr3PT",&ID_Tr3PT,"ID_Tr3PT/I");
+  T->Branch("ID_Tr4PT",&ID_Tr4PT,"ID_Tr4PT/I");
+
 
   Int_t   Event_reco;
   Float_t dR_Tr0T_HPt_Reco;
@@ -910,7 +938,8 @@ int main(int argc, char **argv)
    int Hadronic_decay_total = 0;
    int Leptonic_decay_total = 0;
    vector<int> Total_particle_kind={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322,16,3334};
-   vector<int> Trailing_particle_kind={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322,16,3334,1000010020};
+   vector<int> Trailing_particle_kind={11,13,130,211,321,2112,2212,3122,3112,3312,3222,3322,16,3334,1000010020,310};
+   vector<int> Trailing_particle_kind_limit={11,13,130,211,321,2112,2212};
    vector<int> Trailing_particle_kind_T={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322,16,3334,1000010020};
    vector<int> Trailing_particle_kind_PT={11,12,13,14,22,130,211,310,321,2112,2212,3112,3122,3312,3222,3322,16,3334,1000010020};
    vector<double> Trailing_particle_kind_mass={0.0005,0,0.1057,0,0,0.497648,0.1349766,0.497648,0.493,0.938,0.939,1.197,1.115,1.321,1.189,1.314,0,1.672,1.86};
@@ -950,8 +979,10 @@ int main(int argc, char **argv)
     nEvents ++ ;
    	cout << "nEvents: " << nEvents << endl;
         cout <<  " # Events=" << nEvents << endl;
+                Event_number_check->Fill(1);
    Event = nEvents;
 Event_reco = nEvents;
+
 //Event_reco_track = nEvents;   
   int Status0=0;
    int Status1=0;
@@ -1128,12 +1159,13 @@ Event_reco = nEvents;
    vector<LParticle> truthjets;
    int nn=0;
    int check=4;
+   int Jet_each_event=0;
     vector<TLorentzVector> Truthjets_axis;
 
 
           cout << "truth-4: " ;
 for (unsigned int k = 0; k<sjets_truth.size(); k++) {
-    //            cout << "sjets_truth[k].constituents().size(): " << sjets_truth[k].constituents().size() << endl;
+	//            cout << "sjets_truth[k].constituents().size(): " << sjets_truth[k].constituents().size() << endl;
 	      	//for(int j = 0 ; j < sjets_truth[k].constituents().size(); j++) cout << "pdg: " << sjets_truth[k].constituents()[j].user_index() << endl;
 		if(sjets_truth[k].constituents().size()==1 and abs(sjets_truth[k].constituents()[0].user_index())==22)
 		{//cout << "Fucking ISR Photon" << endl; 
@@ -1153,21 +1185,17 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               vector<float> jet_P_for_rank_sort ; vector<float> jet_P_for_rank; vector<int> Rank_PDGID;
 		
     	      p_using.SetPxPyPzE(sjets_truth[k].px(),sjets_truth[k].py(),sjets_truth[k].pz(),sjets_truth[k].e());
-              fastjet::PseudoJet Jet_axis(sjets_truth[k].px(),sjets_truth[k].py(),sjets_truth[k].pz(),sjets_truth[k].e());
-		//cout << "p_using.DeltaR(Forth_And_Back_Vector[0]): " << p_using.DeltaR(Forth_And_Back_Vector[0]);
-                //cout << "p_using.DeltaR(Forth_And_Back_Vector[1]): " << p_using.DeltaR(Forth_And_Back_Vector[1]);
-
+             
+		fastjet::PseudoJet Jet_axis(sjets_truth[k].px(),sjets_truth[k].py(),sjets_truth[k].pz(),sjets_truth[k].e());
 
 	      if(p_using.DeltaR(Forth_And_Back_Vector[0])<0.1*check and  Check_Forth_And_Back_Bool[0]==0){cout << "backward jet1" << endl;continue;}
               if(p_using.DeltaR(Forth_And_Back_Vector[1])<0.1*check and  Check_Forth_And_Back_Bool[1]==0){cout << "backward jet2" << endl;continue;}
-
-	      if(p_using.DeltaR(Forth_And_Back_Vector[0])>0.1*check and p_using.DeltaR(Forth_And_Back_Vector[1])>0.1*check){
-	    	//cout << "p_using.DeltaR(Forth_And_Back_Vector[0]): " << p_using.DeltaR(Forth_And_Back_Vector[0]);
-                //cout << "p_using.DeltaR(Forth_And_Back_Vector[1]): " << p_using.DeltaR(Forth_And_Back_Vector[1]);	
-		//cout << "Miss-matching jet" << endl; 
-		continue;}
-              LParticle p( sjets_truth[k].px(), sjets_truth[k].py(), sjets_truth[k].pz(),  sjets_truth[k].e(),0);
-
+	      if(p_using.DeltaR(Forth_And_Back_Vector[0])>0.1*check and p_using.DeltaR(Forth_And_Back_Vector[1])>0.1*check){continue;}
+	      
+		Jet_each_event = Jet_each_event+1;
+              h_Jet_PT->Fill(p_using.Perp());
+	      cout << "p_using.Perp: " << p_using.Perp() << endl; 
+	      LParticle p( sjets_truth[k].px(), sjets_truth[k].py(), sjets_truth[k].pz(),  sjets_truth[k].e(),0);
               vector<PseudoJet> constit=sjets_truth[k].constituents();
               int csize=constit.size();
               float event_number=0;
@@ -1179,6 +1207,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               int Check_photon_jet=0;
               vector<TLorentzVector> FourP;
               vector<PseudoJet> FourP_1;
+
                   for (int i=0; i<csize; i++) {
                         if((constit[i].user_index()-22)!=0)
                         Check_photon_jet = Check_photon_jet + 1;
@@ -1207,7 +1236,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                         }}
 
 		Eta_plot->Fill(p_using.Eta());
-	      if(abs(p_using.Eta())>0.6) { cout << "Particles of jet outside Eta==1" << endl; continue; }
+	//      if(abs(p_using.Eta())>0.6) { cout << "Particles of jet outside Eta==1" << endl; continue; }
               Eta_plot_after_cut->Fill(p_using.Eta());
 
 	 //      if(Check_Forth_And_Back_Bool[0]==1 and p_using.DeltaR(Forth_And_Back_Vector[0])<0.1*check)Forth_jet = Forth_jet+1;
@@ -1222,8 +1251,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
               p.SetParameter(eccentricity(sjets_truth[k],sjets_truth[k].constituents())); // 5
               truthjets.push_back(p);
               Truthjets_axis.push_back(p_using);
-	}	
-	 /*    
+	//}	
+	     
                  for (int i=0; i<csize; i++) {
                         fastjet::PseudoJet constituent(constit[i].px(),constit[i].py(),constit[i].pz(),constit[i].e());
                         TLorentzVector constit_vec;
@@ -1274,7 +1303,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 							 cout << "constit[i].getpdg(): "<< constit[i].user_index() << endl;
 							continue;}
 		    
-		   if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
+		 //  if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
 		
 		  
 
@@ -1308,9 +1337,12 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 		  velocity_jet_sort.push_back(constit_velocity);
 		  velocity_jet.push_back(constit_velocity);
 		  velocity_jet_Z.push_back(constit[i].pz()/constit[i].e());
-		  velocity_jet_Theta.push_back(constit_vec.Theta());	
+		  velocity_jet_Theta.push_back(constit_vec.Theta());
+		  if(constit_vec.Eta()==0) cout << "Timing_eta_0: " << abs(2.3*TMath::Power(10,9)/(SOL*TMath::Sin(constit_vec.Theta()))) << endl;	
 		  Timing_Standard->Fill(abs(2.3*TMath::Power(10,9)/(SOL*TMath::Sin(constit_vec.Theta()))));//Suppose all of them are photons.
 		  PT_jet.push_back(constit[i].perp());
+		  cout << "pT: " << constit[i].perp()  << endl;
+		  cout << "PDG: abs(sjets_truth[k].constituents()[i].user_index()): " << abs(sjets_truth[k].constituents()[i].user_index()) << endl;
 		  PT_jet_sort.push_back(constit[i].perp());
 		  momentum_jet.push_back( constit_vec.P() );
 		  P_jet_sort.push_back( constit_vec.P() );
@@ -1318,10 +1350,12 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 		  FourP.push_back(constit_vec);
 		  FourP_1.push_back(constituent);
 		  event_number = event_number+1;
-		  //if(nEvents==1){cout << "Timing_detector: " << 2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta()))) << endl;
-		//	       cout << "Velocity: "<< constit_velocity << endl;}
               	}
 		}
+		cout << "Jet_each_event: " << Jet_each_event << endl;
+		Event_number_check_jet->Fill(Jet_each_event);
+		//close the truth-loop
+
 		if(event_number==0) continue;
           cout << "truth-5: " ;
 		check_jet_particle_number->Fill(jet_time_for_rank_sort.size());
@@ -1365,6 +1399,14 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 		 float Vz_Leading=0;
 		 vector<int> Particle_ID_T;
 		 vector<int> Particle_ID_PT;
+                 vector<int> H_Particle_ID_T;
+                 vector<int> H_Particle_ID_PT;
+		
+		 vector<float> Particle_ID_T_PT;
+		 vector<float> Particle_ID_T_T;
+                 vector<float> Particle_ID_PT_T;
+		 vector<float> Particle_ID_PT_PT; 
+		
 		 vector<float> dR_Highest_PT_T;
                  vector<float> dR_Highest_PT_PT;
 		 vector<float> Timing_checking;
@@ -1377,7 +1419,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 	 for(int i=0; i<PT_jet.size(); i++) {
              if(max_perp==PT_jet[i]){HighestPT_Trailing_and_next_trailing.push_back(FourP[i]);}}
 		//cout << "Highest(PT):" << endl; cout << "PDGID: "<< constit_PDG[i] << endl; cout << "PT_jet[i].pz()" << FourP_1[i].pz() << endl; cout << "PT_jet[i].px()" << FourP_1[i].px() << endl; cout << "PT_jet[i].py()" << FourP_1[i].py() << endl;}}
-
+        cout << "truth121: " << endl;
 	for(int j=0 ; j<jet_time.size() ; j++)
 				{
 		for(int i=0 ; i<jet_time.size(); i++)
@@ -1385,10 +1427,12 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 			if(jet_time_sort[jet_time.size()-1-j]==jet_time[i]) 
 				{
 				check_timing_number = check_timing_number + 1;
-				Timing_checking.push_back(jet_time[i]);			
-				Particle_ID_T.push_back(constit_PDG[i]);
+				Timing_checking.push_back(jet_time[i]);
+				Particle_ID_T_PT.push_back(PT_jet[i]);
+				Particle_ID_T_T.push_back(jet_time[i]);
+				Particle_ID_T.push_back(constit_PDG[i]);			
 				dR_Highest_PT_T.push_back(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
-	//			cout << "HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]): " << HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]) << endl; 
+	//cout << "T_HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]): " << HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]) << endl; 
 				if(j<5)h_Particles_dR_Highest_PT_T[j]->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
 				}}}
 	//======================================================================================
@@ -1400,45 +1444,20 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 				{
                                 PT_checking.push_back(PT_jet[i]);
 				check_PT_number = check_PT_number + 1;
-				Particle_ID_PT.push_back(constit_PDG[i]);
-                                if(j<5)dR_Highest_PT_PT.push_back(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
+                                Particle_ID_PT_PT.push_back(PT_jet[i]);
+                                Particle_ID_PT_T.push_back(jet_time[i]);
+                                //cout << "PT_jet[i]: " << PT_jet[i] << endl;
+                                Particle_ID_PT.push_back(constit_PDG[i]); 
+                                dR_Highest_PT_PT.push_back(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
+        //cout << "PT_HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]): " << HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]) << endl; 
                              	if(j<5)h_Particles_dR_Highest_PT_PT[j]->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
 				   }}}
-
-          cout << "truth-6: " ;
-	if(event_number>=1)
-                {
-                dR_Tr0T_HPt = dR_Highest_PT_T[0];
-                dR_Tr0PT_HPt = dR_Highest_PT_PT[0];
-                ID_Tr0T     = Particle_ID_T[0];
-                }
-        if(event_number>=2)
-                {
-                dR_Tr1T_HPt = dR_Highest_PT_T[1];
-                dR_Tr1PT_HPt = dR_Highest_PT_PT[1];
-                ID_Tr1T     = Particle_ID_T[1];
-                }
-        if(event_number>=3)
-                {
-                dR_Tr2T_HPt = dR_Highest_PT_T[2];
-                dR_Tr2PT_HPt = dR_Highest_PT_PT[2];
-                ID_Tr2T     = Particle_ID_T[2];
-                }
-        if(event_number>=4)
-                {
-                dR_Tr3T_HPt = dR_Highest_PT_T[3];
-                dR_Tr3PT_HPt = dR_Highest_PT_PT[3];
-                ID_Tr3T     = Particle_ID_T[3];
-                }
-        if(event_number>=5)
-                {
-                dR_Tr4T_HPt = dR_Highest_PT_T[4];
-                dR_Tr4PT_HPt = dR_Highest_PT_PT[4];
-                ID_Tr4T     = Particle_ID_T[4];
-                }
-
+	cout << "check_timing_number: " << check_timing_number << endl;
+	cout << "check_PT_number: " << check_PT_number << endl;
+	cout << "truth111: " << endl;
 	for(int j=0 ; j<5 ; j++)
-	{ 
+	{
+	//cout << "j: " << j << endl; 
 	if( (event_number-1) < j) continue;
 	else{	
         	int it;
@@ -1448,10 +1467,19 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
         	Trailing_particle_kind.push_back(abs(Particle_ID_T[j]));
         	}       
 
-	        for(int m=0; m<Trailing_particle_kind.size();m++){
-        	        //cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
-                	if(abs(Particle_ID_T[j])==Trailing_particle_kind[m] and abs(Particle_ID_T[j])!=22) h_Particles_Rank_T[j]->Fill(m);
-                	//cout << "Particle_ID_T[j]->GetBinContent(m): " << h_Particles_Rank_T[j]->GetBinContent(m+1) << endl;
+	        for(int m=0; m<Trailing_particle_kind_limit.size();m++){
+			if(abs(Particle_ID_T[j])==Trailing_particle_kind_limit[m] and abs(Particle_ID_T[j])!=22) 
+			{
+                                H_Particle_ID_T.push_back(m);
+				h_Particles_Rank_T[j]->Fill(m);
+			//cout << "Particle_ID_T_PT[j]: " << Particle_ID_T_PT[j] << endl;
+                        //cout << "Particle_ID_T_T[j]: " << Particle_ID_T_T[j] << endl;
+			h_Particles_Rank_T_vs_T[j]->Fill(m,Particle_ID_T_T[j]);
+                if(TMath::Log10(Particle_ID_T_PT[j])>-1.5)h_Particles_Rank_T_vs_PT[j]->Fill(m,TMath::Log10(Particle_ID_T_PT[j]));
+                if(TMath::Log10(Particle_ID_T_PT[j])<-1.5)h_Particles_Rank_T_vs_PT[j]->Fill(m,-1.499);
+                    //    cout << "h_Particles_Rank_T[j]->GetBinContent(m): " << h_Particles_Rank_T[j]->GetBinContent(m+1) << endl;
+			//cout << "Particle_ID_T_PT: " << TMath::Log10(Particle_ID_T_PT[j]) << endl;
+			}
                 }
 
                 int it2;
@@ -1461,15 +1489,55 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                 Trailing_particle_kind.push_back(abs(Particle_ID_PT[j]));
                 }
                 
-                for(int m=0; m<Trailing_particle_kind.size();m++){
-                        //cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
-                        if(abs(Particle_ID_PT[j])==Trailing_particle_kind[m] and abs(Particle_ID_PT[j])!=22) h_Particles_Rank_PT[j]->Fill(m);
-                        //cout << "Particle_ID_PT[j]->GetBinContent(m): " << h_Particles_Rank_PT[j]->GetBinContent(m+1) << endl;
+                for(int m=0; m<Trailing_particle_kind_limit.size();m++){
+                        if(abs(Particle_ID_PT[j])==Trailing_particle_kind_limit[m] and abs(Particle_ID_PT[j])!=22) 
+			{
+                                H_Particle_ID_PT.push_back(m);
+				h_Particles_Rank_PT[j]->Fill(m);
+                        if(j==0 and Particle_ID_PT_PT[j]>10){
+			cout << "Particle_ID_PT_PT[j]: " << Particle_ID_PT_PT[j] << endl;
+		        cout << "What the hell!!" << endl;
+			}
+			//cout << "Particle_ID_PT_T[j]: " << Particle_ID_PT_T[j] << endl;
+                        h_Particles_Rank_PT_vs_T[j]->Fill(m,Particle_ID_PT_T[j]);
+                if(TMath::Log10(Particle_ID_PT_PT[j])>-1.5)h_Particles_Rank_PT_vs_PT[j]->Fill(m,TMath::Log10(Particle_ID_PT_PT[j]));
+                if(TMath::Log10(Particle_ID_PT_PT[j])<-1.5)h_Particles_Rank_PT_vs_PT[j]->Fill(m,-1.499);
+//                                h_Particles_Rank_PT_vs_PT[j]->Fill(m,TMath::Log10(Particle_ID_PT_PT[j]));
+                       // cout << "h_Particles_Rank_PT[j]->GetBinContent(m): " << h_Particles_Rank_PT[j]->GetBinContent(m+1) << endl;          
+		//	cout << "Particle_ID_PT_PT: " << TMath::Log10(Particle_ID_PT_PT[j]) << endl;
+			}
                 }
 
 	}}
+        cout << "truth131: " << endl;
+        if(event_number>=1)
+                {
+                dR_Tr0T_HPt =  dR_Highest_PT_T[0];
+                dR_Tr0PT_HPt = dR_Highest_PT_PT[0];
+                }
+        if(event_number>=2)
+                {
+                dR_Tr1T_HPt =  dR_Highest_PT_T[1];
+                dR_Tr1PT_HPt = dR_Highest_PT_PT[1];
+                }
+        if(event_number>=3)
+                {
+                dR_Tr2T_HPt =  dR_Highest_PT_T[2];
+                dR_Tr2PT_HPt = dR_Highest_PT_PT[2];
+                }
+        if(event_number>=4)
+                {
+                dR_Tr3T_HPt =  dR_Highest_PT_T[3];
+                dR_Tr3PT_HPt = dR_Highest_PT_PT[3];
+                }
+        if(event_number>=5)
+                {
+                dR_Tr4T_HPt =  dR_Highest_PT_T[4];
+                dR_Tr4PT_HPt = dR_Highest_PT_PT[4];
+                }
+
           cout << "truth-7: " ;
-		==for(int i=0; i<jet_time.size(); i++) 
+		for(int i=0; i<jet_time.size(); i++) 
 				{
                         if(jet_time_sort[jet_time.size()-1]==jet_time[i]){
 				Trailing_ID_T = constit_PDG[i];}
@@ -1490,9 +1558,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 	else cout << "" << endl;//
          
 	for(int m=0; m<Trailing_particle_kind.size();m++){
-		cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
+		//cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
 		if(abs(Trailing_ID_T)==Trailing_particle_kind[m] and abs(Trailing_ID_T)!=22) Trailing_particle_ID_T->Fill(m);
-		cout << "Trailing_particle_ID_T->GetBinContent(m): " << Trailing_particle_ID_T->GetBinContent(m+1) << endl;
+		//cout << "Trailing_particle_ID_T->GetBinContent(m): " << Trailing_particle_ID_T->GetBinContent(m+1) << endl;
 		}
 
         int it2;
@@ -1504,9 +1572,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
         else cout << "" << endl;//
 
         for(int m=0; m<Trailing_particle_kind.size();m++){
-                cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
+                //cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
                 if(abs(Trailing_ID_PT)==Trailing_particle_kind[m] and abs(Trailing_ID_PT)!=22) Trailing_particle_ID_PT->Fill(m);
-                cout << "Trailing_particle_ID_PT->GetBinContent(m): " << Trailing_particle_ID_PT->GetBinContent(m+1) << endl;
+                //cout << "Trailing_particle_ID_PT->GetBinContent(m): " << Trailing_particle_ID_PT->GetBinContent(m+1) << endl;
                 }
        
         int it4;
@@ -1518,9 +1586,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
         else cout << "" << endl;//
 
         for(int m=0; m<Trailing_particle_kind.size();m++){
-                cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
+                //cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
                 if(abs(Next_to_trailing_ID_T)==Trailing_particle_kind[m] and abs(Next_to_trailing_ID_T)!=22) Next_to_trailing_particle_ID_T->Fill(m);
-                cout << "Next_to_trailing_particle_ID_T->GetBinContent(m): " << Next_to_trailing_particle_ID_T->GetBinContent(m+1) << endl;
+                //cout << "Next_to_trailing_particle_ID_T->GetBinContent(m): " << Next_to_trailing_particle_ID_T->GetBinContent(m+1) << endl;
                 }
 
         int it3;
@@ -1532,11 +1600,11 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
         else cout << "" << endl;//
 
         for(int m=0; m<Trailing_particle_kind.size();m++){
-                cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
+                //cout << "Trailing_particle_kind[m]: "<< abs(Trailing_particle_kind[m]) << endl;
                 if(abs(Next_to_trailing_ID_PT)==Trailing_particle_kind[m] and abs(Next_to_trailing_ID_PT)!=22) Next_to_trailing_particle_ID_PT->Fill(m);
-                cout << "Next_to_trailing_particle_ID_PT->GetBinContent(m): " << Next_to_trailing_particle_ID_PT->GetBinContent(m+1) << endl;
+                //cout << "Next_to_trailing_particle_ID_PT->GetBinContent(m): " << Next_to_trailing_particle_ID_PT->GetBinContent(m+1) << endl;
                 }
-		==
+		
 //=================================================================================================================================//           
 		//if(jet_time_sort[0]<jet_time_sort[1] and jet_time_sort[1]<jet_time_sort[2]) cout << "Let go party party all night oh oh!~" << endl;
 		 
@@ -1627,24 +1695,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
       //            h_truth_jets_const_Et10->Fill(constit[i].Et());
                 }
               }
-
-
-              // cout << "jet=" << nn << " E=" << e << " eta=" << eta << " phi=" << phi <<  endl;
-              //nn++;
-              //if (nn==2) break; // take first 3 jets
-
   }
 
-          cout << "truth-8: " ;
-
-		cout << "check*0.1: " << check*0.1 << endl;
-		if(check*0.1==0.3) cout << "Yes! " << endl; 
-		cout << "Forth_jet_number: "<< Forth_jet << endl;
-                cout << "Back_jet_number: "<< Back_jet << endl; 
-	if(check*0.1==0.2)     { cout << "1" << endl;	 Check_matching_0P2->Fill(Forth_jet); Check_matching_0P2->Fill(Back_jet);}
-        else if(check*0.1==0.3){ cout << "2" << endl;    Check_matching_0P3->Fill(Forth_jet); Check_matching_0P3->Fill(Back_jet);}
-        else if(check*0.1==0.4){ cout << "3" << endl;    Check_matching_0P4->Fill(Forth_jet); Check_matching_0P4->Fill(Back_jet);}
-}
 
 // includes Geant4
 /*
@@ -1864,7 +1916,10 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 
 */
 
+//====Calorimeter1
 
+/*
+===comment
 if(Truthjets_axis.size()==0) continue;
  // HCAL simulated raw hits
   double hcalsum_raw=0;
@@ -1872,7 +1927,7 @@ if(Truthjets_axis.size()==0) continue;
   vector<PseudoJet> avec_hits_raw_sf;
   vector<LParticle> Calhits;
   vector<LParticle> simhits;
-
+  vector<LParticle> simhits_1;
 
   IMPL::LCCollectionVec* col50_1 = (IMPL::LCCollectionVec*) evt->getCollection("HAD_BARREL") ;
   int nCL11 = col50_1->getNumberOfElements() ;
@@ -1902,7 +1957,7 @@ if(Truthjets_axis.size()==0) continue;
     p.SetParameter( y*1000 );
     p.SetParameter( z*1000 );
         if(e>0.5)   {avec_hits_raw_sf.push_back(pj_sf);
-		    Calhits.push_back(p);		
+		    //Calhits.push_back(p);		
 						}
         }
   IMPL::LCCollectionVec* col50_2 = (IMPL::LCCollectionVec*) evt->getCollection("EM_BARREL") ;
@@ -1922,12 +1977,13 @@ if(Truthjets_axis.size()==0) continue;
     int cellId0 = mcp_1->getCellID0();
     int cellId1 = mcp_1->getCellID1();
     long long cellId = ((long long)cellId1) << 32 | cellId0;
-    int layer = decoder->getFieldValue("layer", cellId);
+    int layer = decoder_ecal->getFieldValue("layer", cellId);
     LParticle p(px,py,pz,e,layer);
     PseudoJet pj_sf(px,py,pz,e);
     p.SetParameter( x*1000 );
     p.SetParameter( y*1000 );
-    p.SetParameter( z*1000 ); 
+    p.SetParameter( z*1000 );
+    p.SetParameter( layer ) ;
        if(e>0.5) {
 		   //avec_hits_raw_sf.push_back(pj_sf);
 		   Calhits.push_back(p);
@@ -1935,6 +1991,8 @@ if(Truthjets_axis.size()==0) continue;
 							
         }
 cout << "33:";
+====Comment===
+*/
 /*
   int check_cell=0;
   IMPL::LCCollectionVec* col50 = (IMPL::LCCollectionVec*) evt->getCollection("HcalBarrelHits") ;
@@ -2055,8 +2113,11 @@ cout << "33:";
     } // end fill of hits
 */ 
 //cout << " check_cell: " << check_cell << endl;
-  double ecalsum_raw=0;
+  //Calorimeter2
+double ecalsum_raw=0;
 
+/*
+===comment
 // ECAL hits
   IMPL::LCCollectionVec* col53 = (IMPL::LCCollectionVec*) evt->getCollection("EcalBarrelHits") ;
   //IMPL::LCCollectionVec* col53 = (IMPL::LCCollectionVec*) evt->getCollection("EM_BARREL") ;
@@ -2097,7 +2158,6 @@ cout << "33:";
     double phi_r=pj.phi();
     double pt_r=pj.pt();
     //cout << " e=" << e <<  " phi=" << pj.phi() << " eta=" << pj.eta() << endl;
-
     // fill hits
      LParticle p(px,py,pz,e,layer);
      p.SetCharge(layer);
@@ -2142,7 +2202,7 @@ cout << "33:";
          //p.SetParameter( (double)(mcp->getGeneratorStatus()));
      }
 
-    if(layer==31)                    simhits.push_back(p);
+    if(layer==1 or layer==31) simhits.push_back(p);
     // correct by SF (1st, 2nd, 3rd layer are 1., 0.0184, 0.0092)
     double ECAL_SF=0.0184;
     e=e/ECAL_SF;
@@ -2182,14 +2242,15 @@ cout << "33:";
       vector<vector<double>>      T_Reco_sort(Recojets.size(),vector<double>());
       vector<vector<double>>      T_Reco(Recojets.size(),vector<double>());
       vector<vector<double>>      T_sort_number_only(Recojets.size(),vector<double>());
-      
+      vector<vector<double>>      T_first_last_average(2,vector<double>());     
+
+  
       vector<double>  mass_Reco={0,0,0,0,0,0,0,0,0,0};
       vector<int> event_number_Reco={0,0,0,0,0,0,0,0,0,0};
       vector<int> Eta_smaller_than_1_event={0,0,0,0,0,0,0,0,0,0};
       vector<int> event_number_Reco_for_mass={0,0,0,0,0,0,0,0,0,0};
       vector<int> Eta_smaller_than_1_event_for_mass={0,0,0,0,0,0,0,0,0,0};
       
-     cout << "simhits.size: " <<simhits.size() << endl; 
     if(Recojets.size()>0)
           {
         cout << "88: ";
@@ -2215,19 +2276,24 @@ cout << "33:";
           int    pdg=int(par[6]);
           int    stat=int(par[7]);
           double Mass  = par[8];
-      //   if(Back_forth==0) cout << "Mass: " << Mass << endl;
+	 
 	  // Study of the dR
               //Hadronic decays checking
-          //      cout << "Calhits.size(): " << Calhits.size() << endl;
-          	for(int k1=0 ; k1<Calhits.size(); k1++){
+          	
+		for(int k1=0 ; k1<Calhits.size(); k1++){
 			LParticle Calhit=(LParticle)Calhits.at(k1);
 			TLorentzVector LE_1=Calhit.GetP();
 			vector<double> par1=Calhit.GetParameters();
 			int CellX_Cal=int(par1[0]);
                         int CellY_Cal=int(par1[1]);
 			int CellZ_Cal=int(par1[2]);
+			int LAYER_ECAL_USE = int(par1[3]);
 		//   cout << "Back_forth: " << Back_forth  << endl;
-                  if((Recojets[Back_forth].DeltaR(LE_1))<0.4 and x==CellX_Cal and y==CellY_Cal and z==CellZ_Cal){
+                if(layer==1  and (Recojets[Back_forth].DeltaR(LE_1))<0.4 and x==CellX_Cal and y==CellY_Cal and z==CellZ_Cal){
+			T_first_last_average[0].push_back(Thit);
+		}  
+		if(layer==31 and (Recojets[Back_forth].DeltaR(LE_1))<0.4 and x==CellX_Cal and y==CellY_Cal and z==CellZ_Cal){
+			T_first_last_average[1].push_back(Thit);
 			//Mass
                       mass_Reco[Back_forth] = mass_Reco[Back_forth] + Mass;
 			//Timing
@@ -2248,19 +2314,15 @@ cout << "33:";
 		}}}
           // int    genstat=int(par[8]);
       //======================+Cut-up line===============//
-        
+
         for (unsigned int Back_forth=0; Back_forth<Recojets.size(); Back_forth++) {
             sort(T_Reco_sort[Back_forth].begin() , T_Reco_sort[Back_forth].end());
             sort(PT_Reco_sort[Back_forth].begin(), PT_Reco_sort[Back_forth].end());}
-        /*if(T_Reco_sort[0].size()>3){ 
-		for(int i=0 ; i<T_Reco_sort[0].size() ; i++){
-			cout << "T_Reco_sort[i]: "<< T_Reco_sort[0][i] << endl;	 
-			cout << "PT_Reco_sort[i]: "<< PT_Reco_sort[0][i] << endl;  
-								}  
-	}*/
-            vector<vector<TLorentzVector>> Highest_PT_FourP(Recojets.size(),vector<TLorentzVector>());
+            
+
+
+	vector<vector<TLorentzVector>> Highest_PT_FourP(Recojets.size(),vector<TLorentzVector>());
                      
- //		      cout << "New1 " << endl;              
                      for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
                      {
 			 //
@@ -2297,6 +2359,18 @@ cout << "33:";
 		vector<vector<int>>         PT_PDG_Reco(Recojets.size(),vector<int>());
       		 vector<vector<int>>         T_PDG_Reco(Recojets.size(),vector<int>());
 		
+                double T_first=0 ; double T_last=0;
+
+        if( T_first_last_average[0].size()!=0 and T_first_last_average[1].size()!=0  )
+                {
+                        float Time_Difference=0;
+                        for(int G=0 ; G<T_first_last_average[0].size(); G++) T_first = T_first + T_first_last_average[0][G];
+                        for(int H=0 ; H<T_first_last_average[1].size(); H++) T_last  = T_last  + T_first_last_average[1][H];
+                        Time_Difference =  (T_last/T_first_last_average[1].size()) - (T_first/T_first_last_average[0].size());
+                        cout << "Time_Difference: " << Time_Difference << endl;
+                        if(Time_Difference>0) Timing_detecto_ECAL_TDif->Fill(Time_Difference);
+                }
+
    //     cout << "Check_point_dR_calculation" << endl;
                      for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++)
                      {
@@ -2328,7 +2402,7 @@ cout << "33:";
                                                      //cout << "T_PDG_Reco[Back_forth][ijk]: " << PDG_Reco[Back_forth][ijk] << endl;
                                                      dR_Highest_PT_T_Reco.push_back(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
                                                      h_Particles_dR_Highest_PT_T_Reco[jkl]->Fill(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
-                                                     //cout << "TTT:FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]): " << FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]) << endl;
+                                                     cout << "TTT:FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]): " << FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]) << endl;
                                                  }}
                                              if(identify_1>1) cout << "Weird! Check!"<< endl;}
                                          //===================================================/
@@ -2338,24 +2412,25 @@ cout << "33:";
                                              for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
                                                  if(PT_sort_number_only[Back_forth][jkl]==PT_Reco[Back_forth][ijk])
                                                  {
+						//cout << "PT_sort_number_only[Back_forth][jkl]: " << PT_sort_number_only[Back_forth][jkl] << "PT_Reco[Back_forth][ijk]: " << PT_Reco[Back_forth][ijk] << endl;
 						     //cout << "ijk: " << ijk << endl;
                                                      identify = identify+1;
                                                      PT_PDG_Reco[Back_forth].push_back(PDG_Reco[Back_forth][ijk]);
                                                      //cout << "PT_PDG_Reco[Back_forth][ijk]: " << PDG_Reco[Back_forth][ijk] << endl;
                                                      dR_Highest_PT_PT_Reco.push_back(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
                                                      h_Particles_dR_Highest_PT_PT_Reco[jkl]->Fill(FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]));
-                                                     //cout << "PTPTPT:FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]): " << FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]) << endl;
+                                                     cout << "PTPTPT:FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]): " << FourP_dR_Reco[Back_forth][ijk].DeltaR(Highest_PT_FourP[Back_forth][0]) << endl;
                                                  }}
                                              if(identify>1) cout << "Weird! Check_1!"<< endl;}
                                      }
                       }}}}
-/*
-for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
-	if(T_PDG_Reco[Back_forth].size()>0){
-	for(int jjjjj=0; jjjjj<T_PDG_Reco[Back_forth].size();jjjjj++) cout << "T_PDG_Reco[Back_forth]: " << T_PDG_Reco[Back_forth][jjjjj] << endl;}
-	if(PT_PDG_Reco[Back_forth].size()>0){
-        for(int jjjjj=0; jjjjj<PT_PDG_Reco[Back_forth].size();jjjjj++) cout << "PT_PDG_Reco[Back_forth]: " << PT_PDG_Reco[Back_forth][jjjjj] << endl;}
-}*/
+
+//for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
+//	if(T_PDG_Reco[Back_forth].size()>0){
+//	for(int jjjjj=0; jjjjj<T_PDG_Reco[Back_forth].size();jjjjj++) cout << "T_PDG_Reco[Back_forth]: " << T_PDG_Reco[Back_forth][jjjjj] << endl;}
+//	if(PT_PDG_Reco[Back_forth].size()>0){
+//        for(int jjjjj=0; jjjjj<PT_PDG_Reco[Back_forth].size();jjjjj++) cout << "PT_PDG_Reco[Back_forth]: " << PT_PDG_Reco[Back_forth][jjjjj] << endl;}
+//}
 //cout << "444: " << endl;
 cout << "99: " ;
 for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
@@ -2477,32 +2552,9 @@ cout << "2: " << endl;
                      }
                      }
 
-      Full_contain.clear();
-     // SimHIT.clear();
-     /*
-      PT_PDG_Reco.clear();
-      T_PDG_Reco.clear();
-*/
-      //dR_Highest_PT_T_Reco.clear();
-      //dR_Highest_PT_PT_Reco.clear();
-	
-} 
-   /*   mass_Reco.clear();
-      event_number_Reco.clear();
-      Eta_smaller_than_1_event.clear();
-      event_number_Reco_for_mass.clear();
-      Eta_smaller_than_1_event_for_mass.clear();
-     
-  for(int Back_forth=0 ; Back_forth<Recojets.size() ; Back_forth++){
-        FourP_dR_Reco[Back_forth].clear();
-        PDG_Reco[Back_forth].clear();
-        PT_Reco[Back_forth].clear();
-        PT_Reco_sort[Back_forth].clear();
-        PT_sort_number_only[Back_forth].clear();
-        T_Reco_sort[Back_forth].clear();
-        T_Reco[Back_forth].clear();
-        T_sort_number_only[Back_forth].clear();*/
-  }
+      Full_contain.clear();}}
+	====comment
+	*/
       //Recojets.clear();
       //sjets_reco.clear();
       //thisClustering_reco.Clear();
@@ -2855,11 +2907,13 @@ cout << "2: " << endl;
 
 
 
-/*
-// look at track resolution
 
+// look at track resolution
+// 
 // look at reconstructed tracks using Helix
-  double _bField=5;
+/*
+=====comment  
+double _bField=5;
 // Reconstructed tracks
 // look up at: /share/sl6/ilcsoft/slic/release-v05-00-00/slicPandora/HEAD/lcio/v02-04-03/build/include/EVENT
  vector<PseudoJet> avec_tracks;
@@ -2897,6 +2951,7 @@ for (unsigned int j=0; j<Forth_And_Back_Vector.size(); j++)
               TLV.SetPxPyPzE(px,py,pz,e);
              // Get the two 32-bit chunks of the ID.
              //===comment
+             
               for(int ppp=0 ; ppp<track->getTrackerHits().size(); ppp++){
              int cellId0 = track->getTrackerHits()[ppp]->getCellID0();
              int cellId1 = track->getTrackerHits()[ppp]->getCellID1();
@@ -2906,8 +2961,8 @@ for (unsigned int j=0; j<Forth_And_Back_Vector.size(); j++)
              long long cellId = ((long long)cellId1) << 32 | cellId0;
              int layer = decoder->getFieldValue("layer", cellId);
              cout << "Tracker_Layer: "<< layer  << endl;
-              }===comment
-              continue;
+              continue;}
+		=====comment//
              LParticle p(px,py,pz,e,0);
              
              if(TLV.DeltaR(Jet_axis_Truth)<0.4 and Check_Forth_And_Back_Bool[j]==1)
@@ -2972,8 +3027,8 @@ if(Recojets_track.size()>0){
 
           if(T_Reco_sort_track[0].size()>3){
               for(int i=0 ; i<T_Reco_sort_track[0].size() ; i++){
-                  cout << "T_Reco_sort_track[i]: "<< T_Reco_sort_track[0][i] << endl;
-                  cout << "PT_Reco_sort_track[i]: "<< PT_Reco_sort_track[0][i] << endl;
+                 // cout << "T_Reco_sort_track[i]: "<< T_Reco_sort_track[0][i] << endl;
+                 // cout << "PT_Reco_sort_track[i]: "<< PT_Reco_sort_track[0][i] << endl;
               }
           }
           vector<vector<TLorentzVector>> Highest_PT_FourP_track(Recojets_track.size(),vector<TLorentzVector>());
@@ -3037,15 +3092,17 @@ if(Recojets_track.size()>0){
                                   for(int ijk=0 ; ijk<Size_T_PT ; ijk++){
                                       if(T_sort_number_only_track[Back_forth][T_sort_number_only_track[Back_forth].size()-1-jkl]==T_Reco_track[Back_forth][ijk])
                                       {
-                                          if(ijk==0)Timing_detector_Reco_TOF_track->Fill(T_Reco_track[Back_forth][ijk]);
-       //                                   cout << "T_Reco_track[Back_forth][ijk]: " << T_Reco_track[Back_forth][ijk] << endl;
+        //                                  if(ijk==0)Timing_detector_Reco_TOF_track->Fill(T_Reco_track[Back_forth][ijk]);
+                                          //cout << "T_Reco_track[Back_forth][ijk]: " << T_Reco_track[Back_forth][ijk] << endl;
                                           //cout << "ijk: " << ijk << endl;
                                           identify_1 = identify_1+1;
                                           dR_Highest_PT_T_Reco_track.push_back(FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]));
                                           h_Particles_dR_Highest_PT_T_Reco_track[jkl]->Fill(FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]));
-         //                                 cout << "TTT:FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]): " << FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]) << endl;
+                                   //       cout << "TTT:FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]): " << FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]) << endl;
                                       }}
-                                  if(identify_1>1) cout << "Weird! Check!_track"<< endl;}
+			          //cout << "identify_1: " << identify_1 << endl;
+                                  //if(identify_1>1) cout << "Weird! Check!_track"<< endl;
+                                  }
                               //===================================================/
                               
                               if( jkl < PT_sort_number_only_track[Back_forth].size() ){
@@ -3059,17 +3116,11 @@ if(Recojets_track.size()>0){
                                           h_Particles_dR_Highest_PT_PT_Reco_track[jkl]->Fill(FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]));
                                           cout << "PTPTPT:FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]): " << FourP_dR_Reco_track[Back_forth][ijk].DeltaR(Highest_PT_FourP_track[Back_forth][0]) << endl;
                                       }}
-                                  if(identify>1) cout << "Weird! Check_1!_track"<< endl;}
+                                  if(identify>1) cout << "Weird! Check_1!_track"<< endl;
+                                  }
                           }
                       }}}}
-          
-          for(int Back_forth=0 ; Back_forth<2 ; Back_forth++){
-              if(T_PDG_Reco[Back_forth].size()>0){
-                  for(int jjjjj=0; jjjjj<T_PDG_Reco[Back_forth].size();jjjjj++) cout << "T_PDG_Reco[Back_forth]: " << T_PDG_Reco[Back_forth][jjjjj] << endl;}
-              if(PT_PDG_Reco[Back_forth].size()>0){
-                  for(int jjjjj=0; jjjjj<PT_PDG_Reco[Back_forth].size();jjjjj++) cout << "PT_PDG_Reco[Back_forth]: " << PT_PDG_Reco[Back_forth][jjjjj] << endl;}
-          }
-          
+         
           //cout << "Check_point_trailing_dR_Tree" << endl;
           //
           if(dR_Highest_PT_PT_Reco_track.size()>=1)
@@ -3139,7 +3190,7 @@ if(Recojets_track.size()>0){
       }*/
 T->Fill();
 T_Reco_T->Fill();
-//T_Reco_T_track->Fill();
+T_Reco_T_track->Fill();
 cout << "Final: " ;
    // end loop
   }
