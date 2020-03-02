@@ -644,7 +644,7 @@ int main(int argc, char **argv)
   TH1F *Timing_detector_next_to_trailing = new TH1F("Timing_detector_next_to_trailing","Timing_detector_next_to_trailing",200,0,50);
   TH1F *Timing_detector_Trailing_P = new TH1F("Timing_detector_Trailing_P","Timing_detector_Trailing_P",200,0,100);
   TH1F *Timing_detector_next_to_trailing_P = new TH1F("Timing_detector_next_to_trailing_P","Timing_detector_next_to_trailing_P",200,0,100);
-  TH1F *Timing_detector_Trailing_V = new TH1F("Timing_detector_Trailing_V","Timing_detector_Trailing_V",1000,0.9,1);
+  TH1F *Timing_detector_Trailing_V = new TH1F("Timing_detector_Trailing_V","Timing_detector_Trailing_V",10000,8,9);
   TH1F *Timing_detector_next_to_trailing_V = new TH1F("Timing_detector_next_to_trailing_V","Timing_detector_next_to_trailing_V",1000,0.9,1);
   TH1F *Timing_detector_dR_Leading_trailing_T = new TH1F("Timing_detector_dR_Leading_trailing_T","Timing_detector_dR_Leading_trailing_T",50,0,1);
   TH1F *Timing_detector_dR_Leading_next_trailing_T = new TH1F("Timing_detector_dR_Leading_next_trailing_T","Timing_detector_dR_Leading_next_trailing_T",50,0,1);
@@ -692,11 +692,17 @@ int main(int argc, char **argv)
   TH2F *h_Particles_Rank_T_vs_T[5];
   TH2F *h_Particles_Rank_PT_vs_T[5];
   for (int j=0; j<5; j++){
-  h_Particles_Rank_T_vs_T[j] = new TH2F(Form("h_Particles_Rank_T_vs_T%i",j), Form("h_Particles_Rank_T_vs_T%i",j),20,0,20,200,0,50);
-  h_Particles_Rank_PT_vs_T[j] = new TH2F(Form("h_Particles_Rank_PT_vs_T%i",j), Form("h_Particles_Rank_PT_vs_T%i",j),20,0,20,200,0,50);
+  h_Particles_Rank_T_vs_T[j] = new TH2F(Form("h_Particles_Rank_T_vs_T%i",j), Form("h_Particles_Rank_T_vs_T%i",j),20,0,20,500,0,50);
+  h_Particles_Rank_PT_vs_T[j] = new TH2F(Form("h_Particles_Rank_PT_vs_T%i",j), Form("h_Particles_Rank_PT_vs_T%i",j),20,0,20,500,0,50);
   }
  
   TH1F *h_Jet_PT = new TH1F("h_Jet_PT","h_Jet_PT",5000,0,5000);
+  TH1F *h_Jet_SM_PT_PT = new TH1F("h_Jet_SM_PT_PT","h_Jet_SM_PT_PT",80,-2,6);
+  TH1F *h_Jet_SM_PT_T  = new TH1F("h_Jet_SM_PT_T","h_Jet_SM_PT_T",5000,0,50);
+  TH1F *h_Jet_T_PT     = new TH1F("h_Jet_T_PT","h_Jet_T_PT",80,-2,6);
+  TH1F *h_Jet_T_T     = new TH1F("h_Jet_T_T","h_Jet_T_T",5000,0,50);
+  TH1F *h_Jet_PT_HI_PT_C_P = new TH1F("h_Jet_PT_HI_PT_C_P","h_Jet_PT_HI_PT_C_P",100,0,1); 
+
   TH1F *h_Particles_Rank_T_Reco[5];
   TH1F *h_Particles_Rank_PT_Reco[5];
   for (int j=0; j<5; j++){
@@ -1191,7 +1197,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 	      if(p_using.DeltaR(Forth_And_Back_Vector[0])<0.1*check and  Check_Forth_And_Back_Bool[0]==0){cout << "backward jet1" << endl;continue;}
               if(p_using.DeltaR(Forth_And_Back_Vector[1])<0.1*check and  Check_Forth_And_Back_Bool[1]==0){cout << "backward jet2" << endl;continue;}
 	      if(p_using.DeltaR(Forth_And_Back_Vector[0])>0.1*check and p_using.DeltaR(Forth_And_Back_Vector[1])>0.1*check){continue;}
-	      
+	       float Jet_PT = p_using.Perp();
 		Jet_each_event = Jet_each_event+1;
               h_Jet_PT->Fill(p_using.Perp());
 	      cout << "p_using.Perp: " << p_using.Perp() << endl; 
@@ -1236,7 +1242,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                         }}
 
 		Eta_plot->Fill(p_using.Eta());
-	//      if(abs(p_using.Eta())>0.6) { cout << "Particles of jet outside Eta==1" << endl; continue; }
+	      if(abs(p_using.Eta())>0.6) { cout << "Particles of jet outside Eta==1" << endl; continue; }
               Eta_plot_after_cut->Fill(p_using.Eta());
 
 	 //      if(Check_Forth_And_Back_Bool[0]==1 and p_using.DeltaR(Forth_And_Back_Vector[0])<0.1*check)Forth_jet = Forth_jet+1;
@@ -1282,6 +1288,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                                          //cout << "constit[i].getpdg(): "<< constit[i].user_index() << endl;
                                                         continue;}        
 			if(abs(constit_vec.Eta())>1){ Event_number_out_Eta2P1 = Event_number_out_Eta2P1 +1;  continue;}
+			
 			int it;
 			it=find(Total_particle_kind.begin(),Total_particle_kind.end(),abs(constit[i].user_index()))[0];
         		if(it!=abs(constit[i].user_index()))
@@ -1321,7 +1328,7 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 				check_Proton_V->Fill(abs(constit_velocity));
                                 check_Proton_T ->Fill(abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta())))));
                         }
-
+		  cout << "Oh really" << endl;
 		  if(abs(sjets_truth[k].constituents()[i].user_index())!=22)
                         {
 		  time_average = time_average + abs(2.3*TMath::Power(10,9)/(constit_velocity_z*SOL*(TMath::Tan(constit_vec.Theta()))));//[ns]
@@ -1424,8 +1431,11 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 				{
 		for(int i=0 ; i<jet_time.size(); i++)
 				{
-			if(jet_time_sort[jet_time.size()-1-j]==jet_time[i]) 
+			//if(jet_time_sort[jet_time.size()-1-j]==jet_time[i]) 
+			if(velocity_jet_sort[j]==velocity_jet[i]) 
 				{
+				cout << "velocity_jet[i] : " << velocity_jet[i] << endl;
+				//cout << "Time: " << jet_time[i] << endl;
 				check_timing_number = check_timing_number + 1;
 				Timing_checking.push_back(jet_time[i]);
 				Particle_ID_T_PT.push_back(PT_jet[i]);
@@ -1436,25 +1446,57 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 				if(j<5)h_Particles_dR_Highest_PT_T[j]->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
 				}}}
 	//======================================================================================
+	cout << "1: " << endl;
         for(int j=0 ; j<PT_jet.size() ; j++)
                                 {
                 for(int i=0 ; i<PT_jet.size(); i++)
                                 {
-                        if(PT_jet_sort[j]==PT_jet[i]) 
-				{
+                        if(PT_jet_sort[j]==PT_jet[i])
+                                {
                                 PT_checking.push_back(PT_jet[i]);
-				check_PT_number = check_PT_number + 1;
+                                check_PT_number = check_PT_number + 1;
                                 Particle_ID_PT_PT.push_back(PT_jet[i]);
                                 Particle_ID_PT_T.push_back(jet_time[i]);
                                 //cout << "PT_jet[i]: " << PT_jet[i] << endl;
-                                Particle_ID_PT.push_back(constit_PDG[i]); 
+                                Particle_ID_PT.push_back(constit_PDG[i]);
                                 dR_Highest_PT_PT.push_back(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
         //cout << "PT_HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]): " << HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]) << endl; 
-                             	if(j<5)h_Particles_dR_Highest_PT_PT[j]->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
-				   }}}
-	cout << "check_timing_number: " << check_timing_number << endl;
-	cout << "check_PT_number: " << check_PT_number << endl;
-	cout << "truth111: " << endl;
+                                if(j<5)h_Particles_dR_Highest_PT_PT[j]->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(FourP[i]));
+                                   }}}
+
+	if(PT_jet_sort.size()>0)
+	{
+	h_Jet_SM_PT_PT->Fill(TMath::Log10(Particle_ID_PT_PT[0]));
+	h_Jet_SM_PT_T ->Fill(Particle_ID_PT_T[0]);
+	h_Jet_T_PT    ->Fill(TMath::Log10(Particle_ID_T_PT[0]));
+        h_Jet_T_T     ->Fill(Particle_ID_T_T[0]);
+        cout << "TMath::Log10(Particle_ID_PT_PT[0]): " << TMath::Log10(Particle_ID_PT_PT[0]) << endl;
+        cout << "Particle_ID_PT_T[0]: " << Particle_ID_PT_T[0] << endl;
+        cout << "TMath::Log10(Particle_ID_T_PT[0]): "  << TMath::Log10(Particle_ID_T_PT[0]) << endl;
+        cout << "Particle_ID_T_T[0]: " << Particle_ID_T_T[0] << endl;
+
+	for(int joke=0; joke<PT_jet_sort.size(); joke++){
+		int Check=0;
+		for(int joke_1=0; joke_1<PT_jet_sort.size();joke_1++){
+		if(PT_jet_sort[PT_jet_sort.size()-1-joke]==PT_jet[joke_1]){
+			int ID3=0;
+        		ID3 = find(PDG_with_no_charge.begin(),PDG_with_no_charge.end(),abs(constit_PDG[joke_1]))[0];
+			if(ID3!=abs(constit_PDG[joke_1]))
+			{
+			cout << "PT_jet_sort[PT_jet_sort.size()-1-joke]/Jet_PT: " << PT_jet_sort[PT_jet_sort.size()-1-joke]/Jet_PT << endl;
+			h_Jet_PT_HI_PT_C_P->Fill(PT_jet_sort[PT_jet_sort.size()-1-joke]/Jet_PT);
+			cout << "2: " << endl;
+			Check = Check+1;
+			break;
+			}
+			else{
+			continue;
+			}
+			}}
+		if(Check==1) break;}
+	}
+        cout << "3: " << endl;
+	//cout << "truth111: " << endl;
 	for(int j=0 ; j<5 ; j++)
 	{
 	//cout << "j: " << j << endl; 
@@ -1495,8 +1537,8 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
                                 H_Particle_ID_PT.push_back(m);
 				h_Particles_Rank_PT[j]->Fill(m);
                         if(j==0 and Particle_ID_PT_PT[j]>10){
-			cout << "Particle_ID_PT_PT[j]: " << Particle_ID_PT_PT[j] << endl;
-		        cout << "What the hell!!" << endl;
+		//	cout << "Particle_ID_PT_PT[j]: " << Particle_ID_PT_PT[j] << endl;
+		//        cout << "What the hell!!" << endl;
 			}
 			//cout << "Particle_ID_PT_T[j]: " << Particle_ID_PT_T[j] << endl;
                         h_Particles_Rank_PT_vs_T[j]->Fill(m,Particle_ID_PT_T[j]);
@@ -1678,8 +1720,9 @@ for (unsigned int k = 0; k<sjets_truth.size(); k++) {
 		Timing_detector_next_to_trailing->Fill(abs(2.3*TMath::Power(10,9)/(Vz_Next_to_Trailing*SOL*TMath::Tan(Theta_Next_to_Trailing)))); 
 		Timing_detector_Trailing_P->Fill(abs(Momentum_Trailing));
 		Timing_detector_next_to_trailing_P->Fill(abs(Momentum_Next_to_Trailing));
-		Timing_detector_Trailing_V->Fill(abs(velocity_jet_sort[0]));
-		 Timing_detector_next_to_trailing_V->Fill(abs(velocity_jet_sort[1]));
+		Timing_detector_Trailing_V->Fill(TMath::Log10(3*TMath::Power(10,8)*abs(velocity_jet_sort[0])));
+		cout << "Trailing-V: " << TMath::Log10(3*TMath::Power(10,8)*abs(velocity_jet_sort[0])) << endl; 
+		Timing_detector_next_to_trailing_V->Fill(abs(velocity_jet_sort[1]));
 		Timing_detector_dR_Leading_trailing_T->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[1]));
 	Timing_detector_dR_Leading_next_trailing_T->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[2]));
                 Timing_detector_dR_Leading_trailing_PT->Fill(HighestPT_Trailing_and_next_trailing[0].DeltaR(HighestPT_Trailing_and_next_trailing[3]));
